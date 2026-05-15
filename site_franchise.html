@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>대상 부산 1호점 — 가맹점 앱</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+
+:root{
+  --bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--line:#e4e0d8;
+  --text:#1a1916;--muted:#6b6860;--dim:#a8a49c;
+  --green:#1a7a4a;--green-bg:#e8f5ee;--green-mid:#2d9e65;
+  --red:#c0392b;--red-bg:#fdecea;
+  --amber:#b85c00;--amber-bg:#fef3e2;
+  --blue:#1a5fa8;--blue-bg:#e8f0fb;--blue-mid:#2874cc;
+  --purple:#5a3fb5;--purple-bg:#f0eeff;
+  --mono:"Space Mono",monospace;--sans:"Noto Sans KR",sans-serif;
+  --nav-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:flex-start}
+
+/* ── App shell ── */
+.app{
+  width:100%;max-width:390px;height:100vh;
+  background:var(--surface);display:flex;flex-direction:column;
+  border-left:0.5px solid var(--line);border-right:0.5px solid var(--line);
+  position:relative;overflow:hidden;
+}
+
+/* ── Status bar (shared) ── */
+.status-bar{padding:12px 20px 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:var(--surface)}
+.status-time{font-family:var(--mono);font-size:13px;font-weight:700}
+.status-icons{display:flex;gap:5px;color:var(--muted);font-size:14px}
+
+/* ── Pages ── */
+.pages{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column;background:var(--surface);padding-bottom:var(--nav-h)}
+.page.active{display:flex}
+/* 스크롤바 숨김 */
+.page::-webkit-scrollbar{display:none}
+.page{scrollbar-width:none}
+
+/* ── Bottom Nav (shared) ── */
+.nav-bar{
+  height:var(--nav-h);flex-shrink:0;
+  display:flex;border-top:0.5px solid var(--line);
+  background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0);
+  position:relative;z-index:10;
+}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:6px 0;border:none;background:none;font-family:var(--sans)}
+.nav-item i{font-size:22px;color:var(--dim);transition:color .15s}
+.nav-item span{font-size:10px;color:var(--dim);font-weight:500;transition:color .15s}
+.nav-item.active i{color:var(--blue)}
+.nav-item.active span{color:var(--blue);font-weight:700}
+.nav-badge-dot{position:relative}
+.nav-badge-dot::after{content:'';position:absolute;top:-2px;right:-4px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--surface)}
+
+/* ══════════════════════════════════════
+   HOME PAGE
+══════════════════════════════════════ */
+.app-header{padding:14px 20px 12px;border-bottom:0.5px solid var(--line)}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.store-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;border:0.5px solid rgba(26,122,74,.2)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.notif-btn{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:0.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--muted);position:relative}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--surface)}
+.store-name{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.store-sub{font-size:12px;color:var(--dim);margin-top:3px}
+.scroll-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.alert-banner{background:var(--amber-bg);border:0.5px solid rgba(184,92,0,.25);border-radius:12px;padding:11px 14px;display:flex;align-items:flex-start;gap:10px}
+.alert-icon{font-size:16px;color:var(--amber);margin-top:1px;flex-shrink:0}
+.alert-text{font-size:12px;color:var(--amber);line-height:1.55;flex:1}
+.alert-action{margin-left:auto;flex-shrink:0;background:var(--amber);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--sans)}
+.section-label{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stat-card{background:var(--surface2);border-radius:12px;padding:14px 12px;cursor:pointer}
+.stat-label{font-size:11px;color:var(--dim);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.stat-value{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)}
+.stat-sub{font-size:11px;margin-top:4px}
+.stat-sub.up{color:var(--green)}.stat-sub.down{color:var(--red)}.stat-sub.muted{color:var(--dim)}
+.card{background:var(--surface);border:0.5px solid var(--line);border-radius:16px;padding:14px 16px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.card-title{font-size:14px;font-weight:700;color:var(--text)}
+.card-link{font-size:12px;color:var(--blue);cursor:pointer}
+.bar-chart{display:flex;flex-direction:column;gap:7px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-day{font-size:11px;color:var(--dim);width:20px;text-align:right;flex-shrink:0;font-family:var(--mono)}
+.bar-day.today{color:var(--blue);font-weight:700}
+.bar-track{flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.bar-fill.normal{background:var(--line)}.bar-fill.today-fill{background:var(--blue)}
+.bar-val{font-size:11px;color:var(--dim);width:40px;text-align:right;flex-shrink:0;font-family:var(--mono)}
+.bar-val.today{color:var(--blue);font-weight:700}
+.goal-row{margin-top:10px;background:var(--blue-bg);border:0.5px solid rgba(26,95,168,.2);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.goal-label{font-size:12px;color:var(--blue)}.goal-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--blue)}
+.stock-list{display:flex;flex-direction:column;gap:10px}
+.stock-item{display:flex;align-items:center;gap:10px}
+.stock-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.stock-icon.danger{background:var(--red-bg)}.stock-icon.warn{background:var(--amber-bg)}.stock-icon.ok{background:var(--green-bg)}
+.stock-info{flex:1;min-width:0}
+.stock-name{font-size:13px;font-weight:700;color:var(--text)}
+.stock-status{font-size:11px;margin-top:2px}
+.stock-status.danger{color:var(--red)}.stock-status.warn{color:var(--amber)}.stock-status.ok{color:var(--green)}
+.stock-bar-wrap{width:60px;flex-shrink:0}
+.stock-bar-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:3px}
+.stock-bar-fill{height:100%;border-radius:3px}
+.stock-pct{font-size:10px;color:var(--dim);text-align:right;font-family:var(--mono)}
+.goto-order-btn{width:100%;margin-top:12px;padding:13px;background:var(--text);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.goto-order-btn:active{opacity:.85}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quick-btn{background:var(--surface2);border:0.5px solid var(--line);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.quick-btn:active{opacity:.8}
+.quick-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.quick-label{font-size:13px;font-weight:700;color:var(--text)}.quick-sub{font-size:11px;color:var(--dim)}
+
+/* ══════════════════════════════════════
+   ORDER PAGE
+══════════════════════════════════════ */
+.order-header{padding:12px 20px 13px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--line)}
+.back-btn{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:0.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0}
+.order-header-center{flex:1;min-width:0}
+.order-header-title{font-size:17px;font-weight:700}
+.order-header-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.cart-btn{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:0.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:20px;position:relative;flex-shrink:0}
+.cart-count{position:absolute;top:4px;right:4px;width:17px;height:17px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--surface)}
+.deadline-banner{margin:12px 20px 0;background:var(--amber-bg);border:0.5px solid rgba(184,92,0,.25);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.deadline-text{font-size:12px;color:var(--amber);flex:1}
+.deadline-timer{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber);flex-shrink:0}
+.search-wrap{padding:12px 20px 0}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--surface2);border:0.5px solid var(--line);border-radius:12px;padding:10px 14px}
+.search-box i{font-size:18px;color:var(--dim)}
+.search-input{flex:1;border:none;background:transparent;font-size:14px;font-family:var(--sans);color:var(--text);outline:none}
+.search-input::placeholder{color:var(--dim)}
+.cat-scroll{padding:12px 20px 0;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cat-scroll-inner{display:inline-flex;gap:6px;padding-bottom:2px}
+.cat-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:999px;border:0.5px solid var(--line);background:var(--surface2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:var(--sans);transition:all .15s}
+.cat-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.product-section{flex:1;padding:12px 20px;display:flex;flex-direction:column}
+.section-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-label2{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.4px;text-transform:uppercase}
+.product-list{display:flex;flex-direction:column;gap:10px}
+.product-card{border:0.5px solid var(--line);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:flex-start;background:var(--surface)}
+.product-card.low-stock{border-color:rgba(192,57,43,.3);background:var(--red-bg)}
+.product-card.out-of-stock{opacity:.5;pointer-events:none}
+.product-img{width:72px;height:72px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.product-info{flex:1;min-width:0}
+.product-name{font-size:14px;font-weight:700;color:var(--text)}
+.product-spec{font-size:12px;color:var(--muted);margin-top:2px}
+.product-supplier{font-size:11px;color:var(--dim);margin-top:3px}
+.p-stock-bar-wrap{margin-top:6px}
+.p-stock-bar-label{font-size:10px;color:var(--dim);margin-bottom:3px}
+.p-stock-bar-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.p-stock-bar-fill{height:100%;border-radius:2px}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.product-price{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text)}
+.product-unit-label{font-size:11px;color:var(--dim);margin-left:2px}
+.qty-control{display:flex;align-items:center}
+.qty-btn{width:30px;height:30px;border-radius:8px;border:0.5px solid var(--line);background:var(--surface2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--sans)}
+.qty-num{width:36px;text-align:center;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text)}
+.add-btn{width:30px;height:30px;border-radius:8px;background:var(--text);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.badge-row{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.badge-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px}
+.badge-tag.low{background:var(--red-bg);color:var(--red)}.badge-tag.new{background:var(--blue-bg);color:var(--blue)}
+.badge-tag.sale{background:var(--amber-bg);color:var(--amber)}.badge-tag.best{background:var(--green-bg);color:var(--green)}
+.float-bar{padding:10px 20px 16px;background:var(--surface);border-top:0.5px solid var(--line);flex-shrink:0}
+.float-btn{width:100%;padding:14px;border-radius:14px;border:none;background:var(--text);color:#fff;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.float-btn.empty{background:var(--surface2);color:var(--dim);border:0.5px solid var(--line);pointer-events:none}
+.float-btn:active{opacity:.85}
+.float-left{display:flex;align-items:center;gap:8px}
+.float-badge{background:rgba(255,255,255,.2);padding:2px 8px;border-radius:6px;font-size:12px}
+.float-total-val{font-family:var(--mono);font-size:14px}
+
+/* ── Cart sheet ── */
+.cart-sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.cart-sheet-bg.show{display:flex}
+.cart-sheet{width:100%;max-width:390px;background:var(--surface);border-radius:20px 20px 0 0;max-height:80vh;display:flex;flex-direction:column}
+.sheet-handle{width:36px;height:4px;background:var(--line);border-radius:4px;margin:14px auto 0}
+.sheet-header{padding:14px 20px 12px;border-bottom:0.5px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.sheet-title{font-size:16px;font-weight:700}
+.sheet-close{width:30px;height:30px;border-radius:50%;background:var(--surface2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px}
+.cart-list{overflow-y:auto;padding:12px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cart-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0.5px solid var(--line);border-radius:12px}
+.cart-item-img{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-size:13px;font-weight:700}
+.cart-item-price{font-size:12px;color:var(--muted);font-family:var(--mono);margin-top:1px}
+.cart-qty{display:flex;align-items:center}
+.cq-btn{width:26px;height:26px;border-radius:6px;border:0.5px solid var(--line);background:var(--surface2);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--sans)}
+.cq-num{width:30px;text-align:center;font-family:var(--mono);font-size:13px;font-weight:700}
+.cart-remove{width:26px;height:26px;border-radius:6px;border:none;background:var(--red-bg);color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:6px}
+.cart-summary{padding:14px 20px;border-top:0.5px solid var(--line)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.sum-label{font-size:13px;color:var(--muted)}.sum-val{font-family:var(--mono);font-size:14px;font-weight:700}
+.sum-total{font-size:16px;font-weight:700}.sum-total-val{font-family:var(--mono);font-size:18px;font-weight:700}
+.order-confirm-btn{width:100%;margin-top:12px;padding:15px;border-radius:14px;border:none;background:var(--text);color:#fff;font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.order-confirm-btn.disabled{background:var(--dim);pointer-events:none}
+.order-confirm-btn:active{opacity:.85}
+
+/* ── Overlays ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:none;align-items:center;justify-content:center}
+.overlay.show{display:flex}
+.overlay-box{width:calc(100% - 40px);max-width:340px;background:var(--surface);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:14px}
+.ov-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto}
+.ov-title{font-size:18px;font-weight:700;text-align:center}
+.ov-sub{font-size:13px;color:var(--muted);text-align:center;line-height:1.6}
+.ov-detail{background:var(--surface2);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.od-row{display:flex;justify-content:space-between;font-size:13px}
+.od-label{color:var(--muted)}.od-val{font-weight:700;font-family:var(--mono)}
+.ov-btn-row{display:flex;gap:8px}
+.ovbtn{flex:1;padding:13px;border-radius:12px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;border:0.5px solid var(--line)}
+.ovbtn.cancel{background:var(--surface2);color:var(--text)}
+.ovbtn.ok{background:var(--text);color:#fff;border-color:var(--text)}
+.success-box{width:calc(100% - 40px);max-width:340px;background:var(--surface);border-radius:20px;padding:32px 24px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-bg);display:flex;align-items:center;justify-content:center;font-size:32px;animation:pop .4s cubic-bezier(.17,.67,.47,1.4)}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.success-title{font-size:20px;font-weight:700}
+.success-sub{font-size:13px;color:var(--muted);line-height:1.6}
+.success-no{font-family:var(--mono);font-size:13px;color:var(--blue);background:var(--blue-bg);padding:6px 16px;border-radius:8px}
+.success-close{width:100%;padding:13px;border-radius:12px;border:none;background:var(--text);color:#fff;font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer}
+
+/* ── Coming soon pages ── */
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px;padding:40px 20px;color:var(--dim)}
+.coming-soon i{font-size:48px;opacity:.4}
+.coming-soon-title{font-size:18px;font-weight:700;color:var(--muted)}
+.coming-soon-sub{font-size:14px;text-align:center;line-height:1.6}
+
+/* ── 홈 탭 ── */
+.home-tabs{display:flex;gap:0;border-bottom:0.5px solid var(--line);background:var(--surface);flex-shrink:0}
+.home-tab{flex:1;padding:11px 0;text-align:center;font-size:13px;font-weight:700;color:var(--dim);border-bottom:2px solid transparent;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--sans);transition:color .15s,border-color .15s}
+.home-tab.active{color:var(--text);border-bottom-color:var(--text)}
+.home-tab-panel{display:none}.home-tab-panel.active{display:flex;flex-direction:column;gap:14px}
+
+/* ── 최소주문금액 배지 ── */
+.min-order-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:0.5px solid var(--line);border-radius:12px;padding:10px 14px}
+.min-order-left{display:flex;align-items:center;gap:8px}
+.min-order-label{font-size:12px;color:var(--muted)}
+.min-order-amount{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text)}
+.min-order-progress{flex:1;margin:0 12px}
+.min-order-track{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.min-order-fill{height:100%;border-radius:3px;transition:width .4s,background .3s}
+.min-order-pct{font-size:10px;color:var(--dim);font-family:var(--mono);text-align:right}
+.min-order-status{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.min-order-status.ok{background:var(--green-bg);color:var(--green)}
+.min-order-status.warn{background:var(--amber-bg);color:var(--amber)}
+.min-order-status.fail{background:var(--red-bg);color:var(--red)}
+
+/* ── 수발주 현황 ── */
+.order-status-list{display:flex;flex-direction:column;gap:8px}
+.order-status-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0.5px solid var(--line);border-radius:12px;cursor:pointer;transition:background .15s}
+.order-status-item:active{background:var(--surface2)}
+.osi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.osi-info{flex:1;min-width:0}
+.osi-title{font-size:13px;font-weight:700;color:var(--text)}
+.osi-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.osi-right{text-align:right;flex-shrink:0}
+.osi-amount{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)}
+.osi-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;margin-top:3px;display:inline-block}
+.osi-chip.pending{background:var(--amber-bg);color:var(--amber)}
+.osi-chip.shipping{background:var(--blue-bg);color:var(--blue)}
+.osi-chip.done{background:var(--green-bg);color:var(--green)}
+.osi-chip.draft{background:var(--surface2);color:var(--muted)}
+
+/* ── 발주 CTA ── */
+.order-cta{background:var(--text);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:opacity .15s}
+.order-cta:active{opacity:.85}
+.order-cta-left{display:flex;align-items:center;gap:10px}
+.order-cta-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px}
+.order-cta-title{font-size:15px;font-weight:700;color:#fff}
+.order-cta-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.order-cta-arrow{font-size:22px;color:rgba(255,255,255,.6)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:200}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(min-width:440px){
+  body{padding:20px 0 40px;background:#e8e5e0;align-items:flex-start}
+  .app{border-radius:28px;box-shadow:0 4px 40px rgba(0,0,0,.12);height:auto;min-height:calc(100vh - 60px)}
+  .pages{height:720px}
+}
+
+
+/* ── 배송 카드 (가맹점용) ── */
+.store-dlv-card{border:0.5px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.sdlv-header{padding:13px 15px;display:flex;gap:10px;align-items:flex-start}
+.sdlv-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.sdlv-info{flex:1;min-width:0}
+.sdlv-title{font-size:14px;font-weight:700;color:var(--text)}
+.sdlv-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.sdlv-no{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px}
+.sdlv-steps{display:flex;align-items:center;padding:0 15px 12px}
+.sdlv-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.sdlv-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;z-index:1}
+.sdlv-dot.done{background:var(--green-mid);color:#fff}
+.sdlv-dot.active{background:var(--blue-mid);color:#fff;box-shadow:0 0 0 3px var(--blue-bg)}
+.sdlv-dot.pending{background:var(--surface2);color:var(--dim);border:0.5px solid var(--line)}
+.sdlv-label{font-size:9px;color:var(--dim);margin-top:3px;text-align:center;white-space:nowrap}
+.sdlv-label.active{color:var(--blue);font-weight:700}
+.sdlv-line{flex:1;height:2px;margin-top:-10px;z-index:0}
+.sdlv-line.done{background:var(--green-mid)}.sdlv-line.pending{background:var(--line)}
+.sdlv-body{border-top:0.5px solid var(--line);padding:12px 15px;display:flex;flex-direction:column;gap:8px}
+.sdlv-driver{background:var(--surface2);border-radius:9px;padding:9px 11px;display:flex;align-items:center;gap:9px}
+.sdlv-receipt-btn{width:100%;padding:12px;border-radius:11px;border:none;background:var(--green-mid);color:#fff;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.sdlv-issue-btn{width:100%;padding:10px;border-radius:11px;border:0.5px solid rgba(192,57,43,.3);background:var(--red-bg);color:var(--red);font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+
+
+.status-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
+.sc-preparing{background:var(--surface2);color:var(--muted)}
+.sc-shipping{background:var(--blue-bg);color:var(--blue)}
+.sc-done{background:var(--green-bg);color:var(--green)}
+.sc-issue{background:var(--red-bg);color:var(--red)}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- 공통 Status bar -->
+  <div class="status-bar">
+    <span class="status-time" id="statusTime">09:41</span>
+    <div class="status-icons"><i class="ti ti-wifi"></i><i class="ti ti-battery-2"></i></div>
+  </div>
+
+  <!-- Pages -->
+  <div class="pages">
+
+    <!-- ══ PAGE: 홈 (대시보드) ══ -->
+    <div class="page active" id="page-home">
+      <div class="app-header">
+        <div class="header-top">
+          <div class="store-badge"><span class="badge-dot"></span>영업중</div>
+          <div class="notif-btn"><i class="ti ti-bell"></i><span class="notif-dot"></span></div>
+        </div>
+        <div class="store-name">대상 부산 1호점</div>
+        <div class="store-sub" id="headerDate">로딩 중...</div>
+      </div>
+      <!-- 홈 탭 바 -->
+      <div class="home-tabs">
+        <button class="home-tab active" id="htab-order" onclick="switchHomeTab('order')">
+          <i class="ti ti-clipboard-list" style="font-size:15px;vertical-align:-2px;margin-right:4px"></i>수발주 현황
+        </button>
+        <button class="home-tab" id="htab-sales" onclick="switchHomeTab('sales')">
+          <i class="ti ti-chart-bar" style="font-size:15px;vertical-align:-2px;margin-right:4px"></i>매출 현황
+        </button>
+      </div>
+
+      <div class="scroll-body">
+        <!-- 알림 배너 (공통) -->
+        <div class="alert-banner">
+          <i class="ti ti-alert-triangle alert-icon"></i>
+          <span class="alert-text">닭가슴살 재고 18% — 오늘 마감(18:00) 전 발주 필요</span>
+          <button class="alert-action" onclick="goTo('order')">발주</button>
+        </div>
+
+        <!-- ▼ 탭 패널 1: 수발주 현황 -->
+        <div class="home-tab-panel active" id="panel-order">
+
+          <!-- 최소주문금액 진행바 -->
+          <div class="min-order-bar">
+            <div class="min-order-left">
+              <i class="ti ti-coin" style="font-size:18px;color:var(--muted)"></i>
+              <div>
+                <div class="min-order-label">최소 주문금액</div>
+                <div class="min-order-amount" id="minOrderAmt">200만원</div>
+              </div>
+            </div>
+            <div class="min-order-progress">
+              <div class="min-order-track">
+                <div class="min-order-fill" id="minOrderFill" style="width:0%;background:var(--red)"></div>
+              </div>
+              <div class="min-order-pct" id="minOrderPct">0%</div>
+            </div>
+            <div class="min-order-status fail" id="minOrderStatus">미달</div>
+          </div>
+
+          <!-- 발주 CTA -->
+          <div class="order-cta" onclick="goTo('order')">
+            <div class="order-cta-left">
+              <div class="order-cta-icon"><i class="ti ti-clipboard-list" style="color:#fff"></i></div>
+              <div>
+                <div class="order-cta-title">지금 발주하기</div>
+                <div class="order-cta-sub">마감 <span id="ctaTimer">08:23:14</span> 남음</div>
+              </div>
+            </div>
+            <i class="ti ti-chevron-right order-cta-arrow"></i>
+          </div>
+
+          <!-- 진행중 수발주 -->
+          <div>
+            <div class="section-label">진행중 수발주</div>
+            <div class="order-status-list">
+              <div class="order-status-item" onclick="goTo('order')">
+                <div class="osi-icon" style="background:var(--blue-bg)"><i class="ti ti-truck-delivery" style="color:var(--blue)"></i></div>
+                <div class="osi-info">
+                  <div class="osi-title">ORD-20260515-031</div>
+                  <div class="osi-sub">닭가슴살 외 3종 · 오늘 14:00 도착</div>
+                </div>
+                <div class="osi-right">
+                  <div class="osi-amount">284,000원</div>
+                  <div class="osi-chip shipping">배송중</div>
+                </div>
+              </div>
+              <div class="order-status-item" onclick="goTo('order')">
+                <div class="osi-icon" style="background:var(--green-bg)"><i class="ti ti-circle-check" style="color:var(--green)"></i></div>
+                <div class="osi-info">
+                  <div class="osi-title">ORD-20260514-028</div>
+                  <div class="osi-sub">쌀 20kg · 식용유 · 어제 완료</div>
+                </div>
+                <div class="osi-right">
+                  <div class="osi-amount">216,500원</div>
+                  <div class="osi-chip done">완료</div>
+                </div>
+              </div>
+              <div class="order-status-item" onclick="goTo('order')">
+                <div class="osi-icon" style="background:var(--surface2)"><i class="ti ti-pencil" style="color:var(--muted)"></i></div>
+                <div class="osi-info">
+                  <div class="osi-title">임시저장 발주</div>
+                  <div class="osi-sub">소스류 · 음료 — 미완성</div>
+                </div>
+                <div class="osi-right">
+                  <div class="osi-amount">0원</div>
+                  <div class="osi-chip draft">임시저장</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 재고 현황 -->
+          <div class="card" id="stockSection">
+            <div class="card-header"><span class="card-title">재고 현황</span><span class="card-link" onclick="goTo('order')">발주 →</span></div>
+            <div class="stock-list">
+              <div class="stock-item">
+                <div class="stock-icon danger"><i class="ti ti-alert-circle" style="color:var(--red)"></i></div>
+                <div class="stock-info"><div class="stock-name">닭가슴살</div><div class="stock-status danger">위험 — 잔여 2.4kg</div></div>
+                <div class="stock-bar-wrap"><div class="stock-bar-track"><div class="stock-bar-fill" style="width:18%;background:var(--red)"></div></div><div class="stock-pct">18%</div></div>
+              </div>
+              <div class="stock-item">
+                <div class="stock-icon warn"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i></div>
+                <div class="stock-info"><div class="stock-name">쌀 (20kg)</div><div class="stock-status warn">주의 — 잔여 1포대</div></div>
+                <div class="stock-bar-wrap"><div class="stock-bar-track"><div class="stock-bar-fill" style="width:32%;background:var(--amber)"></div></div><div class="stock-pct">32%</div></div>
+              </div>
+              <div class="stock-item">
+                <div class="stock-icon warn"><i class="ti ti-alert-triangle" style="color:var(--amber)"></i></div>
+                <div class="stock-info"><div class="stock-name">식용유 (18L)</div><div class="stock-status warn">주의 — 잔여 3.6L</div></div>
+                <div class="stock-bar-wrap"><div class="stock-bar-track"><div class="stock-bar-fill" style="width:40%;background:var(--amber)"></div></div><div class="stock-pct">40%</div></div>
+              </div>
+              <div class="stock-item">
+                <div class="stock-icon ok"><i class="ti ti-circle-check" style="color:var(--green)"></i></div>
+                <div class="stock-info"><div class="stock-name">소스류</div><div class="stock-status ok">정상 — 충분</div></div>
+                <div class="stock-bar-wrap"><div class="stock-bar-track"><div class="stock-bar-fill" style="width:78%;background:var(--green)"></div></div><div class="stock-pct">78%</div></div>
+              </div>
+            </div>
+            <button class="goto-order-btn" onclick="goTo('order')">
+              <i class="ti ti-truck-delivery" style="font-size:18px"></i>부족한 재고 바로 발주하기
+            </button>
+          </div>
+
+          <!-- 빠른 메뉴 -->
+          <div>
+            <div class="section-label">빠른 메뉴</div>
+            <div class="quick-grid">
+              <div class="quick-btn" onclick="goTo('order')">
+                <div class="quick-icon" style="background:var(--blue-bg)"><i class="ti ti-clipboard-list" style="color:var(--blue)"></i></div>
+                <div class="quick-label">발주하기</div><div class="quick-sub">마감 18:00</div>
+              </div>
+              <div class="quick-btn" onclick="goTo('delivery')">
+                <div class="quick-icon" style="background:var(--green-bg)"><i class="ti ti-map-pin" style="color:var(--green)"></i></div>
+                <div class="quick-label">배송 추적</div><div class="quick-sub">오늘 배송 2건</div>
+              </div>
+              <div class="quick-btn">
+                <div class="quick-icon" style="background:var(--amber-bg)"><i class="ti ti-refresh-alert" style="color:var(--amber)"></i></div>
+                <div class="quick-label">반품·클레임</div><div class="quick-sub">처리중 1건</div>
+              </div>
+              <div class="quick-btn">
+                <div class="quick-icon" style="background:var(--red-bg)"><i class="ti ti-credit-card" style="color:var(--red)"></i></div>
+                <div class="quick-label">결제·미수금</div><div class="quick-sub">D-3 마감</div>
+              </div>
+              <div class="quick-btn">
+                <div class="quick-icon" style="background:var(--surface2)"><i class="ti ti-speakerphone" style="color:var(--muted)"></i></div>
+                <div class="quick-label">공지사항</div><div class="quick-sub">신규 2건</div>
+              </div>
+              <div class="quick-btn">
+                <div class="quick-icon" style="background:var(--surface2)"><i class="ti ti-book" style="color:var(--muted)"></i></div>
+                <div class="quick-label">레시피·매뉴얼</div><div class="quick-sub">최근 업데이트</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ▼ 탭 패널 2: 매출 현황 -->
+        <div class="home-tab-panel" id="panel-sales">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label"><i class="ti ti-receipt" style="font-size:13px"></i> 매출액</div>
+              <div class="stat-value">1,248만</div>
+              <div class="stat-sub up">▲ 전일 대비 +8.3%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label"><i class="ti ti-shopping-cart" style="font-size:13px"></i> 주문건수</div>
+              <div class="stat-value">87건</div>
+              <div class="stat-sub up">▲ 전일 대비 +5건</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label"><i class="ti ti-coin" style="font-size:13px"></i> 객단가</div>
+              <div class="stat-value">143,000</div>
+              <div class="stat-sub muted">원 / 건</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label"><i class="ti ti-credit-card" style="font-size:13px"></i> 미수금</div>
+              <div class="stat-value" style="color:var(--red)">320만</div>
+              <div class="stat-sub down">결제 기한 D-3</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">이번 주 매출 추이</span><span class="card-link">전체 보기 →</span></div>
+            <div class="bar-chart" id="barChart"></div>
+            <div class="goal-row"><span class="goal-label">오늘 목표 달성률</span><span class="goal-val">62%</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">이번달 누계</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--line);font-size:13px">
+                <span style="color:var(--muted)">총 매출</span><span style="font-family:var(--mono);font-weight:700">4,834만원</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--line);font-size:13px">
+                <span style="color:var(--muted)">발주 총액</span><span style="font-family:var(--mono);font-weight:700">1,240만원</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px">
+                <span style="color:var(--muted)">원가율</span><span style="font-family:var(--mono);font-weight:700;color:var(--green)">25.6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ PAGE: 발주 ══ -->
+    <div class="page" id="page-order">
+      <div class="order-header">
+        <div class="back-btn" onclick="goTo('home')"><i class="ti ti-arrow-left"></i></div>
+        <div class="order-header-center">
+          <div class="order-header-title">발주하기</div>
+          <div class="order-header-sub">대상 부산 1호점</div>
+        </div>
+        <div class="cart-btn" onclick="openCart()">
+          <i class="ti ti-shopping-cart"></i>
+          <span class="cart-count" id="cartCount" style="display:none">0</span>
+        </div>
+      </div>
+      <div class="deadline-banner">
+        <i class="ti ti-clock" style="font-size:16px;color:var(--amber);flex-shrink:0"></i>
+        <span class="deadline-text">오늘 발주 마감까지</span>
+        <span class="deadline-timer" id="timerDisplay">08:23:14</span>
+      </div>
+      <div class="search-wrap">
+        <div class="search-box">
+          <i class="ti ti-search"></i>
+          <input class="search-input" type="text" placeholder="품목명으로 검색" id="searchInput" oninput="filterProducts()">
+        </div>
+      </div>
+      <div class="cat-scroll"><div class="cat-scroll-inner" id="catTabs"></div></div>
+      <div class="product-section">
+        <div class="section-row">
+          <span class="section-label2" id="sectionLabel">전체 품목</span>
+          <span class="sort-btn" style="font-size:12px;color:var(--blue);cursor:pointer;display:flex;align-items:center;gap:3px"><i class="ti ti-adjustments-horizontal" style="font-size:14px"></i> 정렬</span>
+        </div>
+        <div class="product-list" id="productList"></div>
+      </div>
+      <div class="float-bar">
+        <button class="float-btn empty" id="floatBtn" onclick="openCart()">
+          <div class="float-left"><i class="ti ti-shopping-cart" style="font-size:20px"></i><span>장바구니 담기</span></div>
+          <span class="float-total-val">0원</span>
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ══ PAGE: 배송 ══ -->
+    <div class="page" id="page-delivery">
+      <div class="app-header" style="border-bottom:0.5px solid var(--line)">
+        <div style="font-size:17px;font-weight:700">배송 현황</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:3px">대상 부산 1호점</div>
+      </div>
+      <!-- 요약 -->
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:14px 20px 0">
+        <div style="background:var(--surface2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:17px;font-weight:700;color:var(--blue)">1건</div><div style="font-size:10px;color:var(--dim);margin-top:2px">배송중</div></div>
+        <div style="background:var(--surface2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:17px;font-weight:700;color:var(--amber)">1건</div><div style="font-size:10px;color:var(--dim);margin-top:2px">준비중</div></div>
+        <div style="background:var(--surface2);border-radius:10px;padding:10px 8px;text-align:center"><div style="font-family:var(--mono);font-size:17px;font-weight:700;color:var(--green)">1건</div><div style="font-size:10px;color:var(--dim);margin-top:2px">완료</div></div>
+      </div>
+      <!-- 배송 목록 -->
+      <div style="padding:14px 20px;display:flex;flex-direction:column;gap:10px;flex:1" id="storeDeliveryList"></div>
+    </div>
+
+    <!-- ══ PAGE: 통계 (Coming soon) ══ -->
+    <div class="page" id="page-stats">
+      <div class="app-header" style="border-bottom:0.5px solid var(--line);padding:14px 20px">
+        <div class="store-name" style="font-size:18px">통계</div>
+      </div>
+      <div class="coming-soon">
+        <i class="ti ti-chart-bar"></i>
+        <div class="coming-soon-title">매출 통계</div>
+        <div class="coming-soon-sub">월별·품목별 매출 분석<br>곧 화면이 추가됩니다.</div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: 설정 (Coming soon) ══ -->
+    <div class="page" id="page-settings">
+      <div class="app-header" style="border-bottom:0.5px solid var(--line);padding:14px 20px">
+        <div class="store-name" style="font-size:18px">설정</div>
+      </div>
+      <div class="coming-soon">
+        <i class="ti ti-settings"></i>
+        <div class="coming-soon-title">설정</div>
+        <div class="coming-soon-sub">매장 정보 및 알림 설정<br>곧 화면이 추가됩니다.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 공통 Bottom Nav -->
+  <div class="nav-bar">
+    <button class="nav-item active" id="nav-home" onclick="goTo('home')">
+      <i class="ti ti-home"></i><span>홈</span>
+    </button>
+    <button class="nav-item" id="nav-order" onclick="goTo('order')">
+      <i class="ti ti-clipboard-list nav-badge-dot"></i><span>발주</span>
+    </button>
+    <button class="nav-item" id="nav-delivery" onclick="goTo('delivery')">
+      <i class="ti ti-truck-delivery"></i><span>배송</span>
+    </button>
+    <button class="nav-item" id="nav-stats" onclick="goTo('stats')">
+      <i class="ti ti-chart-bar"></i><span>통계</span>
+    </button>
+    <button class="nav-item" id="nav-settings" onclick="goTo('settings')">
+      <i class="ti ti-settings"></i><span>설정</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- ── Cart sheet ── -->
+<div class="cart-sheet-bg" id="cartBg" onclick="if(event.target===this)closeCart()">
+  <div class="cart-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <span class="sheet-title">장바구니</span>
+      <button class="sheet-close" onclick="closeCart()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-summary">
+      <div class="sum-row"><span class="sum-label">품목 수</span><span class="sum-val" id="sumItems">0종</span></div>
+      <div class="sum-row"><span class="sum-label">공급가 합계</span><span class="sum-val" id="sumSubtotal">0원</span></div>
+      <div class="sum-row"><span class="sum-label">배송비</span><span class="sum-val">무료</span></div>
+      <div class="sum-row" style="border-top:0.5px solid var(--line);padding-top:10px;margin-top:4px">
+        <span class="sum-total">총 결제금액</span><span class="sum-total-val" id="sumTotal">0원</span>
+      </div>
+      <button class="order-confirm-btn disabled" id="orderConfirmBtn" onclick="openConfirmWithCheck()">
+        <i class="ti ti-clipboard-check"></i>발주 확정하기
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Confirm overlay ── -->
+<div class="overlay" id="confirmOverlay">
+  <div class="overlay-box">
+    <div class="ov-icon" style="background:var(--green-bg)"><i class="ti ti-clipboard-check" style="color:var(--green)"></i></div>
+    <div class="ov-title">발주 확정</div>
+    <div class="ov-sub">아래 내용으로 발주하시겠습니까?<br>확정 후 취소는 본사에 문의하세요.</div>
+    <div class="ov-detail" id="confirmDetail"></div>
+    <div class="ov-btn-row">
+      <button class="ovbtn cancel" onclick="closeConfirm()">취소</button>
+      <button class="ovbtn ok" onclick="submitOrder()">발주 확정</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Success overlay ── -->
+<div class="overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon"><i class="ti ti-circle-check" style="color:var(--green)"></i></div>
+    <div class="success-title">발주 완료!</div>
+    <div class="success-sub">발주가 성공적으로 접수됐습니다.<br>본사에서 확인 후 출고 처리됩니다.</div>
+    <div class="success-no" id="orderNo">주문번호: ORD-20260515-032</div>
+    <div class="success-sub" style="font-size:12px">예상 도착일: <strong>내일 오전</strong></div>
+    <button class="success-close" onclick="closeSuccess()">확인</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* ── 공통: 시계·날짜 ── */
+(function tick(){
+  const n=new Date();
+  document.getElementById('statusTime').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  setTimeout(tick,1000);
+})();
+(function(){
+  const days=['일','월','화','수','목','금','토'],n=new Date();
+  document.getElementById('headerDate').textContent=
+    n.getFullYear()+'년 '+(n.getMonth()+1)+'월 '+n.getDate()+'일 ('+days[n.getDay()]+') · 점주 홍길동';
+})();
+
+/* ── 페이지 전환 ── */
+const PAGES=['home','order','delivery','stats','settings'];
+function goTo(id){
+  PAGES.forEach(p=>{
+    document.getElementById('page-'+p).classList.toggle('active',p===id);
+    const nav=document.getElementById('nav-'+p);
+    if(nav)nav.classList.toggle('active',p===id);
+  });
+  if(id==='order'){const pg=document.getElementById('page-order');if(pg)pg.scrollTop=0;}
+  if(id==='home'){const pg=document.getElementById('page-home');if(pg)pg.scrollTop=0;}
+}
+
+
+/* ── 홈: 바 차트 ── */
+(function(){
+  const days7=['월','화','수','목','금','토','오늘'];
+  const sales=[820,940,780,1050,890,1100,1248];
+  const maxS=Math.max(...sales);
+  document.getElementById('barChart').innerHTML=days7.map((d,i)=>{
+    const pct=Math.round(sales[i]/maxS*100);
+    const isT=i===6;
+    const v=sales[i]>=1000?(sales[i]/100).toFixed(0)+'만':sales[i]+'만';
+    return`<div class="bar-row"><span class="bar-day${isT?' today':''}">${d}</span><div class="bar-track"><div class="bar-fill ${isT?'today-fill':'normal'}" style="width:0%" data-w="${pct}%"></div></div><span class="bar-val${isT?' today':''}">${v}</span></div>`;
+  }).join('');
+  setTimeout(()=>document.querySelectorAll('.bar-fill').forEach((el,i)=>setTimeout(()=>el.style.width=el.dataset.w,i*60)),200);
+})();
+
+/* ── 발주: 카운트다운 ── */
+let deadlineSecs=8*3600+23*60+14;
+(function countdown(){
+  if(deadlineSecs<=0){document.getElementById('timerDisplay').textContent='마감됨';return;}
+  deadlineSecs--;
+  const h=String(Math.floor(deadlineSecs/3600)).padStart(2,'0');
+  const m=String(Math.floor(deadlineSecs%3600/60)).padStart(2,'0');
+  const s=String(deadlineSecs%60).padStart(2,'0');
+  document.getElementById('timerDisplay').textContent=h+':'+m+':'+s;
+  setTimeout(countdown,1000);
+})();
+
+/* ── 발주: 데이터 ── */
+const CATEGORIES=[
+  {id:'all',label:'전체',icon:'ti-layout-grid'},
+  {id:'meat',label:'육류',icon:'ti-meat'},
+  {id:'grain',label:'곡류',icon:'ti-grain'},
+  {id:'oil',label:'유지류',icon:'ti-droplet'},
+  {id:'sauce',label:'소스류',icon:'ti-bottle'},
+  {id:'drink',label:'음료',icon:'ti-cup'},
+  {id:'pack',label:'포장재',icon:'ti-box'},
+];
+const PRODUCTS=[
+  {id:1,cat:'meat',emoji:'🍗',name:'닭가슴살',spec:'냉장 1kg / 팩',supplier:'한국식품',price:9200,unit:'kg',stock:18,minOrder:5,maxOrder:200,isNew:false,isBest:true,isSale:false},
+  {id:2,cat:'meat',emoji:'🥩',name:'돼지목살',spec:'냉장 1kg / 팩',supplier:'한국식품',price:12500,unit:'kg',stock:62,minOrder:5,maxOrder:100,isNew:false,isBest:false,isSale:false},
+  {id:3,cat:'grain',emoji:'🌾',name:'쌀 (20kg)',spec:'상온 / 1포대',supplier:'농협유통',price:58000,unit:'포대',stock:35,minOrder:1,maxOrder:20,isNew:false,isBest:true,isSale:false},
+  {id:4,cat:'grain',emoji:'🌾',name:'찹쌀 (10kg)',spec:'상온 / 1포대',supplier:'농협유통',price:32000,unit:'포대',stock:82,minOrder:1,maxOrder:10,isNew:false,isBest:false,isSale:false},
+  {id:5,cat:'oil',emoji:'🫙',name:'식용유 (18L)',spec:'상온 / 1통',supplier:'CJ제일제당',price:44500,unit:'통',stock:40,minOrder:1,maxOrder:10,isNew:false,isBest:false,isSale:false},
+  {id:6,cat:'oil',emoji:'🫙',name:'참기름 (2L)',spec:'상온 / 1병',supplier:'CJ제일제당',price:18000,unit:'병',stock:55,minOrder:2,maxOrder:20,isNew:false,isBest:false,isSale:true},
+  {id:7,cat:'sauce',emoji:'🍶',name:'간장 (20L)',spec:'상온 / 1말',supplier:'샘표식품',price:28000,unit:'말',stock:70,minOrder:1,maxOrder:10,isNew:false,isBest:false,isSale:false},
+  {id:8,cat:'sauce',emoji:'🥣',name:'혼합소스 세트',spec:'냉장 / 10종 혼합',supplier:'한국식품',price:35000,unit:'세트',stock:90,minOrder:1,maxOrder:5,isNew:true,isBest:false,isSale:false},
+  {id:9,cat:'drink',emoji:'🧃',name:'주스류 (24입)',spec:'상온 / 1박스',supplier:'롯데칠성',price:24000,unit:'박스',stock:88,minOrder:2,maxOrder:30,isNew:false,isBest:false,isSale:false},
+  {id:10,cat:'drink',emoji:'💧',name:'생수 (500ml 24입)',spec:'상온 / 1박스',supplier:'롯데칠성',price:8500,unit:'박스',stock:95,minOrder:5,maxOrder:50,isNew:false,isBest:true,isSale:false},
+  {id:11,cat:'pack',emoji:'📦',name:'테이크아웃 용기 (100개)',spec:'상온 / 1묶음',supplier:'한국포장',price:12000,unit:'묶음',stock:75,minOrder:5,maxOrder:100,isNew:false,isBest:false,isSale:false},
+  {id:12,cat:'pack',emoji:'🛍️',name:'비닐백 대 (500장)',spec:'상온 / 1롤',supplier:'한국포장',price:9800,unit:'롤',stock:0,minOrder:5,maxOrder:50,isNew:false,isBest:false,isSale:false},
+];
+
+let cart={},currentCat='all',searchQuery='';
+
+/* ── 발주: 카테고리 ── */
+function renderCats(){
+  document.getElementById('catTabs').innerHTML=CATEGORIES.map(c=>`
+    <button class="cat-btn${c.id===currentCat?' active':''}" onclick="selectCat('${c.id}')">
+      <i class="ti ${c.icon}"></i>${c.label}
+    </button>`).join('');
+}
+function selectCat(id){currentCat=id;renderCats();renderProducts();}
+
+/* ── 발주: 품목 ── */
+function filterProducts(){searchQuery=document.getElementById('searchInput').value.trim().toLowerCase();renderProducts();}
+function renderProducts(){
+  const list=PRODUCTS.filter(p=>(currentCat==='all'||p.cat===currentCat)&&(!searchQuery||p.name.toLowerCase().includes(searchQuery)));
+  const label=(currentCat==='all'?'전체 품목':(CATEGORIES.find(c=>c.id===currentCat)||{label:''}).label+' 품목')+` (${list.length})`;
+  document.getElementById('sectionLabel').textContent=label;
+  document.getElementById('productList').innerHTML=list.map(p=>{
+    const qty=cart[p.id]||0;
+    const isLow=p.stock>0&&p.stock<30,isOut=p.stock===0;
+    const sc=isOut?'var(--dim)':isLow?'var(--red)':'var(--green-mid)';
+    return`<div class="product-card${isLow?' low-stock':''}${isOut?' out-of-stock':''}">
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}${isOut?' <span style="color:var(--dim);font-size:11px;font-weight:400">(품절)</span>':''}</div>
+        <div class="product-spec">${p.spec}</div>
+        <div class="product-supplier"><i class="ti ti-building-factory" style="font-size:11px"></i> ${p.supplier}</div>
+        <div class="badge-row">${isLow?'<span class="badge-tag low">재고부족</span>':''}${p.isNew?'<span class="badge-tag new">NEW</span>':''}${p.isBest?'<span class="badge-tag best">BEST</span>':''}${p.isSale?'<span class="badge-tag sale">할인</span>':''}</div>
+        <div class="p-stock-bar-wrap">
+          <div class="p-stock-bar-label">현재 재고 ${p.stock}${p.unit}</div>
+          <div class="p-stock-bar-track"><div class="p-stock-bar-fill" style="width:${Math.min(100,p.stock)}%;background:${sc}"></div></div>
+        </div>
+        <div class="product-bottom">
+          <span class="product-price">${p.price.toLocaleString()}<span class="product-unit-label">원/${p.unit}</span></span>
+          <div class="qty-control">
+            ${qty>0?`<button class="qty-btn" onclick="changeQty(${p.id},-1)">−</button><input class="qty-num" type="number" min="1" value="${qty}" style="width:40px;border:0.5px solid var(--line);border-radius:6px;background:var(--surface2);text-align:center;font-family:var(--mono);font-size:13px;font-weight:700;padding:0" onchange="setQty(${p.id},this.value)"><button class="qty-btn" onclick="changeQty(${p.id},1)">+</button>`:`<button class="add-btn" onclick="addToCart(${p.id})"><i class="ti ti-plus" style="font-size:16px"></i></button>`}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||`<div style="text-align:center;padding:40px;color:var(--dim);font-size:14px">해당 품목이 없습니다.</div>`;
+}
+
+/* ── 발주: 장바구니 ── */
+function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  cart[id]=p.minOrder||1;updateUI();showToast(p.name+' 담겼습니다');
+}
+function setQty(id,val){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  const n=parseInt(val)||0;
+  if(n<=0)delete cart[id];
+  else if(n>p.maxOrder){showToast('최대 주문수량: '+p.maxOrder+p.unit);cart[id]=p.maxOrder;}
+  else cart[id]=n;
+  updateUI();
+}
+function changeQty(id,delta){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  const next=(cart[id]||0)+delta;
+  if(next<=0)delete cart[id];
+  else if(next>p.maxOrder){showToast('최대 주문수량: '+p.maxOrder+p.unit);return;}
+  else cart[id]=next;
+  updateUI();
+}
+function cartItems(){return Object.entries(cart).map(([id,qty])=>({...PRODUCTS.find(p=>p.id==id),qty})).filter(Boolean);}
+function cartTotal(){return cartItems().reduce((s,i)=>s+i.price*i.qty,0);}
+
+function updateUI(){
+  renderProducts();
+  updateMinOrderBar();
+  const items=cartItems(),total=cartTotal(),cnt=items.length;
+  const fb=document.getElementById('floatBtn');
+  if(cnt===0){
+    fb.className='float-btn empty';
+    fb.innerHTML=`<div class="float-left"><i class="ti ti-shopping-cart" style="font-size:20px"></i><span>장바구니 담기</span></div><span class="float-total-val">0원</span>`;
+  } else {
+    fb.className='float-btn';
+    fb.innerHTML=`<div class="float-left"><i class="ti ti-shopping-cart" style="font-size:20px"></i><span>장바구니 보기</span><span class="float-badge">${cnt}종</span></div><span class="float-total-val">${total.toLocaleString()}원</span>`;
+  }
+  const cc=document.getElementById('cartCount');
+  cc.style.display=cnt>0?'flex':'none';cc.textContent=cnt;
+  document.getElementById('sumItems').textContent=cnt+'종';
+  document.getElementById('sumSubtotal').textContent=total.toLocaleString()+'원';
+  document.getElementById('sumTotal').textContent=total.toLocaleString()+'원';
+  document.getElementById('orderConfirmBtn').className=cnt>0?'order-confirm-btn':'order-confirm-btn disabled';
+  document.getElementById('cartList').innerHTML=items.length===0
+    ?`<div style="text-align:center;padding:30px;color:var(--dim);font-size:14px">담긴 품목이 없습니다</div>`
+    :items.map(i=>`<div class="cart-item">
+        <div class="cart-item-img">${i.emoji}</div>
+        <div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-price">${(i.price*i.qty).toLocaleString()}원 (${i.price.toLocaleString()}×${i.qty}${i.unit})</div></div>
+        <div class="cart-qty"><button class="cq-btn" onclick="changeQty(${i.id},-1)">−</button><input class="cq-num" type="number" min="1" value="${i.qty}" style="border:0.5px solid var(--line);border-radius:6px;background:var(--surface2);text-align:center;width:36px;padding:0;font-family:var(--mono);font-size:13px;font-weight:700" onchange="setQty(${i.id},this.value)"><button class="cq-btn" onclick="changeQty(${i.id},1)">+</button><button class="cart-remove" onclick="changeQty(${i.id},-999)"><i class="ti ti-trash" style="font-size:14px"></i></button></div>
+      </div>`).join('');
+}
+function openCart(){document.getElementById('cartBg').classList.add('show');updateUI();}
+function closeCart(){document.getElementById('cartBg').classList.remove('show');}
+
+/* ── 발주: 확정·완료 ── */
+function openConfirm(){
+  const items=cartItems();if(!items.length)return;
+  const total=cartTotal(),d=new Date();d.setDate(d.getDate()+1);
+  document.getElementById('confirmDetail').innerHTML=`
+    <div class="od-row"><span class="od-label">주문 품목</span><span class="od-val">${items.length}종</span></div>
+    <div class="od-row"><span class="od-label">총 금액</span><span class="od-val">${total.toLocaleString()}원</span></div>
+    <div class="od-row"><span class="od-label">예상 도착</span><span class="od-val">${d.getMonth()+1}/${d.getDate()} 오전</span></div>
+    <div class="od-row"><span class="od-label">납품업체</span><span class="od-val">한국식품 外</span></div>`;
+  closeCart();
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function closeConfirm(){document.getElementById('confirmOverlay').classList.remove('show');}
+function submitOrder(){
+  closeConfirm();
+  const no='ORD-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*900)+100);
+  document.getElementById('orderNo').textContent='주문번호: '+no;
+  document.getElementById('successOverlay').classList.add('show');
+  cart={};updateUI();
+}
+function closeSuccess(){document.getElementById('successOverlay').classList.remove('show');goTo('home');}
+
+/* ── Toast ── */
+let _tt;
+function showToast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+/* ── 홈 탭 전환 ── */
+function switchHomeTab(tab){
+  ['order','sales'].forEach(t=>{
+    document.getElementById('htab-'+t).classList.toggle('active',t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active',t===tab);
+  });
+}
+
+/* ── 최소 주문금액 설정 (본사에서 변경 가능 — 이 값만 바꾸면 됨) ── */
+const CONFIG = {
+  minOrderAmount: 2000000  // 200만원 (본사 변경 가능)
+};
+
+/* 최소주문금액 진행바 업데이트 */
+function updateMinOrderBar(){
+  const total = cartTotal();
+  const min = CONFIG.minOrderAmount;
+  const pct = Math.min(100, Math.round(total / min * 100));
+  const fill = document.getElementById('minOrderFill');
+  const pctEl = document.getElementById('minOrderPct');
+  const statusEl = document.getElementById('minOrderStatus');
+  const amtEl = document.getElementById('minOrderAmt');
+  if(!fill) return;
+  amtEl.textContent = (min/10000).toLocaleString() + '만원';
+  fill.style.width = pct + '%';
+  fill.style.background = pct >= 100 ? 'var(--green-mid)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+  pctEl.textContent = pct + '%';
+  if(pct >= 100){
+    statusEl.textContent = '충족 ✓'; statusEl.className = 'min-order-status ok';
+  } else if(pct >= 60){
+    statusEl.textContent = (min-total).toLocaleString()+'원 부족'; statusEl.className = 'min-order-status warn';
+  } else {
+    statusEl.textContent = '미달'; statusEl.className = 'min-order-status fail';
+  }
+}
+
+/* 최소주문금액 체크 후 발주 확정 */
+function openConfirmWithCheck(){
+  const items = cartItems();
+  if(!items.length) return;
+  const total = cartTotal();
+  if(total < CONFIG.minOrderAmount){
+    const remain = (CONFIG.minOrderAmount - total).toLocaleString();
+    showToast('최소 주문금액 미달 — ' + remain + '원 더 담아야 합니다');
+    return;
+  }
+  openConfirm();
+}
+
+/* ── CTA 타이머 동기화 (홈과 발주탭 공유) ── */
+const _origCountdown = countdown; // 기존 카운트다운 참조
+function syncCtaTimer(){
+  const el = document.getElementById('ctaTimer');
+  if(el && document.getElementById('timerDisplay')){
+    el.textContent = document.getElementById('timerDisplay').textContent;
+  }
+}
+setInterval(syncCtaTimer, 1000);
+
+/* ── 초기 렌더 ── */
+renderCats();renderProducts();updateMinOrderBar();
+
+
+/* ── 가맹점 배송 현황 ── */
+const STORE_DELIVERIES = [
+  {id:'DEL-001',orderId:'ORD-20260515-031',items:'닭가슴살 50kg · 쌀 5포대 · 소스류',status:'shipping',eta:'오늘 14:00',driver:'박배달 기사 · 010-1234-5678',steps:[{l:'발주확정',d:true},{l:'출고준비',d:true},{l:'배송중',d:false,a:true},{l:'완료',d:false}]},
+  {id:'DEL-005',orderId:'ORD-20260515-015',items:'전품목 7종 정기 주문',status:'preparing',eta:'오늘 18:00',driver:'기사 배정 전',steps:[{l:'발주확정',d:true},{l:'출고준비',d:false,a:true},{l:'배송중',d:false},{l:'완료',d:false}]},
+  {id:'DEL-003',orderId:'ORD-20260514-024',items:'식용유 8통 · 참기름 4병',status:'done',eta:'10:42 완료',driver:'이기사 · 010-9876-5432',steps:[{l:'발주확정',d:true},{l:'출고준비',d:true},{l:'배송중',d:true},{l:'완료',d:true}]},
+];
+function renderStoreDeliveries(){
+  const el=document.getElementById('storeDeliveryList');
+  if(!el)return;
+  const stMap={shipping:{label:'배송중',cls:'sc-shipping',icon:'ti-truck-delivery',bg:'var(--blue-bg)'},preparing:{label:'준비중',cls:'sc-preparing',icon:'ti-package',bg:'var(--surface2)'},done:{label:'완료',cls:'sc-done',icon:'ti-circle-check',bg:'var(--green-bg)'},issue:{label:'지연',cls:'sc-issue',icon:'ti-alert-triangle',bg:'var(--red-bg)'}};
+  el.innerHTML=STORE_DELIVERIES.map(d=>{
+    const st=stMap[d.status]||stMap.preparing;
+    const steps=d.steps.map((s,i)=>{
+      const dc=s.d?'done':s.a?'active':'pending';
+      const lc=s.d?'done':s.a?'active':'';
+      const icon=s.d?'<i class="ti ti-check" style="font-size:9px"></i>':s.a?'<i class="ti ti-loader" style="font-size:9px"></i>':(i+1);
+      const line=i<d.steps.length-1?`<div class="sdlv-line ${s.d?'done':'pending'}"></div>`:'';
+      return `<div class="sdlv-step"><div class="sdlv-dot ${dc}">${icon}</div><div class="sdlv-label ${lc}">${s.l}</div></div>${line}`;
+    }).join('');
+    const isDone=d.status==='done';
+    const isShipping=d.status==='shipping';
+    return `<div class="store-dlv-card" style="opacity:${isDone?.7:1}">
+      <div class="sdlv-header">
+        <div class="sdlv-icon" style="background:${st.bg}"><i class="ti ${st.icon}" style="color:${isDone?'var(--green)':isShipping?'var(--blue)':'var(--muted)'}"></i></div>
+        <div class="sdlv-info">
+          <div style="display:flex;align-items:center;gap:6px"><span class="sdlv-title">${d.items.split('·')[0].trim()}</span><span class="status-chip ${st.cls}" style="font-size:10px;padding:2px 7px">${st.label}</span></div>
+          <div class="sdlv-sub">${d.items}</div>
+          <div class="sdlv-no">${d.orderId}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--text)">${d.eta}</div></div>
+      </div>
+      <div class="sdlv-steps">${steps}</div>
+      <div class="sdlv-body">
+        <div class="sdlv-driver"><i class="ti ti-user" style="font-size:15px;color:var(--muted)"></i><span style="font-size:12px;color:var(--muted);flex:1">${d.driver}</span>${isShipping?`<a href="tel:01012345678" style="background:var(--blue-bg);color:var(--blue);border-radius:7px;padding:4px 9px;font-size:11px;font-weight:700;text-decoration:none;flex-shrink:0">전화</a>`:''}
+        </div>
+        ${isShipping?`<button class="sdlv-receipt-btn" onclick="showToast('수령 완료 처리')"><i class="ti ti-circle-check"></i>수령 완료</button>`:''}
+        ${isShipping?`<button class="sdlv-issue-btn" onclick="showToast('이슈 보고')"><i class="ti ti-alert-triangle"></i>이슈 보고</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+/* 페이지 전환 시 배송 렌더 */
+const _origGoTo = goTo;
+function goTo(id){
+  _origGoTo(id);
+  if(id==='delivery') setTimeout(renderStoreDeliveries, 50);
+}
+
+renderStoreDeliveries();
+</script>
+</body>
+</html>
