@@ -741,7 +741,7 @@ function goTo(id){
 
 /* ── 발주: 카운트다운 ── */
 let deadlineSecs=8*3600+23*60+14;
-(function countdown(){
+function countdown(){
   if(deadlineSecs<=0){document.getElementById('timerDisplay').textContent='마감됨';return;}
   deadlineSecs--;
   const h=String(Math.floor(deadlineSecs/3600)).padStart(2,'0');
@@ -749,7 +749,8 @@ let deadlineSecs=8*3600+23*60+14;
   const s=String(deadlineSecs%60).padStart(2,'0');
   document.getElementById('timerDisplay').textContent=h+':'+m+':'+s;
   setTimeout(countdown,1000);
-})();
+}
+countdown();
 
 /* ── 발주: 데이터 ── */
 const CATEGORIES=[
@@ -1006,11 +1007,12 @@ function renderStoreDeliveries(){
   }).join('');
 }
 /* 페이지 전환 시 배송 렌더 */
-const _origGoTo = goTo;
-function goTo(id){
+function goToWithDelivery(id){
   _origGoTo(id);
   if(id==='delivery') setTimeout(renderStoreDeliveries, 50);
 }
+var _origGoTo = goTo;
+goTo = goToWithDelivery;
 
 renderStoreDeliveries();
 </script>
