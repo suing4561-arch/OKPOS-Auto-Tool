@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Balju Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Noto Sans KR",sans-serif;min-height:100vh;background:#f4f7fb;color:#162033;display:flex;align-items:center;justify-content:center;padding:20px}.box{width:100%;max-width:390px;background:#fff;border:1px solid #dbe3ee;border-radius:18px;padding:28px;box-shadow:0 18px 50px rgba(20,31,51,.1)}h1{font-size:24px;font-weight:900;margin-bottom:5px}.sub{color:#6b7280;font-size:13px;margin-bottom:22px;line-height:1.6}label{display:block;margin:12px 0 5px;font-size:12px;font-weight:900;color:#6b7280}input{width:100%;border:1px solid #dbe3ee;border-radius:10px;padding:12px;font:inherit;outline:none}input:focus{border-color:#2563eb}button{width:100%;border:0;border-radius:10px;padding:13px;margin-top:16px;background:#17233c;color:#fff;font-weight:900;cursor:pointer}.msg{margin-top:12px;min-height:20px;color:#dc2626;font-size:13px;font-weight:700}.hint{margin-top:18px;color:#6b7280;font-size:12px;line-height:1.7;background:#f8fafc;border-radius:10px;padding:12px}.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="box">
+  <div id="loginPanel">
+    <h1>Smart Balju 로그인</h1>
+    <div class="sub">계정 상태가 비활성/사용중지/계약만료이면 내부 페이지로 이동하지 않습니다.</div>
+    <label>로그인 ID</label><input id="loginId" placeholder="master">
+    <label>비밀번호</label><input id="password" type="password" placeholder="1234">
+    <button onclick="doLogin()">로그인</button>
+    <div class="msg" id="loginMsg"></div>
+    <div class="hint">mock 기본 계정: master / hq_demo / franchise_demo / supplier_demo / driver_demo<br>기본 비밀번호: 1234</div>
+  </div>
+  <div id="changePanel" class="hidden">
+    <h1>새 비밀번호 변경</h1>
+    <div class="sub">임시 비밀번호로 로그인했습니다. 새 비밀번호 변경 후 정상 사용 가능합니다.</div>
+    <label>새 비밀번호</label><input id="newPassword" type="password">
+    <button onclick="doChangePassword()">변경 완료</button>
+    <div class="msg" id="changeMsg"></div>
+  </div>
+</div>
+<script src="auth.js"></script>
+<script>
+let pendingUser=null;
+function doLogin(){
+  const result=SmartBaljuAuth.login(loginId.value,password.value);
+  if(!result.ok){loginMsg.textContent=result.message;return}
+  if(result.requirePasswordChange){pendingUser=result.user;loginPanel.classList.add("hidden");changePanel.classList.remove("hidden");return}
+  location.href=result.redirect;
+}
+function doChangePassword(){
+  try{
+    const user=SmartBaljuAuth.changePassword(pendingUser.uid,newPassword.value);
+    location.href=SmartBaljuAuth.redirectByRole(user.role);
+  }catch(error){changeMsg.textContent=error.message}
+}
+password.addEventListener("keydown",e=>{if(e.key==="Enter")doLogin()});
+</script>
+</body>
+</html>
