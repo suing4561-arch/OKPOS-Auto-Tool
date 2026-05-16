@@ -1,488 +1,641 @@
-const AUTH_STORAGE_KEY = "smart_balju_users_v1";
-const SESSION_STORAGE_KEY = "smart_balju_session_v1";
-const DATA_STORAGE_KEY = "smart_balju_data_v1";
+/**
+ * SmartBalju Auth + Data Layer v2.0
+ * Firebase Realtime Database 연동
+ * 
+ * 사용법: 모든 HTML 파일에서 <script src="auth.js"></script> 로 로드
+ * 전역 객체: window.SmartBaljuAuth
+ */
 
+// ── Firebase 설정 ──────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyBNSCDGJthpy6rwtFZ1HwpW30Q4_j1b9KU",
+  authDomain:        "smart-balju.firebaseapp.com",
+  databaseURL:       "https://smart-balju-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "smart-balju",
+  storageBucket:     "smart-balju.firebasestorage.app",
+  messagingSenderId: "139221840931",
+  appId:             "1:139221840931:web:9949b064807526e3f92d96",
+};
+
+// ── Firebase SDK (CDN compat) ───────────────────────────────
+// Firebase 앱 초기화 (중복 방지)
+let _db = null;
+let _firebaseReady = false;
+let _firebaseError = null;
+
+(function initFirebase() {
+  // 이미 로드된 경우
+  if (typeof firebase !== 'undefined') {
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      _db = firebase.database();
+      _firebaseReady = true;
+    } catch (e) {
+      _firebaseError = e;
+      console.warn('[auth.js] Firebase init error, localStorage fallback 사용:', e);
+    }
+    return;
+  }
+
+  // Firebase SDK 동적 로드
+  const scripts = [
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',
+  ];
+
+  let loaded = 0;
+  scripts.forEach(src => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => {
+      loaded++;
+      if (loaded === scripts.length) {
+        try {
+          if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+          _db = firebase.database();
+          _firebaseReady = true;
+          // 로드 완료 이벤트
+          document.dispatchEvent(new CustomEvent('firebaseReady'));
+        } catch (e) {
+          _firebaseError = e;
+          console.warn('[auth.js] Firebase 초기화 실패, localStorage 사용:', e);
+          document.dispatchEvent(new CustomEvent('firebaseReady'));
+        }
+      }
+    };
+    s.onerror = () => {
+      loaded++;
+      _firebaseError = new Error('Firebase SDK 로드 실패');
+      if (loaded === scripts.length) document.dispatchEvent(new CustomEvent('firebaseReady'));
+    };
+    document.head.appendChild(s);
+  });
+})();
+
+// ── 헬퍼 ────────────────────────────────────────────────────
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+function now() {
+  return new Date().toISOString();
+}
+function hashPw(pw) {
+  // 간단 해시 (실서비스는 서버사이드 처리 필요)
+  let h = 0;
+  for (let i = 0; i < pw.length; i++) h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0;
+  return 'h_' + Math.abs(h).toString(16);
+}
+
+// ── Firebase vs localStorage 추상화 ────────────────────────
+const DB = {
+  // 읽기
+  async get(path) {
+    if (_db) {
+      const snap = await _db.ref(path).get();
+      return snap.exists() ? snap.val() : null;
+    }
+    const key = 'sbalju_' + path.replace(/\//g, '_');
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : null;
+  },
+  // 쓰기 (덮어쓰기)
+  async set(path, val) {
+    if (_db) {
+      await _db.ref(path).set(val);
+      return;
+    }
+    const key = 'sbalju_' + path.replace(/\//g, '_');
+    localStorage.setItem(key, JSON.stringify(val));
+  },
+  // 부분 업데이트
+  async update(path, val) {
+    if (_db) {
+      await _db.ref(path).update(val);
+      return;
+    }
+    const existing = await DB.get(path) || {};
+    await DB.set(path, { ...existing, ...val });
+  },
+  // 삭제
+  async remove(path) {
+    if (_db) {
+      await _db.ref(path).remove();
+      return;
+    }
+    const key = 'sbalju_' + path.replace(/\//g, '_');
+    localStorage.removeItem(key);
+  },
+  // 실시간 구독
+  on(path, cb) {
+    if (_db) {
+      _db.ref(path).on('value', snap => cb(snap.exists() ? snap.val() : null));
+      return () => _db.ref(path).off('value');
+    }
+    // localStorage fallback: 폴링
+    const iv = setInterval(async () => cb(await DB.get(path)), 3000);
+    return () => clearInterval(iv);
+  },
+};
+
+// ── 상수 ────────────────────────────────────────────────────
 const ROLE_LABELS = {
-  master: "대상정보통신",
-  hq: "프렌차이즈 본사",
-  franchise: "가맹점",
-  supplier: "납품업체",
-  driver: "배송기사"
+  master:    'Master',
+  hq:        '프랜차이즈 본사',
+  franchise: '가맹점',
+  supplier:  '납품업체',
+  driver:    '배송기사',
 };
 
 const STATUS_LABELS = {
-  active: "정상",
-  inactive: "비활성",
-  suspended: "사용중지",
-  expired: "계약만료",
-  password_reset_required: "비밀번호 재설정 필요"
+  active:                   '정상',
+  inactive:                 '비활성',
+  suspended:                '사용중지',
+  expired:                  '계약만료',
+  password_reset_required:  '비밀번호 재설정 필요',
 };
 
-const BLOCKED_LOGIN_STATUSES = ["inactive", "suspended", "expired"];
+const BLOCKED_LOGIN_STATUSES = ['inactive', 'suspended', 'expired'];
 
-function nowIso() {
-  return new Date().toISOString();
+// ── 세션 (sessionStorage) ──────────────────────────────────
+const SESSION_KEY = 'sbalju_session';
+
+function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
+}
+function setSession(user) {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+}
+function clearSession() {
+  sessionStorage.removeItem(SESSION_KEY);
 }
 
-function uid(prefix = "USR") {
-  return prefix + "-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
+// ── 사용자 CRUD ────────────────────────────────────────────
+async function loadUsers() {
+  const data = await DB.get('users') || {};
+  const users = Object.values(data);
+  // 마스터 계정 없으면 자동 생성
+  if (!users.find(u => u.role === 'master')) {
+    await _ensureMaster();
+    return Object.values(await DB.get('users') || {});
+  }
+  return users;
 }
 
-function simpleHash(value) {
-  let hash = 2166136261;
-  String(value || "").split("").forEach(ch => {
-    hash ^= ch.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
+async function _ensureMaster() {
+  const id = 'master_001';
+  const existing = await DB.get('users/' + id);
+  if (existing) return;
+  await DB.set('users/' + id, {
+    uid: id,
+    role: 'master',
+    status: 'active',
+    loginId: 'n41u0912',
+    passwordHash: hashPw('1234'),
+    name: '관리자',
+    businessName: '대상정보통신',
+    businessNumber: '',
+    phone: '',
+    brandId: '',
+    storeId: '',
+    supplierId: '',
+    driverId: '',
+    permissions: {},
+    mustChangePassword: false,
+    createdAt: now(),
+    lastLoginAt: null,
   });
-  return "mock$" + (hash >>> 0).toString(36);
 }
 
-function generateTempPassword() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let text = "";
-  for (let i = 0; i < 8; i += 1) text += chars[Math.floor(Math.random() * chars.length)];
-  return text.slice(0, 4) + "-" + text.slice(4);
-}
-
-function seedUsers() {
-  const createdAt = nowIso();
-  return [
-    {
-      uid: "MASTER-001",
-      role: "master",
-      name: "대상정보통신 관리자",
-      businessName: "대상정보통신",
-      businessNumber: "",
-      phone: "010-4551-7240",
-      loginId: "master",
-      passwordHash: simpleHash("1234"),
-      tempPassword: "",
-      mustChangePassword: false,
-      status: "active",
-      brandId: "",
-      storeId: "",
-      supplierId: "",
-      driverId: "",
-      createdAt,
-      updatedAt: createdAt,
-      lastLoginAt: "",
-      passwordUpdatedAt: createdAt,
-      resetBy: "",
-      resetAt: ""
-    },
-    {
-      uid: "HQ-001",
-      role: "hq",
-      name: "홍길동 이사",
-      businessName: "맛있는 프렌차이즈 본사",
-      businessNumber: "000-00-00001",
-      phone: "010-1111-2222",
-      loginId: "hq_demo",
-      passwordHash: simpleHash("1234"),
-      tempPassword: "",
-      mustChangePassword: false,
-      status: "active",
-      brandId: "BR-001",
-      storeId: "",
-      supplierId: "",
-      driverId: "",
-      createdAt,
-      updatedAt: createdAt,
-      lastLoginAt: "",
-      passwordUpdatedAt: createdAt,
-      resetBy: "",
-      resetAt: ""
-    },
-    {
-      uid: "FR-001",
-      role: "franchise",
-      name: "김가맹",
-      businessName: "맛있는식당 부산점",
-      businessNumber: "000-00-00002",
-      phone: "010-2222-3333",
-      loginId: "franchise_demo",
-      passwordHash: simpleHash("1234"),
-      tempPassword: "",
-      mustChangePassword: false,
-      status: "active",
-      brandId: "BR-001",
-      storeId: "ST-001",
-      supplierId: "",
-      driverId: "",
-      createdAt,
-      updatedAt: createdAt,
-      lastLoginAt: "",
-      passwordUpdatedAt: createdAt,
-      resetBy: "",
-      resetAt: ""
-    },
-    {
-      uid: "SUP-001",
-      role: "supplier",
-      name: "박납품",
-      businessName: "한국식품",
-      businessNumber: "000-00-00003",
-      phone: "010-3333-4444",
-      loginId: "supplier_demo",
-      passwordHash: simpleHash("1234"),
-      tempPassword: "",
-      mustChangePassword: false,
-      status: "active",
-      brandId: "",
-      storeId: "",
-      supplierId: "SP-001",
-      driverId: "",
-      createdAt,
-      updatedAt: createdAt,
-      lastLoginAt: "",
-      passwordUpdatedAt: createdAt,
-      resetBy: "",
-      resetAt: ""
-    },
-    {
-      uid: "DRV-001",
-      role: "driver",
-      name: "이배송",
-      businessName: "한국식품 배송팀",
-      businessNumber: "",
-      phone: "010-4444-5555",
-      loginId: "driver_demo",
-      passwordHash: simpleHash("1234"),
-      tempPassword: "",
-      mustChangePassword: false,
-      status: "active",
-      brandId: "",
-      storeId: "",
-      supplierId: "SP-001",
-      driverId: "DV-001",
-      createdAt,
-      updatedAt: createdAt,
-      lastLoginAt: "",
-      passwordUpdatedAt: createdAt,
-      resetBy: "",
-      resetAt: ""
-    }
-  ];
-}
-
-function loadUsers() {
-  try {
-    const rows = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "[]");
-    if (Array.isArray(rows) && rows.length) return rows;
-  } catch {}
-  const seeded = seedUsers();
-  saveUsers(seeded);
-  return seeded;
-}
-
-function saveUsers(users) {
-  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(users));
-}
-
-function seedData() {
-  const createdAt = nowIso();
-  return {
-    partners: [
-      { id: "PT-001", type: "supplier", name: "한국식품", businessNumber: "000-00-00003", phone: "010-3333-4444", status: "pending", createdAt, updatedAt: createdAt },
-      { id: "PT-002", type: "supplier", name: "농협유통", businessNumber: "000-00-00004", phone: "010-5555-6666", status: "active", createdAt, updatedAt: createdAt }
-    ],
-    brands: [{ id: "BR-001", name: "맛있는 프렌차이즈", owner: "홍길동", status: "active", createdAt, updatedAt: createdAt }],
-    menus: [{ id: "MN-001", brandId: "BR-001", name: "닭가슴살 정식", category: "메인", status: "active", createdAt, updatedAt: createdAt }],
-    prices: [{ id: "PR-001", menuId: "MN-001", partnerId: "PT-001", price: 9200, unit: "kg", createdAt, updatedAt: createdAt }],
-    franchises: [{ id: "ST-001", supplierId: "SP-001", businessName: "맛있는식당 부산점", address: "부산시 부산진구", businessNumber: "000-00-00002", phone: "010-2222-3333", createdAt, updatedAt: createdAt }],
-    drivers: [{ id: "DV-001", supplierId: "SP-001", name: "이배송", phone: "010-4444-5555", status: "active", createdAt, updatedAt: createdAt }],
-    deliveries: [
-      { id: "DLV-001", supplierId: "SP-001", storeId: "ST-001", storeName: "맛있는식당 부산점", address: "부산시 부산진구", driverId: "DV-001", driverName: "이배송", items: "닭가슴살 50kg / 쌀 5포대", status: "assigned", checked: false, createdAt, updatedAt: createdAt }
-    ],
-    permissions: {}
+async function upsertUser(fields) {
+  const uid = fields.uid || genId();
+  const existing = await DB.get('users/' + uid) || {};
+  const pw = fields.password ? hashPw(fields.password) : existing.passwordHash;
+  const user = {
+    ...existing,
+    uid,
+    role:           fields.role           ?? existing.role ?? 'franchise',
+    status:         fields.status         ?? existing.status ?? 'active',
+    loginId:        fields.loginId        ?? existing.loginId ?? '',
+    passwordHash:   pw,
+    name:           fields.name           ?? existing.name ?? '',
+    businessName:   fields.businessName   ?? existing.businessName ?? '',
+    businessNumber: fields.businessNumber ?? existing.businessNumber ?? '',
+    phone:          fields.phone          ?? existing.phone ?? '',
+    brandId:        fields.brandId        ?? existing.brandId ?? '',
+    storeId:        fields.storeId        ?? existing.storeId ?? '',
+    supplierId:     fields.supplierId     ?? existing.supplierId ?? '',
+    driverId:       fields.driverId       ?? existing.driverId ?? '',
+    permissions:    existing.permissions  ?? {},
+    mustChangePassword: fields.password ? false : (existing.mustChangePassword ?? false),
+    createdAt:      existing.createdAt    ?? now(),
+    updatedAt:      now(),
+    lastLoginAt:    existing.lastLoginAt  ?? null,
   };
+  await DB.set('users/' + uid, user);
+  return user;
 }
 
-function loadData() {
-  try {
-    const data = JSON.parse(localStorage.getItem(DATA_STORAGE_KEY) || "null");
-    if (data && typeof data === "object") return Object.assign(seedData(), data);
-  } catch {}
-  const seeded = seedData();
-  saveData(seeded);
-  return seeded;
+async function deleteUser(uid) {
+  await DB.remove('users/' + uid);
 }
 
-function saveData(data) {
-  localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+async function setUserStatus(uid, status) {
+  await DB.update('users/' + uid, { status, updatedAt: now() });
 }
 
-function addDataRow(collection, row) {
-  const data = loadData();
-  const now = nowIso();
-  const prefix = { partners: "PT", brands: "BR", menus: "MN", prices: "PR", franchises: "ST", drivers: "DV", deliveries: "DLV" }[collection] || "ROW";
-  const next = Object.assign({ id: uid(prefix), createdAt: now, updatedAt: now }, row);
-  data[collection] = data[collection] || [];
-  data[collection].push(next);
-  saveData(data);
-  return next;
+async function resetPasswordByMaster(uid) {
+  const tempPw = Math.random().toString(36).slice(2, 8).toUpperCase();
+  await DB.update('users/' + uid, {
+    passwordHash: hashPw(tempPw),
+    mustChangePassword: true,
+    updatedAt: now(),
+  });
+  const user = await DB.get('users/' + uid);
+  return { user, tempPassword: tempPw };
 }
 
-function updateDataRow(collection, id, patch) {
-  const data = loadData();
-  const rows = data[collection] || [];
-  const row = rows.find(item => item.id === id);
-  if (!row) throw new Error("데이터를 찾을 수 없습니다.");
-  Object.assign(row, patch, { updatedAt: nowIso() });
-  saveData(data);
-  return row;
+// ── 권한 관리 ───────────────────────────────────────────────
+async function setPermissions(uid, perms) {
+  await DB.update('users/' + uid, { permissions: perms, updatedAt: now() });
+}
+async function getPermissions(uid) {
+  const user = await DB.get('users/' + uid);
+  return user?.permissions || {};
 }
 
-function deleteDataRow(collection, id) {
-  const data = loadData();
-  data[collection] = (data[collection] || []).filter(item => item.id !== id);
-  saveData(data);
-}
-
-function registerPartner(input) {
-  return addDataRow("partners", { type: input.type || "supplier", name: input.name || "", businessNumber: input.businessNumber || "", phone: input.phone || "", status: input.status || "active" });
-}
-
-function registerBrand(input) {
-  return addDataRow("brands", { name: input.name || "", owner: input.owner || "", status: input.status || "active" });
-}
-
-function registerMenu(input) {
-  return addDataRow("menus", { brandId: input.brandId || "", name: input.name || "", category: input.category || "", status: input.status || "active" });
-}
-
-function registerPrice(input) {
-  return addDataRow("prices", { menuId: input.menuId || "", partnerId: input.partnerId || "", price: Number(input.price || 0), unit: input.unit || "" });
-}
-
-function registerSupplierDriver(input) {
-  return addDataRow("drivers", { supplierId: input.supplierId || "SP-001", name: input.name || "", phone: input.phone || "", status: "active" });
-}
-
-function registerSupplierFranchise(input) {
-  return addDataRow("franchises", { supplierId: input.supplierId || "SP-001", businessName: input.businessName || "", address: input.address || "", businessNumber: input.businessNumber || "", phone: input.phone || "" });
-}
-
-function createDelivery(input) {
-  return addDataRow("deliveries", { supplierId: input.supplierId || "SP-001", storeId: input.storeId || "", storeName: input.storeName || "", address: input.address || "", driverId: input.driverId || "", driverName: input.driverName || "", items: input.items || "", status: input.status || "assigned", checked: false });
-}
-
-function assignDelivery(deliveryId, driverId) {
-  const data = loadData();
-  const driver = (data.drivers || []).find(item => item.id === driverId);
-  return updateDataRow("deliveries", deliveryId, { driverId, driverName: driver ? driver.name : "", status: "assigned" });
-}
-
-function startDelivery(deliveryId) {
-  return updateDataRow("deliveries", deliveryId, { status: "shipping", startedAt: nowIso() });
-}
-
-function markDeliveryDone(deliveryId) {
-  return updateDataRow("deliveries", deliveryId, { status: "done", checked: true, doneAt: nowIso() });
-}
-
-function setPermissions(uidValue, permissions) {
-  const data = loadData();
-  data.permissions = data.permissions || {};
-  data.permissions[uidValue] = permissions;
-  saveData(data);
-  return permissions;
-}
-
-function deleteUser(uidValue) {
-  const users = loadUsers().filter(user => user.uid !== uidValue);
-  saveUsers(users);
-}
-
-function getCurrentUser() {
-  try {
-    const session = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY) || "null");
-    if (!session?.uid) return null;
-    return loadUsers().find(user => user.uid === session.uid) || null;
-  } catch {
-    return null;
-  }
-}
-
-function setCurrentUser(user) {
-  sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ uid: user.uid, role: user.role, loginAt: nowIso() }));
-}
-
-function login(loginId, password) {
-  const users = loadUsers();
-  const user = users.find(row => row.loginId === String(loginId || "").trim());
-  if (!user) return { ok: false, message: "아이디 또는 비밀번호가 올바르지 않습니다." };
+// ── 로그인 ──────────────────────────────────────────────────
+async function login(loginId, password) {
+  const users = await loadUsers();
+  const user = users.find(u => u.loginId === loginId);
+  if (!user) return { ok: false, error: '존재하지 않는 아이디입니다.' };
+  if (user.passwordHash !== hashPw(password)) return { ok: false, error: '비밀번호가 틀렸습니다.' };
   if (BLOCKED_LOGIN_STATUSES.includes(user.status)) {
-    return { ok: false, message: "사용이 중지된 계정입니다. 대상정보통신에 문의하세요.", status: user.status };
+    return { ok: false, error: STATUS_LABELS[user.status] + ' 상태입니다. 관리자에게 문의하세요.' };
   }
-  const isTemp = user.tempPassword && user.tempPassword === password;
-  const isPassword = user.passwordHash === simpleHash(password);
-  if (!isTemp && !isPassword) return { ok: false, message: "아이디 또는 비밀번호가 올바르지 않습니다." };
-  user.lastLoginAt = nowIso();
-  saveUsers(users);
-  setCurrentUser(user);
-  if (user.status === "password_reset_required" || user.mustChangePassword || isTemp) {
-    return { ok: true, user, requirePasswordChange: true };
-  }
-  return { ok: true, user, redirect: redirectByRole(user.role) };
+  await DB.update('users/' + user.uid, { lastLoginAt: now() });
+  user.lastLoginAt = now();
+  setSession(user);
+  return { ok: true, user };
 }
 
 function logout() {
-  sessionStorage.removeItem(SESSION_STORAGE_KEY);
+  clearSession();
+  location.href = '/login.html';
 }
 
-function checkRole(allowedRoles) {
-  const user = getCurrentUser();
-  const allowed = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
-  return Boolean(user && allowed.includes(user.role) && !BLOCKED_LOGIN_STATUSES.includes(user.status));
-}
-
-function redirectByRole(role) {
-  return {
-    master: "master.html",
-    hq: "site_hq.html",
-    franchise: "site_franchise.html",
-    supplier: "site_supplier.html",
-    driver: "site_driver.html"
-  }[role] || "site_franchise.html";
-}
-
-function upsertUser(input) {
-  const users = loadUsers();
-  const now = nowIso();
-  const existingIndex = input.uid ? users.findIndex(user => user.uid === input.uid) : -1;
-  const current = existingIndex >= 0 ? users[existingIndex] : {};
-  const next = {
-    uid: current.uid || uid(String(input.role || "USR").toUpperCase()),
-    role: input.role || current.role || "franchise",
-    name: input.name || current.name || "",
-    businessName: input.businessName || current.businessName || "",
-    businessNumber: input.businessNumber || current.businessNumber || "",
-    phone: input.phone || current.phone || "",
-    loginId: input.loginId || current.loginId || "",
-    passwordHash: input.password ? simpleHash(input.password) : current.passwordHash || simpleHash("1234"),
-    tempPassword: current.tempPassword || "",
-    mustChangePassword: Boolean(current.mustChangePassword),
-    status: input.status || current.status || "active",
-    brandId: input.brandId || current.brandId || "",
-    storeId: input.storeId || current.storeId || "",
-    supplierId: input.supplierId || current.supplierId || "",
-    driverId: input.driverId || current.driverId || "",
-    createdAt: current.createdAt || now,
-    updatedAt: now,
-    lastLoginAt: current.lastLoginAt || "",
-    passwordUpdatedAt: input.password ? now : current.passwordUpdatedAt || "",
-    resetBy: current.resetBy || "",
-    resetAt: current.resetAt || ""
+// ── 역할별 리다이렉트 ────────────────────────────────────────
+function redirectByRole(user) {
+  const map = {
+    master:    '/master.html',
+    hq:        '/site_hq.html',
+    franchise: '/site_franchise.html',
+    supplier:  '/site_supplier.html',
+    driver:    '/site_driver.html',
   };
-  if (existingIndex >= 0) users[existingIndex] = next;
-  else users.push(next);
-  saveUsers(users);
-  return next;
+  location.href = map[user.role] || '/login.html';
 }
 
-function updateUserStatus(uidValue, status) {
-  const users = loadUsers();
-  const user = users.find(row => row.uid === uidValue);
-  if (!user) throw new Error("계정을 찾을 수 없습니다.");
-  user.status = status;
-  user.updatedAt = nowIso();
-  if (status === "active") user.mustChangePassword = false;
-  saveUsers(users);
-  return user;
+// ── 페이지 보호 (각 페이지 상단에서 호출) ──────────────────
+function requireLogin(allowedRoles) {
+  const session = getSession();
+  if (!session) { location.href = '/login.html'; return null; }
+  if (allowedRoles && !allowedRoles.includes(session.role)) {
+    alert('접근 권한이 없습니다.');
+    location.href = '/login.html';
+    return null;
+  }
+  return session;
 }
 
-function resetPasswordByMaster(uidValue, masterUser) {
-  const users = loadUsers();
-  const user = users.find(row => row.uid === uidValue);
-  if (!user) throw new Error("계정을 찾을 수 없습니다.");
-  const tempPassword = generateTempPassword();
-  user.tempPassword = tempPassword;
-  user.mustChangePassword = true;
-  user.status = "password_reset_required";
-  user.resetBy = masterUser?.loginId || masterUser?.name || "master";
-  user.resetAt = nowIso();
-  user.updatedAt = user.resetAt;
-  saveUsers(users);
-  return { user, tempPassword };
+// ── 거래처 (납품업체 계정 첫 로그인 시 본사에 표시) ────────
+async function registerPartner(fields) {
+  const id = genId();
+  const partner = {
+    id, ...fields,
+    status: fields.status || 'pending_approval',
+    createdAt: now(),
+  };
+  await DB.set('partners/' + id, partner);
+  return partner;
+}
+async function loadPartners() {
+  const data = await DB.get('partners') || {};
+  return Object.values(data);
+}
+async function updatePartner(id, fields) {
+  await DB.update('partners/' + id, { ...fields, updatedAt: now() });
+}
+async function deletePartner(id) {
+  await DB.remove('partners/' + id);
 }
 
-function activateUser(uidValue) {
-  return updateUserStatus(uidValue, "active");
+// ── 브랜드 ──────────────────────────────────────────────────
+async function registerBrand(fields) {
+  const id = genId();
+  const brand = { id, ...fields, createdAt: now() };
+  await DB.set('brands/' + id, brand);
+  return brand;
+}
+async function loadBrands() {
+  const data = await DB.get('brands') || {};
+  return Object.values(data);
 }
 
-function deactivateUser(uidValue) {
-  return updateUserStatus(uidValue, "inactive");
+// ── 메뉴 ────────────────────────────────────────────────────
+async function registerMenu(fields) {
+  const id = genId();
+  const menu = { id, ...fields, createdAt: now() };
+  await DB.set('menus/' + id, menu);
+  return menu;
+}
+async function loadMenus() {
+  const data = await DB.get('menus') || {};
+  return Object.values(data);
+}
+async function updateMenu(id, fields) {
+  await DB.update('menus/' + id, { ...fields, updatedAt: now() });
+}
+async function deleteMenu(id) {
+  await DB.remove('menus/' + id);
 }
 
-function suspendUser(uidValue) {
-  return updateUserStatus(uidValue, "suspended");
+// ── 판매가격 ─────────────────────────────────────────────────
+async function registerPrice(fields) {
+  const id = genId();
+  const price = { id, ...fields, createdAt: now() };
+  await DB.set('prices/' + id, price);
+  return price;
+}
+async function loadPrices() {
+  const data = await DB.get('prices') || {};
+  return Object.values(data);
+}
+async function updatePrice(id, fields) {
+  await DB.update('prices/' + id, { ...fields, updatedAt: now() });
+}
+async function deletePrice(id) {
+  await DB.remove('prices/' + id);
 }
 
-function expireUser(uidValue) {
-  return updateUserStatus(uidValue, "expired");
+// ── 납품업체: 배송기사 등록 ─────────────────────────────────
+async function registerSupplierDriver(fields) {
+  const id = genId();
+  const driver = { id, ...fields, createdAt: now() };
+  await DB.set('supplier_drivers/' + id, driver);
+  return driver;
+}
+async function loadSupplierDrivers() {
+  const data = await DB.get('supplier_drivers') || {};
+  return Object.values(data);
+}
+async function deleteSupplierDriver(id) {
+  await DB.remove('supplier_drivers/' + id);
 }
 
-function requirePasswordChange(uidValue) {
-  const users = loadUsers();
-  const user = users.find(row => row.uid === uidValue);
-  if (!user) throw new Error("계정을 찾을 수 없습니다.");
-  user.mustChangePassword = true;
-  user.status = "password_reset_required";
-  user.updatedAt = nowIso();
-  saveUsers(users);
-  return user;
+// ── 납품업체: 가맹점(배송지) 등록 ──────────────────────────
+async function registerSupplierFranchise(fields) {
+  const id = genId();
+  const store = { id, ...fields, createdAt: now() };
+  await DB.set('supplier_franchises/' + id, store);
+  return store;
+}
+async function loadSupplierFranchises() {
+  const data = await DB.get('supplier_franchises') || {};
+  return Object.values(data);
+}
+async function deleteSupplierFranchise(id) {
+  await DB.remove('supplier_franchises/' + id);
 }
 
-function changePassword(uidValue, newPassword) {
-  const users = loadUsers();
-  const user = users.find(row => row.uid === uidValue);
-  if (!user) throw new Error("계정을 찾을 수 없습니다.");
-  if (!newPassword || String(newPassword).length < 4) throw new Error("비밀번호는 4자리 이상 입력하세요.");
-  user.passwordHash = simpleHash(newPassword);
-  user.tempPassword = "";
-  user.mustChangePassword = false;
-  user.status = "active";
-  user.passwordUpdatedAt = nowIso();
-  user.updatedAt = user.passwordUpdatedAt;
-  saveUsers(users);
-  setCurrentUser(user);
-  return user;
+// ── 배송 ────────────────────────────────────────────────────
+async function createDelivery(fields) {
+  const id = genId();
+  const delivery = {
+    id,
+    storeId:    fields.storeId    || '',
+    storeName:  fields.storeName  || '',
+    address:    fields.address    || '',
+    driverId:   fields.driverId   || '',
+    driverName: fields.driverName || '',
+    driverPhone:fields.driverPhone|| '',
+    items:      fields.items      || '',
+    amount:     fields.amount     || 0,
+    status:     'assigned',       // assigned → shipping → done
+    note:       fields.note       || '',
+    createdAt:  now(),
+    startedAt:  null,
+    doneAt:     null,
+    issueNote:  null,
+  };
+  await DB.set('deliveries/' + id, delivery);
+  return delivery;
 }
 
+async function loadDeliveries(filters = {}) {
+  const data = await DB.get('deliveries') || {};
+  let list = Object.values(data);
+  if (filters.driverId) list = list.filter(d => d.driverId === filters.driverId);
+  if (filters.storeId)  list = list.filter(d => d.storeId  === filters.storeId);
+  if (filters.status)   list = list.filter(d => d.status   === filters.status);
+  return list.sort((a, b) => a.createdAt > b.createdAt ? 1 : -1);
+}
+
+async function assignDelivery(deliveryId, driverId) {
+  const drivers = await loadSupplierDrivers();
+  const driver = drivers.find(d => d.id === driverId);
+  await DB.update('deliveries/' + deliveryId, {
+    driverId,
+    driverName:  driver?.name  || '',
+    driverPhone: driver?.phone || '',
+    status: 'assigned',
+    updatedAt: now(),
+  });
+}
+
+async function startDelivery(deliveryId) {
+  await DB.update('deliveries/' + deliveryId, {
+    status: 'shipping',
+    startedAt: now(),
+    updatedAt: now(),
+  });
+}
+
+async function markDeliveryDone(deliveryId, note = '') {
+  await DB.update('deliveries/' + deliveryId, {
+    status: 'done',
+    doneAt: now(),
+    issueNote: note || null,
+    updatedAt: now(),
+  });
+}
+
+async function reportDeliveryIssue(deliveryId, note) {
+  await DB.update('deliveries/' + deliveryId, {
+    status: 'issue',
+    issueNote: note,
+    updatedAt: now(),
+  });
+}
+
+// 배송 링크 생성 (배송기사용)
+function getDeliveryLink(deliveryId) {
+  const base = location.origin;
+  return `${base}/site_driver.html?delivery=${deliveryId}`;
+}
+
+// 배송전표 HTML 생성
+async function getDeliverySlipHtml(deliveryId) {
+  const d = await DB.get('deliveries/' + deliveryId);
+  if (!d) return '';
+  return `
+    <!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>배송전표</title>
+    <style>body{font-family:'Noto Sans KR',sans-serif;padding:24px;max-width:400px;margin:0 auto}
+    h2{font-size:18px;margin-bottom:16px}
+    .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee;font-size:14px}
+    .label{color:#888}.val{font-weight:700}
+    .items{margin-top:12px;padding:12px;background:#f5f5f5;border-radius:8px;font-size:13px}
+    .footer{margin-top:20px;text-align:center;color:#aaa;font-size:11px}
+    @media print{button{display:none}}</style></head>
+    <body>
+    <h2>📦 배송전표</h2>
+    <div class="row"><span class="label">배송ID</span><span class="val">${d.id}</span></div>
+    <div class="row"><span class="label">배송처</span><span class="val">${d.storeName}</span></div>
+    <div class="row"><span class="label">주소</span><span class="val">${d.address}</span></div>
+    <div class="row"><span class="label">기사</span><span class="val">${d.driverName || '미배정'}</span></div>
+    <div class="row"><span class="label">연락처</span><span class="val">${d.driverPhone || '-'}</span></div>
+    <div class="row"><span class="label">금액</span><span class="val">${(d.amount||0).toLocaleString()}원</span></div>
+    <div class="row"><span class="label">생성일시</span><span class="val">${d.createdAt?.slice(0,16).replace('T',' ')}</span></div>
+    <div class="items"><b>품목:</b><br>${d.items || '-'}</div>
+    <div class="footer">대상정보통신 스마트발주</div>
+    <br><button onclick="window.print()">🖨️ 인쇄</button>
+    </body></html>`;
+}
+
+// ── 실시간 구독 헬퍼 ────────────────────────────────────────
+function onDeliveriesChange(cb, filters = {}) {
+  return DB.on('deliveries', data => {
+    let list = Object.values(data || {});
+    if (filters.driverId) list = list.filter(d => d.driverId === filters.driverId);
+    if (filters.status)   list = list.filter(d => d.status   === filters.status);
+    cb(list);
+  });
+}
+
+function onUsersChange(cb) {
+  return DB.on('users', data => cb(Object.values(data || {})));
+}
+
+// ── localStorage 동기 호환 (기존 코드 지원) ────────────────
+// 기존 master.html, site_hq.html 등에서 동기 방식으로 쓰던 loadData() 지원
+function loadData() {
+  // 동기 fallback (localStorage)
+  const keys = ['partners','brands','menus','prices','supplier_drivers','supplier_franchises','deliveries'];
+  const out = {};
+  keys.forEach(k => {
+    try {
+      const v = localStorage.getItem('sbalju_' + k);
+      out[k] = v ? Object.values(JSON.parse(v)) : [];
+    } catch { out[k] = []; }
+  });
+  return out;
+}
+
+// ── 전역 노출 ────────────────────────────────────────────────
 window.SmartBaljuAuth = {
+  // 상수
   ROLE_LABELS,
   STATUS_LABELS,
   BLOCKED_LOGIN_STATUSES,
+
+  // DB 직접 접근
+  DB,
+
+  // 세션
+  getSession,
+  setSession,
+  clearSession,
+  requireLogin,
+
+  // 인증
+  login,
+  logout,
+  redirectByRole,
+  hashPw,
+
+  // 사용자
   loadUsers,
-  saveUsers,
-  loadData,
-  saveData,
+  upsertUser,
+  deleteUser,
+  setUserStatus,
+  resetPasswordByMaster,
+  activateUser:   uid => setUserStatus(uid, 'active'),
+  deactivateUser: uid => setUserStatus(uid, 'inactive'),
+  suspendUser:    uid => setUserStatus(uid, 'suspended'),
+  expireUser:     uid => setUserStatus(uid, 'expired'),
+
+  // 권한
+  setPermissions,
+  getPermissions,
+
+  // 거래처 (납품업체)
   registerPartner,
+  loadPartners,
+  updatePartner,
+  deletePartner,
+
+  // 브랜드
   registerBrand,
+  loadBrands,
+
+  // 메뉴
   registerMenu,
+  loadMenus,
+  updateMenu,
+  deleteMenu,
+
+  // 판매가격
   registerPrice,
+  loadPrices,
+  updatePrice,
+  deletePrice,
+
+  // 납품업체: 배송기사
   registerSupplierDriver,
+  loadSupplierDrivers,
+  deleteSupplierDriver,
+
+  // 납품업체: 가맹점
   registerSupplierFranchise,
+  loadSupplierFranchises,
+  deleteSupplierFranchise,
+
+  // 배송
   createDelivery,
+  loadDeliveries,
   assignDelivery,
   startDelivery,
   markDeliveryDone,
-  setPermissions,
-  updateDataRow,
-  deleteDataRow,
-  deleteUser,
-  getCurrentUser,
-  login,
-  logout,
-  checkRole,
-  redirectByRole,
-  upsertUser,
-  resetPasswordByMaster,
-  activateUser,
-  deactivateUser,
-  suspendUser,
-  expireUser,
-  requirePasswordChange,
-  changePassword
+  reportDeliveryIssue,
+  getDeliveryLink,
+  getDeliverySlipHtml,
+  onDeliveriesChange,
+  onUsersChange,
+
+  // 기존 호환
+  loadData,
+
+  // Firebase 상태
+  get isFirebaseReady() { return _firebaseReady; },
+  get db() { return _db; },
 };
+
+// ── 초기화 로그 ─────────────────────────────────────────────
+document.addEventListener('firebaseReady', () => {
+  if (_firebaseReady) {
+    console.log('[SmartBalju] ✅ Firebase Realtime Database 연결됨');
+    _ensureMaster();
+  } else {
+    console.warn('[SmartBalju] ⚠️ Firebase 미연결 — localStorage 모드로 동작');
+  }
+});

@@ -7,59 +7,76 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--line:#e4e0d8;--text:#1a1916;--muted:#6b6860;--dim:#a8a49c;--green:#1a7a4a;--green-bg:#e8f5ee;--green-mid:#2d9e65;--red:#c0392b;--red-bg:#fdecea;--amber:#b85c00;--amber-bg:#fef3e2;--blue:#1a5fa8;--blue-bg:#e8f0fb;--blue-mid:#2874cc;--purple:#5a3fb5;--purple-bg:#f0eeff;--mono:"Space Mono",monospace;--sans:"Noto Sans KR",sans-serif}
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0ede8;--line:#e4e0d8;--text:#1a1916;--muted:#6b6860;--dim:#a8a49c;--green:#1a7a4a;--green-bg:#e8f5ee;--green-mid:#2d9e65;--red:#c0392b;--red-bg:#fdecea;--amber:#b85c00;--amber-bg:#fef3e2;--blue:#1a5fa8;--blue-bg:#e8f0fb;--blue-mid:#2874cc;--mono:"Space Mono",monospace;--sans:"Noto Sans KR",sans-serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center}
 .app{width:100%;max-width:390px;background:var(--surface);min-height:100vh;display:flex;flex-direction:column}
 .status-bar{padding:12px 20px 0;display:flex;justify-content:space-between;align-items:center}
 .st-time{font-family:var(--mono);font-size:13px;font-weight:700}
-.st-icons{display:flex;gap:5px;color:var(--muted);font-size:14px}
-.app-header{padding:12px 20px 14px;border-bottom:0.5px solid var(--line)}
-.driver-info-card{margin:14px 20px 0;background:var(--purple-bg);border:0.5px solid rgba(90,63,181,.2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.st-icons{display:flex;gap:5px;color:var(--muted);font-size:14px;align-items:center}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.app-header{padding:14px 20px 12px;border-bottom:.5px solid var(--line)}
+.header-title{font-size:18px;font-weight:700}
+.header-sub{font-size:11px;color:var(--dim);margin-top:2px}
+/* 기사 카드 */
+.driver-card{margin:14px 20px 0;background:var(--purple-bg);border:.5px solid rgba(90,63,181,.2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px}
 .driver-avatar{width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(90,63,181,.2)}
-.driver-name{font-size:17px;font-weight:700;color:var(--text)}
+.driver-name{font-size:17px;font-weight:700}
 .driver-sub{font-size:12px;color:var(--muted);margin-top:2px}
-.progress-bar-wrap{margin:14px 20px 0;background:var(--surface2);border-radius:12px;padding:12px 14px}
+/* 진행바 */
+.progress-wrap{margin:14px 20px 0;background:var(--surface2);border-radius:12px;padding:12px 14px}
 .progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.progress-title{font-size:13px;font-weight:700;color:var(--text)}
-.progress-count{font-family:var(--mono);font-size:15px;font-weight:700}
+.progress-title{font-size:13px;font-weight:700}
+.progress-count{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-mid)}
 .progress-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
 .progress-fill{height:100%;border-radius:4px;background:var(--green-mid);transition:width .5s}
+/* 완료 배너 */
+.all-done{margin:14px 20px;background:var(--green-bg);border:.5px solid rgba(26,122,74,.25);border-radius:14px;padding:20px;text-align:center;display:none}
+.all-done.show{display:block}
+.all-done-icon{font-size:40px;margin-bottom:8px}
+.all-done-title{font-size:18px;font-weight:700;color:var(--green)}
+.all-done-sub{font-size:13px;color:var(--green-mid);margin-top:4px}
+/* 섹션 */
 .section-label{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.4px;text-transform:uppercase;padding:14px 20px 8px}
-.delivery-list{padding:0 20px;display:flex;flex-direction:column;gap:10px;flex:1}
-.dlv-card{border:0.5px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface)}
+/* 배송 카드 */
+.dlv-list{padding:0 20px;display:flex;flex-direction:column;gap:10px;padding-bottom:24px}
+.dlv-card{border:.5px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface);transition:opacity .3s}
 .dlv-card.is-done{opacity:.6}
 .dlv-card.is-active{border-color:var(--blue-mid);box-shadow:0 0 0 2px var(--blue-bg)}
 .dlv-header{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.dlv-check{width:20px;height:20px;cursor:pointer;accent-color:var(--blue-mid);flex-shrink:0}
 .dlv-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
 .dlv-num.waiting{background:var(--surface2);color:var(--muted)}
 .dlv-num.active{background:var(--blue-bg);color:var(--blue-mid);border:2px solid var(--blue-mid)}
 .dlv-num.done{background:var(--green-bg);color:var(--green)}
 .dlv-info{flex:1;min-width:0}
-.dlv-store{font-size:15px;font-weight:700;color:var(--text)}
+.dlv-store{font-size:15px;font-weight:700}
 .dlv-addr{font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dlv-items{font-size:11px;color:var(--dim);margin-top:2px}
-.dlv-body{border-top:0.5px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
-.dlv-addr-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.dlv-addr-text{font-size:13px;color:var(--text);flex:1}
-.call-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue-bg);color:var(--blue-mid);border:0.5px solid rgba(26,95,168,.2);border-radius:9px;padding:7px 12px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0}
-.map-btn{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);color:var(--muted);border:0.5px solid var(--line);border-radius:9px;padding:7px 12px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;cursor:pointer}
+.status-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;flex-shrink:0}
+.sc-waiting{background:var(--surface2);color:var(--muted)}
+.sc-active{background:var(--blue-bg);color:var(--blue)}
+.sc-done{background:var(--green-bg);color:var(--green)}
+.dlv-body{border-top:.5px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.addr-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.addr-text{font-size:13px;flex:1}
+.call-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue-bg);color:var(--blue-mid);border:.5px solid rgba(26,95,168,.2);border-radius:9px;padding:7px 12px;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0}
 .items-box{background:var(--surface2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted);line-height:1.6}
-.big-action-btn{width:100%;padding:16px;border-radius:14px;border:none;font-size:16px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s}
-.big-action-btn:active{opacity:.85}
-.big-action-btn i{font-size:22px}
+.big-btn{width:100%;padding:15px;border-radius:13px;border:none;font-size:15px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s}
+.big-btn:active{opacity:.85}.big-btn i{font-size:20px}
 .btn-start{background:var(--blue-mid);color:#fff}
 .btn-done{background:var(--green-mid);color:#fff}
-.btn-issue{background:var(--red-bg);color:var(--red);border:0.5px solid rgba(192,57,43,.3)!important}
-.done-stamp{background:var(--green-bg);border:0.5px solid rgba(26,122,74,.25);border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px}
-.done-stamp-icon{font-size:22px;color:var(--green)}
+.btn-issue{background:var(--red-bg);color:var(--red);border:.5px solid rgba(192,57,43,.3)}
+.done-stamp{background:var(--green-bg);border:.5px solid rgba(26,122,74,.25);border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.done-stamp i{font-size:22px;color:var(--green)}
 .done-stamp-title{font-size:14px;font-weight:700;color:var(--green)}
 .done-stamp-time{font-size:12px;color:var(--green-mid);margin-top:2px}
-.all-done-banner{margin:14px 20px;background:var(--green-bg);border:0.5px solid rgba(26,122,74,.25);border-radius:14px;padding:20px;text-align:center;display:none}
-.all-done-banner.show{display:block}
-.all-done-icon{font-size:40px;margin-bottom:8px}
-.all-done-title{font-size:18px;font-weight:700;color:var(--green)}
-.all-done-sub{font-size:13px;color:var(--green-mid);margin-top:4px}
+/* 일괄 완료 */
+.bulk-bar{margin:0 20px 16px;background:var(--surface);border:.5px solid var(--line);border-radius:12px;padding:12px 16px;display:none;align-items:center;gap:10px}
+.bulk-bar.show{display:flex}
+.bulk-count{font-size:13px;color:var(--muted);flex:1}
+.bulk-btn{padding:9px 16px;border-radius:9px;border:none;background:var(--green-mid);color:#fff;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;gap:6px}
 /* 모달 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.show{display:flex}
@@ -72,13 +89,19 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .photo-area i{font-size:32px;color:var(--dim)}
 .photo-label{font-size:13px;font-weight:700;color:var(--muted)}
 .photo-sub{font-size:11px;color:var(--dim)}
-.modal-btn-row{display:flex;gap:8px}
-.mbtn{flex:1;padding:14px;border-radius:12px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;border:0.5px solid var(--line)}
+.mbtn-row{display:flex;gap:8px}
+.mbtn{flex:1;padding:14px;border-radius:12px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;border:.5px solid var(--line)}
 .mbtn.cancel{background:var(--surface2);color:var(--text)}
 .mbtn.ok{background:var(--green-mid);color:#fff;border-color:var(--green-mid)}
 .mbtn.report{background:var(--red);color:#fff;border-color:var(--red)}
+/* 토스트 */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:200}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* 로딩 */
+.loading-wrap{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted)}
+.spinner{width:20px;height:20px;border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:40px;color:var(--dim);font-size:14px}
 @media(min-width:440px){body{padding:20px 0 40px;background:#e8e5e0;align-items:flex-start}.app{border-radius:28px;box-shadow:0 4px 40px rgba(0,0,0,.12);min-height:auto}}
 </style>
 </head>
@@ -86,33 +109,48 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div class="app">
   <div class="status-bar">
     <span class="st-time" id="stTime">09:41</span>
-    <div class="st-icons"><div style="width:7px;height:7px;border-radius:50%;background:var(--green-mid);animation:pulse 1.5s infinite" title="실시간 연결"></div><i class="ti ti-wifi"></i><i class="ti ti-battery-2"></i></div>
+    <div class="st-icons"><div class="live-dot"></div><i class="ti ti-wifi"></i><i class="ti ti-battery-2"></i></div>
   </div>
   <div class="app-header">
-    <div style="font-size:17px;font-weight:700">오늘 배송</div>
-    <div style="font-size:11px;color:var(--dim);margin-top:2px" id="todayDate"></div>
+    <div class="header-title">오늘 배송</div>
+    <div class="header-sub" id="todayDate"></div>
   </div>
-  <div class="driver-info-card">
+
+  <!-- 기사 정보 -->
+  <div class="driver-card" id="driverCard">
     <div class="driver-avatar">🚚</div>
     <div>
-      <div class="driver-name">박배달 기사님</div>
-      <div class="driver-sub">한국식품 전담 · 010-1234-5678</div>
+      <div class="driver-name" id="driverName">기사님</div>
+      <div class="driver-sub" id="driverPhone">-</div>
     </div>
   </div>
-  <div class="progress-bar-wrap">
+
+  <!-- 진행바 -->
+  <div class="progress-wrap">
     <div class="progress-label">
       <span class="progress-title">오늘 배송 진행률</span>
-      <span class="progress-count" id="progressCount" style="color:var(--green-mid)">0 / 3</span>
+      <span class="progress-count" id="progressCount">0 / 0</span>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
-  <div class="all-done-banner" id="allDoneBanner">
+
+  <!-- 전체 완료 배너 -->
+  <div class="all-done" id="allDone">
     <div class="all-done-icon">🎉</div>
     <div class="all-done-title">오늘 배송 완료!</div>
     <div class="all-done-sub">수고하셨습니다. 모든 납품이 완료됐습니다.</div>
   </div>
+
+  <!-- 일괄 완료 바 -->
+  <div class="bulk-bar" id="bulkBar">
+    <span class="bulk-count"><span id="checkedCount">0</span>건 선택됨</span>
+    <button class="bulk-btn" onclick="bulkDone()"><i class="ti ti-circle-check" style="font-size:16px"></i>선택 완료</button>
+  </div>
+
   <div class="section-label">배송 목록</div>
-  <div class="delivery-list" id="deliveryList" style="padding-bottom:24px"></div>
+  <div class="dlv-list" id="dlvList">
+    <div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>
+  </div>
 </div>
 
 <!-- 완료 모달 -->
@@ -126,7 +164,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <span class="photo-label">완료 사진 촬영</span>
       <span class="photo-sub">선택사항 · 증빙용 권장</span>
     </div>
-    <div class="modal-btn-row">
+    <div class="mbtn-row">
       <button class="mbtn cancel" onclick="closeModal('doneModal')">취소</button>
       <button class="mbtn ok" onclick="confirmDone()"><i class="ti ti-circle-check" style="font-size:16px;vertical-align:-2px"></i> 완료 처리</button>
     </div>
@@ -144,8 +182,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <span class="photo-label">현장 사진 촬영</span>
       <span class="photo-sub">파손·오배송·접촉불가 등</span>
     </div>
-    <textarea id="issueNote" placeholder="이슈 내용을 간단히 입력하세요" style="width:100%;padding:10px 12px;border-radius:10px;border:0.5px solid var(--line);background:var(--surface2);font-size:14px;font-family:var(--sans);resize:none;min-height:80px;outline:none"></textarea>
-    <div class="modal-btn-row">
+    <textarea id="issueNote" placeholder="이슈 내용을 간단히 입력하세요" style="width:100%;padding:10px 12px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:14px;font-family:var(--sans);resize:none;min-height:80px;outline:none;color:var(--text)"></textarea>
+    <div class="mbtn-row">
       <button class="mbtn cancel" onclick="closeModal('issueModal')">취소</button>
       <button class="mbtn report" onclick="confirmIssue()"><i class="ti ti-alert-triangle" style="font-size:16px;vertical-align:-2px"></i> 이슈 보고</button>
     </div>
@@ -153,131 +191,186 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <div class="toast" id="toast"></div>
-<style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
 <script src="auth.js"></script>
 <script>
-const DELIVERIES = [
-  {id:1,store:'부산 1호점',addr:'부산시 부산진구 ○○동 123-4',contact:'010-9999-1111',items:'닭가슴살 50kg · 쌀 5포대 · 소스류 3세트',amount:1240000,status:'shipping',departedAt:'13:20',arrivedAt:null},
-  {id:2,store:'부산 해운대점',addr:'부산시 해운대구 ○○로 56',contact:'010-8888-2222',items:'닭가슴살 30kg · 소스 세트 2개',amount:587000,status:'waiting',departedAt:null,arrivedAt:null},
-  {id:3,store:'부산 사직점',addr:'부산시 연제구 ○○대로 88',contact:'010-7777-3333',items:'전품목 7종 정기 주문',amount:2140000,status:'waiting',departedAt:null,arrivedAt:null},
-];
-if(window.SmartBaljuAuth){
-  const params=new URLSearchParams(location.search),target=params.get('delivery'),rows=SmartBaljuAuth.loadData().deliveries||[];
-  const list=target?rows.filter(d=>d.id===target):rows;
-  if(list.length)DELIVERIES.splice(0,DELIVERIES.length,...list.map((d,i)=>({id:d.id,store:d.storeName||('?? '+(i+1)),addr:d.address||'',contact:d.phone||'',items:d.items||'',amount:d.amount||0,status:d.status==='done'?'done':d.status==='shipping'?'shipping':'waiting',departedAt:d.startedAt?String(d.startedAt).slice(11,16):null,arrivedAt:d.doneAt?String(d.doneAt).slice(11,16):null})));
-}
+const Auth = window.SmartBaljuAuth;
 
-let pendingId=null;
+// URL 파라미터에서 deliveryId 또는 driverId 추출
+const params = new URLSearchParams(location.search);
+const targetDeliveryId = params.get('delivery'); // 특정 배송 1건
+const targetDriverId   = params.get('driver');   // 기사 전체 배송
 
-function now(){return new Date().toTimeString().slice(0,5)}
+let deliveries = [];
+let pendingId = '';
+let checked = new Set();
+
+// 시계
+(function tick(){ const n=new Date(); document.getElementById('stTime').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); setTimeout(tick,1000); })();
+(function(){ const days=['일','월','화','수','목','금','토'],n=new Date(); document.getElementById('todayDate').textContent=n.getFullYear()+'년 '+(n.getMonth()+1)+'월 '+n.getDate()+'일 ('+days[n.getDay()]+')'; })();
+
+function now(){ return new Date().toTimeString().slice(0,5); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+let _tt;
+function showToast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2500); }
 
 function updateProgress(){
-  const done=DELIVERIES.filter(d=>d.status==='done').length;
-  const total=DELIVERIES.length;
-  document.getElementById('progressCount').textContent=done+' / '+total;
-  document.getElementById('progressFill').style.width=(done/total*100)+'%';
-  document.getElementById('allDoneBanner').classList.toggle('show',done===total);
+  const done = deliveries.filter(d=>d.status==='done').length;
+  const total = deliveries.length;
+  document.getElementById('progressCount').textContent = done+' / '+total;
+  document.getElementById('progressFill').style.width = total ? (done/total*100)+'%' : '0%';
+  document.getElementById('allDone').classList.toggle('show', total>0 && done===total);
+}
+
+function updateBulkBar(){
+  const bar = document.getElementById('bulkBar');
+  const cnt = checked.size;
+  document.getElementById('checkedCount').textContent = cnt;
+  bar.classList.toggle('show', cnt > 0);
 }
 
 function render(){
   updateProgress();
-  const activeIdx=DELIVERIES.findIndex(d=>d.status==='shipping'||d.status==='waiting');
-  document.getElementById('deliveryList').insertAdjacentHTML('afterend','<div id="bulkDoneBar" style="padding:0 20px 18px"><button class="big-action-btn btn-done" onclick="completeCheckedDeliveries()">?? ????</button></div>');
-  const oldBulk=document.querySelectorAll('#bulkDoneBar');oldBulk.forEach((el,i)=>{if(i<oldBulk.length-1)el.remove()});
-  document.getElementById('deliveryList').innerHTML=DELIVERIES.map((d,i)=>{
-    const isActive=d.status==='shipping';
-    const isDone=d.status==='done';
-    const isWaiting=d.status==='waiting';
-    const isFirst=i===activeIdx;
-    const numCls=isDone?'done':isActive?'active':'waiting';
-    const numContent=isDone?'<i class="ti ti-check" style="font-size:13px"></i>':isActive?'<i class="ti ti-truck-delivery" style="font-size:13px"></i>':(i+1);
+  const activeIdx = deliveries.findIndex(d=>d.status==='shipping'||d.status==='assigned');
+  const el = document.getElementById('dlvList');
 
-    let body='';
+  if(!deliveries.length){
+    el.innerHTML = '<div class="empty-state"><i class="ti ti-mood-smile" style="font-size:40px;display:block;margin-bottom:10px;opacity:.4"></i>오늘 배송이 없습니다</div>';
+    return;
+  }
+
+  el.innerHTML = deliveries.map((d, i) => {
+    const isDone = d.status==='done';
+    const isShipping = d.status==='shipping';
+    const isWaiting = d.status==='assigned';
+    const isFirst = i===activeIdx;
+    const numCls = isDone?'done':isShipping?'active':'waiting';
+    const numContent = isDone?'<i class="ti ti-check" style="font-size:13px"></i>':isShipping?'<i class="ti ti-truck-delivery" style="font-size:13px"></i>':(i+1);
+    const stCls = isDone?'sc-done':isShipping?'sc-active':'sc-waiting';
+    const stLabel = isDone?'완료':isShipping?'배송중':'대기';
+    const isChecked = checked.has(d.id);
+
+    let body = '';
     if(!isDone){
-      body+=`<div class="dlv-addr-row">
-        <span class="dlv-addr-text"><i class="ti ti-map-pin" style="font-size:13px;color:var(--muted);margin-right:4px"></i>${d.addr}</span>
-        <a href="tel:${d.contact}" class="call-btn"><i class="ti ti-phone" style="font-size:14px"></i>전화</a>
-      </div>`;
+      body += `<div class="addr-row"><span class="addr-text"><i class="ti ti-map-pin" style="font-size:13px;color:var(--muted);margin-right:4px"></i>${d.address||'-'}</span>${d.driverPhone?`<a href="tel:${d.driverPhone}" class="call-btn"><i class="ti ti-phone" style="font-size:14px"></i>전화</a>`:''}</div>`;
     }
-    if(isActive||isDone){
-      body+=`<div class="items-box">${d.items}<br><span style="color:var(--text);font-weight:700;font-family:var(--mono)">${d.amount.toLocaleString()}원</span></div>`;
+    if(!isDone){
+      body += `<div class="items-box">${d.items||'품목 없음'}${d.amount?'<br><span style="color:var(--text);font-weight:700;font-family:var(--mono)">'+(Number(d.amount)||0).toLocaleString()+'원</span>':''}</div>`;
     }
-    if(isActive){
-      body+=`<div style="display:flex;gap:4px;align-items:center;font-size:12px;color:var(--muted)"><i class="ti ti-clock" style="font-size:13px"></i>출발: ${d.departedAt}</div>`;
-      body+=`<button class="big-action-btn btn-done" onclick="openDone(${d.id})"><i class="ti ti-circle-check"></i>도착 완료</button>`;
-      body+=`<button class="big-action-btn btn-issue" style="padding:12px" onclick="openIssue(${d.id})"><i class="ti ti-alert-triangle" style="font-size:18px"></i>이슈 보고</button>`;
+    if(isShipping){
+      body += `<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)"><i class="ti ti-clock" style="font-size:13px"></i>출발: ${d.startedAt?.slice(11,16)||'-'}</div>`;
+      body += `<button class="big-btn btn-done" onclick="openDone('${d.id}')"><i class="ti ti-circle-check"></i>도착 완료</button>`;
+      body += `<button class="big-btn btn-issue" style="padding:11px" onclick="openIssue('${d.id}')"><i class="ti ti-alert-triangle" style="font-size:17px"></i>이슈 보고</button>`;
     }
-    if(isWaiting&&isFirst){
-      body+=`<button class="big-action-btn btn-start" onclick="startDelivery(${d.id})"><i class="ti ti-truck-delivery"></i>배송 출발</button>`;
+    if(isWaiting && isFirst){
+      body += `<button class="big-btn btn-start" onclick="startDlv('${d.id}')"><i class="ti ti-truck-delivery"></i>배송 출발</button>`;
     }
     if(isDone){
-      body=`<div class="done-stamp"><div class="done-stamp-icon"><i class="ti ti-circle-check"></i></div><div><div class="done-stamp-title">납품 완료</div><div class="done-stamp-time">${d.arrivedAt} 도착 확인</div></div></div>`;
+      body = `<div class="done-stamp"><i class="ti ti-circle-check"></i><div><div class="done-stamp-title">납품 완료</div><div class="done-stamp-time">${d.doneAt?.slice(11,16)||''} 도착 확인</div></div></div>`;
     }
 
-    return `<div class="dlv-card${isActive?' is-active':''}${isDone?' is-done':''}">
+    return `<div class="dlv-card${isShipping?' is-active':''}${isDone?' is-done':''}">
       <div class="dlv-header">
-        <input class="dlv-check" type="checkbox" value="${d.id}" ${isDone?'disabled':''} style="width:18px;height:18px"><div class="dlv-num ${numCls}">${numContent}</div>
+        <input type="checkbox" class="dlv-check" value="${d.id}" ${isDone?'disabled':''} ${isChecked?'checked':''} onchange="toggleCheck('${d.id}',this.checked)">
+        <div class="dlv-num ${numCls}">${numContent}</div>
         <div class="dlv-info">
-          <div class="dlv-store">${d.store}</div>
-          <div class="dlv-addr">${d.addr}</div>
-          ${isActive?`<div class="dlv-items">${d.items}</div>`:''}
+          <div class="dlv-store">${d.storeName||'-'}</div>
+          <div class="dlv-addr">${d.address||''}</div>
+          ${isShipping?`<div class="dlv-items">${d.items||''}</div>`:''}
         </div>
-        <div style="text-align:right;flex-shrink:0">
-          ${isActive?'<span style="background:var(--blue-bg);color:var(--blue-mid);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px">배송중</span>':''}
-          ${isDone?'<span style="background:var(--green-bg);color:var(--green);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px">완료</span>':''}
-          ${isWaiting?'<span style="background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px">대기</span>':''}
-        </div>
+        <span class="status-chip ${stCls}">${stLabel}</span>
       </div>
       ${body?`<div class="dlv-body">${body}</div>`:''}
     </div>`;
   }).join('');
 }
 
-function startDelivery(id){
-  const d=DELIVERIES.find(x=>x.id===id);
-  if(!d)return;
-  d.status='shipping'; d.departedAt=now();
-  showToast('출발! 🚚 가맹점·본사에 알림 전송됐습니다');
+function toggleCheck(id, val){
+  val ? checked.add(id) : checked.delete(id);
+  updateBulkBar();
+}
+
+async function startDlv(id){
+  const d = deliveries.find(x=>x.id===id); if(!d) return;
+  await Auth.startDelivery(id);
+  d.status='shipping'; d.startedAt=new Date().toISOString();
+  showToast('출발! 🚚 가맹점·본사에 알림 전송됨');
   render();
 }
-function openDone(id){pendingId=id;document.getElementById('doneModal').classList.add('show');}
-function openIssue(id){pendingId=id;document.getElementById('issueModal').classList.add('show');}
-function confirmDone(){
-  const d=DELIVERIES.find(x=>x.id===pendingId);
-  if(d){d.status='done';d.arrivedAt=now();if(window.SmartBaljuAuth)SmartBaljuAuth.markDeliveryDone(pendingId);}
-  closeModal('doneModal');
-  showToast('납품 완료! ✓ 가맹점·본사에 알림 전송됐습니다');
+
+function openDone(id){ pendingId=id; document.getElementById('doneModal').classList.add('show'); }
+function openIssue(id){ pendingId=id; document.getElementById('issueModal').classList.add('show'); }
+
+async function confirmDone(){
+  const d = deliveries.find(x=>x.id===pendingId); if(!d) return;
+  await Auth.markDeliveryDone(pendingId);
+  d.status='done'; d.doneAt=new Date().toISOString();
+  checked.delete(pendingId);
+  closeModal('doneModal'); updateBulkBar();
+  showToast('납품 완료! ✓ 가맹점·본사에 알림 전송됨');
   render();
 }
-function completeCheckedDeliveries(){document.querySelectorAll('.dlv-check:checked').forEach(ch=>{const d=DELIVERIES.find(x=>String(x.id)===ch.value);if(d){d.status='done';d.arrivedAt=now();if(window.SmartBaljuAuth)SmartBaljuAuth.markDeliveryDone(d.id)}});showToast('?? ???? ??');render()}
-function confirmIssue(){
+
+async function bulkDone(){
+  const ids = [...checked].filter(id=>{ const d=deliveries.find(x=>x.id===id); return d && d.status!=='done'; });
+  if(!ids.length){ showToast('완료할 항목이 없습니다'); return; }
+  await Promise.all(ids.map(id=>Auth.markDeliveryDone(id)));
+  ids.forEach(id=>{ const d=deliveries.find(x=>x.id===id); if(d){d.status='done';d.doneAt=new Date().toISOString();} });
+  checked.clear(); updateBulkBar();
+  showToast(ids.length+'건 완료 처리됨 ✓');
+  render();
+}
+
+async function confirmIssue(){
+  const note = document.getElementById('issueNote').value.trim();
+  if(!note){ showToast('이슈 내용을 입력하세요'); return; }
+  await Auth.reportDeliveryIssue(pendingId, note);
+  const d = deliveries.find(x=>x.id===pendingId); if(d){ d.status='issue'; }
+  document.getElementById('issueNote').value='';
   closeModal('issueModal');
-  showToast('이슈 보고 완료. 본사에 즉시 알림 전송됐습니다');
-}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-
-/* 시계 */
-(function tick(){
-  const n=new Date();
-  document.getElementById('stTime').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-  setTimeout(tick,1000);
-})();
-
-/* 날짜 */
-(function(){
-  const days=['일','월','화','수','목','금','토'],n=new Date();
-  document.getElementById('todayDate').textContent=n.getFullYear()+'년 '+( n.getMonth()+1)+'월 '+n.getDate()+'일 ('+days[n.getDay()]+')';
-})();
-
-/* 토스트 */
-let _tt;
-function showToast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2500);
+  showToast('이슈 보고 완료. 본사에 알림 전송됨');
+  render();
 }
 
-render();
+// 초기 데이터 로드
+async function init(){
+  let list = [];
+  if(targetDeliveryId){
+    // 링크로 직접 접근 — 특정 배송 1건
+    const d = await Auth.DB.get('deliveries/'+targetDeliveryId);
+    if(d){ list=[d]; document.getElementById('driverName').textContent=d.driverName||'기사님'; document.getElementById('driverPhone').textContent=d.driverPhone||''; }
+  } else if(targetDriverId){
+    // 기사 ID로 전체 배송 조회
+    list = await Auth.loadDeliveries({driverId:targetDriverId});
+    if(list.length){ document.getElementById('driverName').textContent=list[0].driverName||'기사님'; document.getElementById('driverPhone').textContent=list[0].driverPhone||''; }
+  } else {
+    // 파라미터 없음 — 모든 배송 (테스트용)
+    list = await Auth.loadDeliveries();
+    if(list.length){ document.getElementById('driverName').textContent=list[0].driverName||'기사님'; document.getElementById('driverPhone').textContent=list[0].driverPhone||''; }
+  }
+  deliveries = list.filter(d=>d); // null 제거
+  render();
+
+  // 실시간 구독 (Firebase 연결 시)
+  if(Auth.isFirebaseReady && Auth.db){
+    const path = targetDeliveryId ? 'deliveries/'+targetDeliveryId : 'deliveries';
+    Auth.db.ref(path).on('value', snap=>{
+      if(!snap.exists()) return;
+      const val = snap.val();
+      if(targetDeliveryId){
+        const idx = deliveries.findIndex(d=>d.id===targetDeliveryId);
+        if(idx>=0) deliveries[idx]={...deliveries[idx],...val};
+        else deliveries=[val];
+      } else {
+        deliveries = Object.values(val).filter(Boolean);
+      }
+      render();
+    });
+  }
+}
+
+document.addEventListener('firebaseReady', init);
+if(Auth.isFirebaseReady) init();
+else setTimeout(init, 2000);
 </script>
 </body>
 </html>
