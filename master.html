@@ -99,6 +99,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 8px;
   </div>
 </div>
 
+<div class="modal" id="permModal"><div class="box"><h2>?? ??</h2><div class="muted" id="permTarget"></div><div class="grid" style="margin-top:14px"><label><input type="checkbox" id="permHq"> ?? ? ??</label><label><input type="checkbox" id="permSupplier"> ???? ? ??</label><label><input type="checkbox" id="permDriver"> ???? ? ??</label></div><div class="top-actions" style="margin-top:16px"><button class="btn" onclick="closePerm()">??</button><button class="btn primary" onclick="savePerm()">??</button></div></div></div>
+
 <div class="toast" id="toast"></div>
 <script src="auth.js"></script>
 <script>
@@ -169,6 +171,10 @@ function showDetail(uid){
   detailModal.classList.add("show");
 }
 function closeDetail(){detailModal.classList.remove("show")}
+let permUid="";
+function openPerm(uid){permUid=uid;const user=Auth.loadUsers().find(row=>row.uid===uid),data=Auth.loadData(),p=(data.permissions||{})[uid]||{};permTarget.textContent=(user?.businessName||user?.name||uid)+" ??";permHq.checked=!!p.hq;permSupplier.checked=!!p.supplier;permDriver.checked=!!p.driver;permModal.classList.add("show")}
+function closePerm(){permModal.classList.remove("show")}
+function savePerm(){Auth.setPermissions(permUid,{hq:permHq.checked,supplier:permSupplier.checked,driver:permDriver.checked,updatedAt:new Date().toISOString()});closePerm();toast("?? ?? ??")}
 function resetMock(){if(confirm("mock 계정 데이터를 초기화할까요?")){localStorage.removeItem("smart_balju_users_v1");Auth.loadUsers();render();toast("mock 데이터 초기화 완료")}}
 render();
 </script>

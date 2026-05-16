@@ -401,6 +401,14 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <!-- ──────────────── PAGE 2: 출고 처리 ──────────────── -->
   <div class="page" id="page-ship">
     <div class="scroll-body">
+      <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:15px;font-weight:700">?? / ?? ??</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input class="form-input" id="supDriverName" placeholder="???? ??"><input class="form-input" id="supDriverPhone" placeholder="???? ???"><button class="btn-confirm primary" onclick="supAddDriver()" style="grid-column:1/3">???? ??</button>
+          <input class="form-input" id="supStoreName" placeholder="??? ??"><input class="form-input" id="supStoreBiz" placeholder="?????(??)"><input class="form-input" id="supStoreAddr" placeholder="??? ??" style="grid-column:1/3"><button class="btn-confirm secondary" onclick="supAddStore()" style="grid-column:1/3">??? ??</button>
+        </div>
+        <div id="supAssignBox"></div>
+      </div>
 
       <div class="summary-strip">
         <div class="strip-card">
@@ -620,6 +628,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 <div class="toast" id="toast"></div>
 
 
+<script src="auth.js"></script>
 <script>
 
 /* 시계 */
@@ -629,6 +638,18 @@ function updateClock() {
     String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
 }
 updateClock(); setInterval(updateClock, 1000);
+
+function supData(){return window.SmartBaljuAuth?SmartBaljuAuth.loadData():{drivers:[],franchises:[],deliveries:[]}}
+function supAddDriver(){if(!supDriverName.value.trim()){showToast('?? ??? ?????');return}SmartBaljuAuth.registerSupplierDriver({name:supDriverName.value,phone:supDriverPhone.value});supDriverName.value=supDriverPhone.value='';renderSupplierAssign();showToast('???? ?? ??')}
+function supAddStore(){if(!supStoreName.value.trim()||!supStoreAddr.value.trim()){showToast('??? ??? ?????');return}SmartBaljuAuth.registerSupplierFranchise({businessName:supStoreName.value,address:supStoreAddr.value,businessNumber:supStoreBiz.value});supStoreName.value=supStoreAddr.value=supStoreBiz.value='';renderSupplierAssign();showToast('??? ?? ??')}
+function supCreateDelivery(storeId){const data=supData(),store=(data.franchises||[]).find(s=>s.id===storeId),driver=(data.drivers||[])[0];if(!store){showToast('???? ?? ? ????');return}SmartBaljuAuth.createDelivery({storeId:store.id,storeName:store.businessName,address:store.address,driverId:driver?.id||'',driverName:driver?.name||'',items:'?? ?? ?? ??',status:'assigned'});renderSupplierAssign();showToast('?? ?? ?? ??')}
+function supAssignDelivery(deliveryId,driverId){SmartBaljuAuth.assignDelivery(deliveryId,driverId);renderSupplierAssign();showToast('?? ?? ??')}
+function supStartDelivery(id){SmartBaljuAuth.startDelivery(id);renderSupplierAssign();showToast('?? ?? ?? ??')}
+function supCopyLink(id){const url=new URL('site_driver.html',location.href);url.searchParams.set('delivery',id);navigator.clipboard?.writeText(url.href).then(()=>showToast('?? ?? ?? ??')).catch(()=>prompt('?? ??',url.href))}
+function supPrintSlip(id){const d=(supData().deliveries||[]).find(x=>x.id===id);if(!d)return;const w=window.open('','_blank');w.document.write(`<h2>????</h2><p>???: ${d.storeName}</p><p>??: ${d.address}</p><p>??: ${d.driverName||'???'}</p><p>??: ${d.items}</p>`);w.print()}
+function renderSupplierAssign(){const box=document.getElementById('supAssignBox');if(!box||!window.SmartBaljuAuth)return;const data=supData(),drivers=data.drivers||[],stores=data.franchises||[],deliveries=data.deliveries||[];box.innerHTML=`<div style="font-size:13px;font-weight:700;margin:8px 0">??? ??</div>${stores.map(s=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:8px;border:0.5px solid var(--line);border-radius:9px;margin-bottom:6px"><span>${s.businessName}<br><small style="color:var(--muted)">${s.address}</small></span><button class="btn-confirm secondary" style="max-width:96px;padding:8px" onclick="supCreateDelivery('${s.id}')">????</button></div>`).join('')||'<div style="color:var(--muted);font-size:12px">??? ???? ????.</div>'}<div style="font-size:13px;font-weight:700;margin:12px 0 8px">?? ??</div>${deliveries.map(d=>`<div style="padding:9px;border:0.5px solid var(--line);border-radius:9px;margin-bottom:7px"><b>${d.storeName}</b> <small>${d.status}</small><div style="color:var(--muted);font-size:12px">${d.address}</div><select class="form-input" onchange="supAssignDelivery('${d.id}',this.value)" style="margin:7px 0">${drivers.map(dr=>`<option value="${dr.id}" ${dr.id===d.driverId?'selected':''}>${dr.name}</option>`).join('')}</select><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn-confirm primary" style="padding:8px" onclick="supStartDelivery('${d.id}')">????</button><button class="btn-confirm secondary" style="padding:8px" onclick="supPrintSlip('${d.id}')">????</button><button class="btn-confirm secondary" style="padding:8px" onclick="supCopyLink('${d.id}')">????</button></div></div>`).join('')||'<div style="color:var(--muted);font-size:12px">??? ??? ????.</div>'}`}
+setTimeout(renderSupplierAssign,0);
+
 
 /* 날짜 */
 (function() {

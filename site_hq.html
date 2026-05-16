@@ -859,7 +859,15 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
   <!-- ── 납품업체 ── -->
   <div class="hq-page" id="hqp-suppliers">
-    <div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-building-factory" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">납품업체 관리</div><div style="font-size:14px;margin-top:6px">다음 업데이트에 추가 예정</div></div></div>
+    <div class="content">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:14px">
+        <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:14px;font-weight:700;margin-bottom:10px">??? ??</div><input id="hqPartnerName" placeholder="?????" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><input id="hqPartnerBiz" placeholder="?????" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><input id="hqPartnerPhone" placeholder="???" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><button onclick="hqRegisterPartner()" style="width:100%;padding:10px;border:0;border-radius:8px;background:var(--text);color:#fff;font-weight:700">??</button></div>
+        <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:14px;font-weight:700;margin-bottom:10px">??? ??</div><input id="hqBrandName" placeholder="????" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><input id="hqBrandOwner" placeholder="???" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><button onclick="hqRegisterBrand()" style="width:100%;padding:10px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-weight:700">??</button></div>
+        <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:14px;font-weight:700;margin-bottom:10px">?? ??</div><input id="hqMenuName" placeholder="???" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><input id="hqMenuCategory" placeholder="??" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><button onclick="hqRegisterMenu()" style="width:100%;padding:10px;border:0;border-radius:8px;background:var(--green);color:#fff;font-weight:700">??</button></div>
+        <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:12px;padding:14px"><div style="font-size:14px;font-weight:700;margin-bottom:10px">???? ??</div><input id="hqPriceMenu" placeholder="???" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><input id="hqPriceValue" type="number" placeholder="????" style="width:100%;padding:10px;border:0.5px solid var(--line);border-radius:8px;margin-bottom:8px"><button onclick="hqRegisterPrice()" style="width:100%;padding:10px;border:0;border-radius:8px;background:var(--amber);color:#fff;font-weight:700">??</button></div>
+      </div>
+      <div style="background:var(--surface);border:0.5px solid var(--line);border-radius:12px;overflow:hidden"><div style="padding:14px 16px;border-bottom:0.5px solid var(--line);font-weight:700">??? ?? ? ? ??? ?? ??</div><table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--surface2)"><th style="padding:10px;text-align:left">???</th><th style="padding:10px;text-align:left">??</th><th style="padding:10px;text-align:left">???</th><th style="padding:10px"></th></tr></thead><tbody id="hqPartnerRows"></tbody></table></div>
+    </div>
   </div>
 
   <!-- ── 통계 ── -->
@@ -916,6 +924,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <div id="hq-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:200"></div>
 
+<script src="auth.js"></script>
 <script>
 /* ── 페이지 전환 ── */
 const HQ_PAGES = {
@@ -1547,6 +1556,14 @@ renderOrders();
 document.querySelectorAll('#filterStatus,#filterRegion').forEach(el=>el.addEventListener('change',renderOrders));
 const si=document.getElementById('searchInput');if(si)si.addEventListener('input',renderOrders);
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
+
+function hqData(){return window.SmartBaljuAuth?SmartBaljuAuth.loadData():{partners:[],brands:[],menus:[],prices:[]}}
+function hqRegisterPartner(){if(!hqPartnerName.value.trim()){showToast('거래처명을 입력하세요');return}SmartBaljuAuth.registerPartner({name:hqPartnerName.value,businessNumber:hqPartnerBiz.value,phone:hqPartnerPhone.value,status:'active'});hqPartnerName.value=hqPartnerBiz.value=hqPartnerPhone.value='';renderHqPartners();showToast('거래처 등록 완료')}
+function hqRegisterBrand(){if(!hqBrandName.value.trim()){showToast('브랜드명을 입력하세요');return}SmartBaljuAuth.registerBrand({name:hqBrandName.value,owner:hqBrandOwner.value});hqBrandName.value=hqBrandOwner.value='';showToast('브랜드 등록 완료')}
+function hqRegisterMenu(){if(!hqMenuName.value.trim()){showToast('메뉴명을 입력하세요');return}const data=hqData(),brand=(data.brands||[])[0];SmartBaljuAuth.registerMenu({brandId:brand?brand.id:'',name:hqMenuName.value,category:hqMenuCategory.value});hqMenuName.value=hqMenuCategory.value='';showToast('메뉴 등록 완료')}
+function hqRegisterPrice(){if(!hqPriceMenu.value.trim()){showToast('메뉴명을 입력하세요');return}const data=hqData();let menu=(data.menus||[]).find(m=>m.name===hqPriceMenu.value);if(!menu)menu=SmartBaljuAuth.registerMenu({name:hqPriceMenu.value,category:''});SmartBaljuAuth.registerPrice({menuId:menu.id,partnerId:(data.partners||[])[0]?.id||'',price:hqPriceValue.value,unit:'ea'});hqPriceMenu.value=hqPriceValue.value='';showToast('판매가격 등록 완료')}
+function renderHqPartners(){const body=document.getElementById('hqPartnerRows');if(!body||!window.SmartBaljuAuth)return;const rows=SmartBaljuAuth.loadData().partners||[];body.innerHTML=rows.map(p=>`<tr><td style="padding:10px;border-top:0.5px solid var(--line)"><b>${p.name||'-'}</b><div style="font-size:11px;color:var(--muted)">${p.businessNumber||''}</div></td><td style="padding:10px;border-top:0.5px solid var(--line)">${p.status||'active'}</td><td style="padding:10px;border-top:0.5px solid var(--line)">${p.phone||''}</td><td style="padding:10px;border-top:0.5px solid var(--line);text-align:right"><button onclick="SmartBaljuAuth.updateDataRow('partners','${p.id}',{status:'inactive'});renderHqPartners();showToast('비활성화 완료')" style="padding:6px 10px;border:0;border-radius:7px;background:var(--surface2);font-weight:700">비활성화</button> <button onclick="SmartBaljuAuth.deleteDataRow('partners','${p.id}');renderHqPartners();showToast('삭제 완료')" style="padding:6px 10px;border:0;border-radius:7px;background:var(--red-bg);color:var(--red);font-weight:700">삭제</button></td></tr>`).join('')||'<tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted)">거래처가 없습니다.</td></tr>'}
+renderHqPartners();
 </script>
 </body>
 </html>
