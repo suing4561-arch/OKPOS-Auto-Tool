@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>??곸젙蹂댄넻??Master 怨꾩젙愿由?/title>
+<title>대상정보통신 Master 계정관리</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f7fb;--panel:#fff;--text:#162033;--muted:#6b7280;--line:#dbe3ee;--navy:#17233c;--blue:#2563eb;--green:#16a34a;--yellow:#d97706;--red:#dc2626;--purple:#7c3aed;--shadow:0 14px 40px rgba(20,31,51,.08)}
@@ -69,15 +69,15 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <body>
 <div class="shell">
   <aside class="side">
-    <div class="brand">??곸젙蹂댄넻??small>Smart Balju Master</small></div>
+    <div class="brand">대상정보통신<small>Smart Balju Master</small></div>
     <div class="nav">
-      <button class="active" onclick="showSection('accounts')">?뫁 怨꾩젙愿由?/button>
-      <button onclick="showSection('partners')">?룺 嫄곕옒泥??뱀씤</button>
-      <button onclick="location.href='site_hq.html'">?룫 蹂몄궗 ?붾㈃</button>
-      <button onclick="location.href='site_franchise.html'">?룵 媛留뱀젏 ?붾㈃</button>
-      <button onclick="location.href='site_supplier.html'">?슊 ?⑺뭹?낆껜 ?붾㈃</button>
-      <button onclick="location.href='site_driver.html'">?쎎 諛곗넚湲곗궗 ?붾㈃</button>
-      <button onclick="Auth.logout()" style="margin-top:20px;background:rgba(220,38,38,.2);color:#fca5a5">?슞 濡쒓렇?꾩썐</button>
+      <button class="active" onclick="showSection('accounts')">계정관리</button>
+      <button onclick="showSection('partners')">거래처 승인</button>
+      <button onclick="location.href='site_hq.html'">본사 화면</button>
+      <button onclick="location.href='site_franchise.html'">가맹점 화면</button>
+      <button onclick="location.href='site_supplier.html'">납품업체 화면</button>
+      <button onclick="location.href='site_driver.html'">배송기사 화면</button>
+      <button onclick="Auth.logout()" style="margin-top:20px;background:rgba(220,38,38,.2);color:#fca5a5">로그아웃</button>
     </div>
   </aside>
   <main class="main">
@@ -85,17 +85,17 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
     <!-- 怨꾩젙愿由?-->
     <div id="section-accounts">
       <div class="top">
-        <div><div class="title">Master 怨꾩젙愿由?/div><div class="muted">怨꾩젙 ?앹꽦쨌?섏젙쨌沅뚰븳 遺??/div></div>
+        <div><div class="title">Master 계정관리</div><div class="muted">계정 생성·수정·권한 부여</div></div>
         <div class="top-actions">
-          <button class="btn" onclick="resetMock()">珥덇린??/button>
-          <button class="btn primary" onclick="openEditor()">+ 怨꾩젙 ?앹꽦</button>
+          <button class="btn" onclick="resetMock()">초기화</button>
+          <button class="btn primary" onclick="openEditor()">+ 계정 생성</button>
         </div>
       </div>
       <div class="card">
         <div class="filters" id="filters"></div>
         <div style="overflow:auto">
           <table>
-            <thead><tr><th>??븷</th><th>怨꾩젙</th><th>?곹깭</th><th>濡쒓렇??/th><th>遺?щ맂 沅뚰븳</th><th>愿由?/th></tr></thead>
+            <thead><tr><th>역할</th><th>계정</th><th>상태</th><th>로그인</th><th>부여된 권한</th><th>관리</th></tr></thead>
             <tbody id="userBody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div></td></tr></tbody>
           </table>
         </div>
@@ -105,7 +105,7 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
     <!-- 嫄곕옒泥??뱀씤 -->
     <div id="section-partners" style="display:none">
       <div class="top">
-        <div><div class="title">嫄곕옒泥??뱀씤 愿由?/div><div class="muted">?⑺뭹?낆껜 泥?濡쒓렇?????ш린???쒖떆?⑸땲??/div></div>
+        <div><div class="title">거래처 승인 관리</div><div class="muted">납품업체 첫 로그인 시 여기에 표시됩니다</div></div>
       </div>
       <div class="card">
         <div id="partnerBody"><div class="loading"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div></div>
@@ -118,51 +118,51 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <!-- ?? 怨꾩젙 ?몄쭛 紐⑤떖 ?? -->
 <div class="modal" id="editorModal">
   <div class="box">
-    <h2 id="editorTitle">怨꾩젙 ?앹꽦</h2>
+    <h2 id="editorTitle">계정 생성</h2>
     <div class="grid">
-      <div><label>??븷</label><select id="fRole" onchange="toggleOkposFields()">
-        <option value="hq">?꾨옖李⑥씠利?蹂몄궗</option>
-        <option value="franchise">媛留뱀젏</option>
-        <option value="supplier">?⑺뭹?낆껜</option>
-        <option value="driver">諛곗넚湲곗궗</option>
+      <div><label>역할</label><select id="fRole" onchange="toggleOkposFields()">
+        <option value="hq">프랜차이즈 본사</option>
+        <option value="franchise">가맹점</option>
+        <option value="supplier">납품업체</option>
+        <option value="driver">배송기사</option>
         <option value="master">Master</option>
       </select></div>
-      <div><label>?곹깭</label><select id="fStatus">
-        <option value="active">?뺤긽</option>
-        <option value="inactive">鍮꾪솢??/option>
-        <option value="suspended">?ъ슜以묒?</option>
-        <option value="expired">怨꾩빟留뚮즺</option>
-        <option value="password_reset_required">鍮꾨?踰덊샇 ?ъ꽕???꾩슂</option>
+      <div><label>상태</label><select id="fStatus">
+        <option value="active">정상</option>
+        <option value="inactive">비활성</option>
+        <option value="suspended">사용중지</option>
+        <option value="expired">계약만료</option>
+        <option value="password_reset_required">비밀번호 재설정 필요</option>
       </select></div>
 
-      <div class="section-divider">湲곕낯 ?뺣낫</div>
-      <div><label>?대떦?먮챸</label><input id="fName"></div>
-      <div><label>?곹샇紐?/label><input id="fBusinessName"></div>
-      <div><label>?ъ뾽?먮쾲??/label><input id="fBusinessNumber"></div>
-      <div><label>?곕씫泥?/label><input id="fPhone"></div>
+      <div class="section-divider">기본 정보</div>
+      <div><label>담당자명</label><input id="fName"></div>
+      <div><label>상호명</label><input id="fBusinessName"></div>
+      <div><label>사업자번호</label><input id="fBusinessNumber"></div>
+      <div><label>연락처</label><input id="fPhone"></div>
 
-      <div class="section-divider">濡쒓렇???뺣낫</div>
-      <div><label>濡쒓렇??ID</label><input id="fLoginId"></div>
-      <div><label>鍮꾨?踰덊샇 <span style="color:var(--muted);font-weight:400">(?섏젙 ??鍮꾩썙?먮㈃ ?좎?)</span></label><input id="fPassword" type="password"></div>
+      <div class="section-divider">로그인 정보</div>
+      <div><label>로그인 ID</label><input id="fLoginId"></div>
+      <div><label>비밀번호 <span style="color:var(--muted);font-weight:400">(수정 시 비워두면 유지)</span></label><input id="fPassword" type="password"></div>
 
       <!-- 釉뚮옖???곕룞 (蹂몄궗/媛留뱀젏 ??븷???뚮쭔 ?쒖떆) -->
-      <div class="section-divider" id="brandDivider" style="display:none">釉뚮옖???곕룞</div>
+      <div class="section-divider" id="brandDivider" style="display:none">브랜드 연동</div>
       <div id="brandSelectWrap" style="display:none">
-        <label>?곕룞 釉뚮옖??<span style="color:var(--muted);font-weight:400">(蹂몄궗?먯꽌 ?깅줉??釉뚮옖??</span></label>
+        <label>연동 브랜드 <span style="color:var(--muted);font-weight:400">(본사에서 등록한 브랜드)</span></label>
         <select id="fBrandSelect">
           <option value="">釉뚮옖???좏깮</option>
-        </select>
+        <div id="brandPreview" style="margin-top:6px;padding:8px 12px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--muted);display:none"></div>
         <div id="brandPreview" style="margin-top:6px;padding:8px 12px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--muted);display:none"></div>
       </div>
 
       <!-- OKPos ?뺣낫 (媛留뱀젏/蹂몄궗 ??븷???뚮쭔 ?쒖떆) -->
-      <div class="section-divider" id="okposDivider" style="display:none">OKPos ?곕룞</div>
-      <div id="okposIdWrap" style="display:none"><label>OKPos ?꾩씠??/label><input id="fOkposId" placeholder="OKPos 濡쒓렇???꾩씠??></div>
-      <div id="okposPwWrap" style="display:none"><label>OKPos 鍮꾨?踰덊샇</label><input id="fOkposPw" type="password" placeholder="OKPos 鍮꾨?踰덊샇"></div>
+      <div class="section-divider" id="okposDivider" style="display:none">OKPos 연동</div>
+      <div id="okposIdWrap" style="display:none"><label>OKPos 아이디</label><input id="fOkposId" placeholder="OKPos 로그인 아이디"></div>
+      <div id="okposPwWrap" style="display:none"><label>OKPos 비밀번호</label><input id="fOkposPw" type="password" placeholder="OKPos 비밀번호"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
-      <button class="btn" onclick="closeEditor()">痍⑥냼</button>
-      <button class="btn primary" onclick="saveEditor()">???/button>
+      <button class="btn" onclick="closeEditor()">취소</button>
+      <button class="btn primary" onclick="saveEditor()">저장</button>
     </div>
   </div>
 </div>
@@ -170,15 +170,15 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <!-- ?? 沅뚰븳遺??紐⑤떖 ?? -->
 <div class="modal" id="permModal">
   <div class="box" style="max-width:620px">
-    <h2>?뵎 沅뚰븳遺??/h2>
+    <h2>권한부여</h2>
     <div id="permTargetName" style="color:var(--muted);margin-bottom:16px;font-size:14px"></div>
     <div id="permGrid"></div>
     <div style="margin-top:8px;padding:10px;background:#f8fafc;border-radius:8px;font-size:12px;color:var(--muted)">
       ??泥댄겕??湲곕뒫留??대떦 怨꾩젙?먯꽌 ??硫붾돱媛 蹂댁엯?덈떎. 寃곗젣 ?뚮옖???곕씪 李⑤벑 遺?ы븯?몄슂.
-    </div>
+      ※ 체크된 기능만 해당 계정에서 탭/메뉴가 보입니다. 결제 플랜에 따라 차등 부여하세요.
     <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
-      <button class="btn" onclick="closePerm()">痍⑥냼</button>
-      <button class="btn primary" onclick="savePerm()">???/button>
+      <button class="btn" onclick="closePerm()">취소</button>
+      <button class="btn primary" onclick="savePerm()">저장</button>
     </div>
   </div>
 </div>
@@ -186,9 +186,9 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <!-- ?곸꽭蹂닿린 紐⑤떖 -->
 <div class="modal" id="detailModal">
   <div class="box">
-    <h2>怨꾩젙 ?곸꽭蹂닿린</h2>
+    <h2>계정 상세보기</h2>
     <pre id="detailText" style="white-space:pre-wrap;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px;max-height:60vh;overflow:auto"></pre>
-    <div style="margin-top:14px;text-align:right"><button class="btn primary" onclick="closeDetail()">?リ린</button></div>
+    <div style="margin-top:14px;text-align:right"><button class="btn primary" onclick="closeDetail()">닫기</button></div>
   </div>
 </div>
 
@@ -292,41 +292,41 @@ function filteredUsers(){ return _users.filter(u=>filter==='all'||u.role===filte
 function permBadges(u){
   const p = u.permissions||{};
   const active = Object.keys(p).filter(k=>p[k]);
-  if(!active.length) return '<span style="color:var(--muted);font-size:11px">?놁쓬</span>';
-  // 移댄뀒怨좊━蹂?洹몃９??  const groups={hq:0,fr:0,sup:0};
+  if(!active.length) return '<span style="color:var(--muted);font-size:11px">없음</span>';
+  const groups={hq:0,fr:0,sup:0};
   active.forEach(k=>{ if(k.startsWith('hq_'))groups.hq++; else if(k.startsWith('fr_'))groups.fr++; else if(k.startsWith('sup_'))groups.sup++; });
   let badges='';
-  if(groups.hq) badges+=`<span class="pill role-hq" style="font-size:10px;margin:1px">蹂몄궗 ${groups.hq}媛?/span>`;
-  if(groups.fr) badges+=`<span class="pill role-franchise" style="font-size:10px;margin:1px">媛留뱀젏 ${groups.fr}媛?/span>`;
-  if(groups.sup) badges+=`<span class="pill role-supplier" style="font-size:10px;margin:1px">?⑺뭹?낆껜 ${groups.sup}媛?/span>`;
-  return badges||'<span style="color:var(--muted);font-size:11px">?놁쓬</span>';
+  if(groups.hq) badges+=`<span class="pill role-hq" style="font-size:10px;margin:1px">본사 ${groups.hq}개</span>`;
+  if(groups.fr) badges+=`<span class="pill role-franchise" style="font-size:10px;margin:1px">가맹점 ${groups.fr}개</span>`;
+  if(groups.sup) badges+=`<span class="pill role-supplier" style="font-size:10px;margin:1px">납품업체 ${groups.sup}개</span>`;
+  return badges||'<span style="color:var(--muted);font-size:11px">없음</span>';
 }
 
 function render(){
   renderFilters();
   const users=filteredUsers();
   document.getElementById('userBody').innerHTML=users.length===0
-    ?'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">怨꾩젙???놁뒿?덈떎.</td></tr>'
+    ?'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">계정이 없습니다.</td></tr>'
     :users.map(u=>`<tr>
       <td><span class="pill role-${esc(u.role)}">${esc(Auth.ROLE_LABELS[u.role]||u.role)}</span></td>
       <td><strong>${esc(u.businessName||u.name||'-')}</strong>
-        <div class="muted">${esc(u.name)} 쨌 ${esc(u.loginId)}</div>
+        <div class="muted">${esc(u.name)} · ${esc(u.loginId)}</div>
         ${u.okposId?`<div style="font-size:11px;color:#6366f1">OKPos: ${esc(u.okposId)}</div>`:''}
         <div class="muted">${esc(u.businessNumber||'')}</div></td>
       <td><span class="pill status-${esc(u.status)}">${esc(Auth.STATUS_LABELS[u.status]||u.status)}</span></td>
-      <td>${loginAvailable(u)?'<span class="login-ok">媛??/span>':'<span class="login-no">遺덇?</span>'}
-        ${u.mustChangePassword?'<div class="muted" style="font-size:10px">鍮꾨쾲蹂寃쏀븘??/div>':''}</td>
+      <td>${loginAvailable(u)?'<span class="login-ok">가능</span>':'<span class="login-no">불가</span>'}
+        ${u.mustChangePassword?'<div class="muted" style="font-size:10px">비번변경필요</div>':''}</td>
       <td>${permBadges(u)}
-        ${u.role!=='master'?`<br><button class="mini blue" style="margin-top:4px" onclick="openPerm('${esc(u.uid)}')">?뵎 沅뚰븳遺??/button>`:''}</td>
+        ${u.role!=='master'?`<br><button class="mini blue" style="margin-top:4px" onclick="openPerm('${esc(u.uid)}')">권한부여</button>`:''}</td>
       <td><div class="actions">
-        <button class="mini blue" onclick="openEditor('${esc(u.uid)}')">?섏젙</button>
-        <button class="mini green" onclick="doStatus('${esc(u.uid)}','active')">?쒖꽦??/button>
-        <button class="mini" onclick="doStatus('${esc(u.uid)}','inactive')">鍮꾪솢??/button>
-        <button class="mini yellow" onclick="doStatus('${esc(u.uid)}','suspended')">以묒?</button>
-        <button class="mini red" onclick="doStatus('${esc(u.uid)}','expired')">留뚮즺</button>
-        <button class="mini blue" onclick="doResetPw('${esc(u.uid)}')">鍮꾨쾲珥덇린??/button>
-        <button class="mini" onclick="showDetail('${esc(u.uid)}')">?곸꽭</button>
-        ${u.role!=='master'?`<button class="mini red" onclick="doDelete('${esc(u.uid)}')">??젣</button>`:''}
+        <button class="mini blue" onclick="openEditor('${esc(u.uid)}')">수정</button>
+        <button class="mini green" onclick="doStatus('${esc(u.uid)}','active')">활성</button>
+        <button class="mini" onclick="doStatus('${esc(u.uid)}','inactive')">비활성</button>
+        <button class="mini yellow" onclick="doStatus('${esc(u.uid)}','suspended')">중지</button>
+        <button class="mini red" onclick="doStatus('${esc(u.uid)}','expired')">만료</button>
+        <button class="mini blue" onclick="doResetPw('${esc(u.uid)}')">비번초기화</button>
+        <button class="mini" onclick="showDetail('${esc(u.uid)}')">상세</button>
+        ${u.role!=='master'?`<button class="mini red" onclick="doDelete('${esc(u.uid)}')">삭제</button>`:''}
       </div></td>
     </tr>`).join('');
 }
@@ -444,8 +444,8 @@ async function savePerm(){
 async function loadPartnersSection(){
   const partners=await Auth.loadPartners();
   const el=document.getElementById('partnerBody');
-  if(!partners.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">?깅줉??嫄곕옒泥??붿껌???놁뒿?덈떎.</div>'; return; }
-  el.innerHTML=`<table><thead><tr><th>?곹샇紐?/th><th>?ъ뾽?먮쾲??/th><th>?곕씫泥?/th><th>?곹깭</th><th>?깅줉??/th><th>愿由?/th></tr></thead><tbody>
+  if(!partners.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">등록된 거래처 요청이 없습니다.</div>'; return; }
+  el.innerHTML=`<table><thead><tr><th>상호명</th><th>사업자번호</th><th>연락처</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead><tbody>
     ${partners.map(p=>`<tr>
       <td><strong>${esc(p.name||'-')}</strong></td>
       <td>${esc(p.businessNumber||'-')}</td>
