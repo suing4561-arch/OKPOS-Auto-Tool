@@ -16,30 +16,41 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .slogo-mark{font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;letter-spacing:1px}
 .slogo-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
 .slabel{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;padding:20px 20px 8px}
-.ni{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:#c8c5bc;font-size:13px;font-weight:500;transition:background .15s,color .15s;text-decoration:none;border:none;background:none;width:100%;font-family:var(--sans)}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:#c8c5bc;font-size:13px;font-weight:500;transition:background .15s,color .15s;border:none;background:none;width:100%;font-family:var(--sans)}
 .ni:hover{background:rgba(255,255,255,.06);color:#fff}.ni.active{background:rgba(255,255,255,.1);color:#fff}
-.ni i{font-size:17px;opacity:.8}.nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px}
+.ni i{font-size:17px;opacity:.8}
 .sfooter{margin-top:auto;padding:16px 20px;border-top:.5px solid rgba(255,255,255,.08)}
 .main{flex:1;display:flex;flex-direction:column;min-width:0}
 .topbar{background:var(--surface);border-bottom:.5px solid var(--line);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.ptitle{font-size:16px;font-weight:700}.dbadge{font-size:12px;color:var(--muted);background:var(--surface2);padding:4px 10px;border-radius:999px}
+.ptitle{font-size:16px;font-weight:700}
+.dbadge{font-size:12px;color:var(--muted);background:var(--surface2);padding:4px 10px;border-radius:999px}
 .tbar-btn{width:34px;height:34px;border-radius:8px;background:var(--surface2);border:.5px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px}
 .content{padding:24px 28px;display:flex;flex-direction:column;gap:20px}
 .hqp{display:none}.hqp.active{display:block}
+
+/* KPI */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .kpi{background:var(--surface);border:.5px solid var(--line);border-radius:14px;padding:18px 16px}
 .kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
 .kpi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .kpi-trend{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px}
 .trend-up{background:var(--green-bg);color:var(--green)}.trend-down{background:var(--red-bg);color:var(--red)}.trend-flat{background:var(--surface2);color:var(--muted)}
-.kpi-val{font-family:var(--mono);font-size:24px;font-weight:700;line-height:1}.kpi-lbl{font-size:12px;color:var(--muted);margin-top:6px}
+.kpi-val{font-family:var(--mono);font-size:24px;font-weight:700;line-height:1}
+.kpi-lbl{font-size:12px;color:var(--muted);margin-top:6px}
 .two{display:grid;grid-template-columns:1fr 340px;gap:16px}
 .card{background:var(--surface);border:.5px solid var(--line);border-radius:14px;padding:18px 20px}
 .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .ct{font-size:14px;font-weight:700}
 .cw{position:relative;height:200px}
-/* reg */
-.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+
+/* ── 기준정보 탭 바 ── */
+.reg-tabs{display:flex;gap:0;border-bottom:.5px solid var(--line);margin-bottom:20px;background:var(--surface);border-radius:12px 12px 0 0;overflow:hidden}
+.reg-tab{padding:11px 20px;font-size:13px;font-weight:700;color:var(--muted);border:none;background:none;cursor:pointer;font-family:var(--sans);border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap}
+.reg-tab.active{color:var(--text);border-bottom-color:var(--text)}
+.reg-panel{display:none}.reg-panel.active{display:block}
+
+/* ── 등록 카드 ── */
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
 .rc{background:var(--surface);border:.5px solid var(--line);border-radius:14px;overflow:hidden}
 .rch{padding:14px 16px;border-bottom:.5px solid var(--line);display:flex;align-items:center;gap:10px}
 .rci{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
@@ -47,18 +58,47 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .rcb{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .fl{display:flex;flex-direction:column;gap:4px}
 .flb{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px}
-.fi{width:100%;padding:9px 11px;border-radius:9px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-family:var(--sans);color:var(--text);outline:none}
+.fi{width:100%;padding:9px 11px;border-radius:9px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-family:var(--sans);color:var(--text);outline:none;transition:border-color .15s}
 .fi:focus{border-color:var(--blue-mid);background:var(--surface)}
+.fi.code{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:2px;text-align:center}
 .fs{width:100%;padding:9px 11px;border-radius:9px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-family:var(--sans);color:var(--text);outline:none;appearance:none}
-.rb{width:100%;padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px}
-.rb.blue{background:var(--blue-mid);color:#fff}.rb.green{background:var(--green-mid);color:#fff}.rb.amber{background:var(--amber);color:#fff}.rb.purple{background:var(--purple);color:#fff}
-.lt{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
-.lt th{text-align:left;font-size:11px;font-weight:700;color:var(--dim);padding:6px 8px;border-bottom:.5px solid var(--line)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.rb{width:100%;padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px;transition:opacity .15s}
+.rb:active{opacity:.85}
+.rb.blue{background:var(--blue-mid);color:#fff}.rb.green{background:var(--green-mid);color:#fff}
+.rb.amber{background:var(--amber);color:#fff}.rb.purple{background:var(--purple);color:#fff}
+
+/* ── 코드 프리뷰 ── */
+.code-preview{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface2);border-radius:10px;margin-bottom:2px}
+.code-big{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text);letter-spacing:3px}
+.code-seg{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── 목록 테이블 ── */
+.lt{width:100%;border-collapse:collapse;font-size:13px}
+.lt th{text-align:left;font-size:11px;font-weight:700;color:var(--dim);padding:7px 8px;border-bottom:.5px solid var(--line)}
 .lt td{padding:8px;border-bottom:.5px solid var(--line);vertical-align:middle}
 .lt tr:last-child td{border-bottom:none}.lt tr:hover td{background:var(--surface2)}
+.code-chip{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--blue-mid);cursor:pointer;padding:2px 8px;border-radius:5px;border:.5px solid rgba(40,116,204,.3);background:var(--blue-bg);display:inline-block}
+.code-chip:hover{background:var(--blue-mid);color:#fff}
 .delbtn{padding:3px 8px;border-radius:6px;border:.5px solid rgba(192,57,43,.3);background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;cursor:pointer}
-.edbtn{padding:3px 8px;border-radius:6px;border:.5px solid var(--line);background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer}
 .empty{text-align:center;color:var(--dim);padding:16px;font-size:13px}
+
+/* ── 소요량 등록 ── */
+.recipe-card{background:var(--surface);border:.5px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.recipe-header{padding:13px 16px;border-bottom:.5px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.recipe-title{font-size:14px;font-weight:700}
+.recipe-body{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.ingredient-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:.5px solid var(--line);border-radius:9px;background:var(--surface)}
+.ing-name{flex:1;font-size:13px;font-weight:700}
+.ing-qty{font-family:var(--mono);font-size:13px;color:var(--blue-mid);font-weight:700;white-space:nowrap}
+.ing-del{padding:2px 7px;border-radius:5px;border:none;background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;cursor:pointer}
+.alert-card{background:var(--amber-bg);border:.5px solid rgba(184,92,0,.25);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.alert-card i{font-size:18px;color:var(--amber);flex-shrink:0;margin-top:1px}
+.alert-title{font-size:13px;font-weight:700;color:var(--amber)}
+.alert-desc{font-size:12px;color:var(--amber);margin-top:3px;line-height:1.5}
+
+/* 기존 */
 .oi{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--surface2);border:.5px solid var(--line);margin-bottom:6px}
 .oa{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
 .ai{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;border-left:3px solid transparent;margin-bottom:6px}
@@ -82,7 +122,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="slogo"><div class="slogo-mark">DAESANG HQ</div><div class="slogo-sub">본사 관리자 센터</div></div>
   <div class="slabel">메인</div>
   <button class="ni active" onclick="goto('dashboard')"><i class="ti ti-layout-dashboard"></i><span>대시보드</span></button>
-  <button class="ni" onclick="goto('orders')"><i class="ti ti-circles-relation"></i><span>주문 통합 관리</span><span class="nbadge">12</span></button>
+  <button class="ni" onclick="goto('orders')"><i class="ti ti-circles-relation"></i><span>주문 통합 관리</span></button>
   <button class="ni" onclick="goto('delivery')"><i class="ti ti-truck-delivery"></i><span>배송 관리</span></button>
   <div class="slabel">기준정보</div>
   <button class="ni" onclick="goto('register')"><i class="ti ti-database-plus"></i><span>기준정보 등록</span></button>
@@ -91,7 +131,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <button class="ni" onclick="goto('stats')"><i class="ti ti-chart-bar"></i><span>통계·분석</span></button>
   <button class="ni" onclick="goto('settle')"><i class="ti ti-coin"></i><span>정산 관리</span></button>
   <button class="ni" onclick="goto('notice')"><i class="ti ti-speakerphone"></i><span>공지·레시피</span></button>
-  <div class="sfooter"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">홍</div><div><div style="font-size:12px;font-weight:500;color:#fff">홍길동 이사</div><div style="font-size:11px;color:rgba(255,255,255,.4)">최고 관리자</div></div></div></div>
+  <div class="sfooter"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">홍</div><div><div style="font-size:12px;font-weight:500;color:#fff">홍길동 이사</div><div style="font-size:11px;color:rgba(255,255,255,.4)">최고 관리자</div></div></div></div>
 </aside>
 
 <div class="main">
@@ -100,7 +140,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div style="display:flex;gap:10px"><div class="tbar-btn" onclick="showToast('새로고침')"><i class="ti ti-refresh"></i></div><div class="tbar-btn"><i class="ti ti-bell"></i></div></div>
   </div>
 
-  <!-- 대시보드 -->
+  <!-- ── 대시보드 ── -->
   <div class="hqp active" id="hqp-dashboard"><div class="content">
     <div class="kpi-grid">
       <div class="kpi"><div class="kpi-top"><div class="kpi-icon" style="background:var(--blue-bg)"><i class="ti ti-receipt" style="color:var(--blue)"></i></div><span class="kpi-trend trend-up">▲ 11.2%</span></div><div class="kpi-val">4억 8,340만</div><div class="kpi-lbl">전체 가맹점 이번달 매출</div></div>
@@ -126,235 +166,490 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div></div>
 
-  <!-- 기준정보 등록 -->
-  <div class="hqp" id="hqp-register"><div class="content"><div class="rg">
+  <!-- ── 기준정보 등록 ── -->
+  <div class="hqp" id="hqp-register"><div class="content">
 
-    <!-- 거래처 -->
-    <div class="rc">
-      <div class="rch"><div class="rci" style="background:var(--blue-bg)"><i class="ti ti-building-factory" style="color:var(--blue)"></i></div><div><div class="rct">거래처 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">납품업체 정보</div></div></div>
-      <div class="rcb">
-        <div class="fl"><div class="flb">거래처명 *</div><input class="fi" id="pName" placeholder="(주)한국식품"></div>
-        <div class="fl"><div class="flb">사업자번호</div><input class="fi" id="pBiz" placeholder="000-00-00000"></div>
-        <div class="fl"><div class="flb">연락처</div><input class="fi" id="pPhone" placeholder="010-0000-0000"></div>
-        <div class="fl"><div class="flb">담당자명</div><input class="fi" id="pContact" placeholder="담당자 이름"></div>
-        <button class="rb blue" onclick="addPartner()"><i class="ti ti-plus"></i>거래처 등록</button>
-      </div>
-      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 거래처</div><div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>상호명</th><th>연락처</th><th></th></tr></thead><tbody id="partnerList"></tbody></table></div></div>
+    <!-- 탭 바 -->
+    <div class="reg-tabs">
+      <button class="reg-tab active" onclick="switchRegTab('code')">코드·거래처·브랜드</button>
+      <button class="reg-tab" onclick="switchRegTab('menu')">품목·가격 등록</button>
+      <button class="reg-tab" onclick="switchRegTab('recipe')">메뉴별 소요량 등록</button>
     </div>
 
-    <!-- 브랜드 -->
-    <div class="rc">
-      <div class="rch"><div class="rci" style="background:var(--purple-bg)"><i class="ti ti-award" style="color:var(--purple)"></i></div><div><div class="rct">브랜드 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">프랜차이즈 브랜드</div></div></div>
-      <div class="rcb">
-        <div class="fl"><div class="flb">브랜드명 *</div><input class="fi" id="bName" placeholder="브랜드 이름"></div>
-        <div class="fl"><div class="flb">대표자</div><input class="fi" id="bOwner" placeholder="대표자명"></div>
-        <div class="fl"><div class="flb">카테고리</div><input class="fi" id="bCategory" placeholder="치킨, 카페, 분식 등"></div>
-        <button class="rb purple" onclick="addBrand()"><i class="ti ti-plus"></i>브랜드 등록</button>
+    <!-- ┌ 탭1: 코드·거래처·브랜드 ┐ -->
+    <div class="reg-panel active" id="regp-code">
+      <div class="rg">
+
+        <!-- 거래처 등록 -->
+        <div class="rc">
+          <div class="rch"><div class="rci" style="background:var(--blue-bg)"><i class="ti ti-building-factory" style="color:var(--blue)"></i></div>
+            <div><div class="rct">거래처 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">코드 2자리 숫자</div></div>
+          </div>
+          <div class="rcb">
+            <div class="fl"><div class="flb">거래처 코드 * (2자리)</div>
+              <input class="fi code" id="pCode" placeholder="01" maxlength="2" oninput="this.value=this.value.replace(/\D/g,'');updateCodePreview()">
+            </div>
+            <div class="fl"><div class="flb">거래처명 *</div><input class="fi" id="pName" placeholder="(주)한국식품"></div>
+            <div class="fl"><div class="flb">사업자번호</div><input class="fi" id="pBiz" placeholder="000-00-00000"></div>
+            <div class="two-col">
+              <div class="fl"><div class="flb">연락처</div><input class="fi" id="pPhone" placeholder="010-0000-0000"></div>
+              <div class="fl"><div class="flb">담당자명</div><input class="fi" id="pContact" placeholder="김철수"></div>
+            </div>
+            <button class="rb blue" onclick="addPartner()"><i class="ti ti-plus"></i>거래처 등록</button>
+          </div>
+          <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 거래처</div>
+            <div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>코드</th><th>상호명</th><th>연락처</th><th></th></tr></thead><tbody id="partnerList"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- 브랜드 등록 -->
+        <div class="rc">
+          <div class="rch"><div class="rci" style="background:var(--purple-bg)"><i class="ti ti-award" style="color:var(--purple)"></i></div>
+            <div><div class="rct">브랜드 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">코드 2자리 숫자</div></div>
+          </div>
+          <div class="rcb">
+            <div class="fl"><div class="flb">브랜드 코드 * (2자리)</div>
+              <input class="fi code" id="bCode" placeholder="01" maxlength="2" oninput="this.value=this.value.replace(/\D/g,'');updateCodePreview()">
+            </div>
+            <div class="fl"><div class="flb">브랜드명 *</div><input class="fi" id="bName" placeholder="부막"></div>
+            <div class="fl"><div class="flb">대표자</div><input class="fi" id="bOwner" placeholder="대표자명"></div>
+            <div class="fl"><div class="flb">카테고리</div><input class="fi" id="bCategory" placeholder="치킨, 카페, 분식 등"></div>
+            <button class="rb purple" onclick="addBrand()"><i class="ti ti-plus"></i>브랜드 등록</button>
+          </div>
+          <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 브랜드</div>
+            <div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>코드</th><th>브랜드명</th><th>카테고리</th><th></th></tr></thead><tbody id="brandList"></tbody></table></div>
+          </div>
+        </div>
+
       </div>
-      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 브랜드</div><div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>브랜드명</th><th>카테고리</th><th></th></tr></thead><tbody id="brandList"></tbody></table></div></div>
     </div>
 
-    <!-- 메뉴 -->
-    <div class="rc">
-      <div class="rch"><div class="rci" style="background:var(--green-bg)"><i class="ti ti-tools-kitchen-2" style="color:var(--green)"></i></div><div><div class="rct">메뉴·품목 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">상품·재료 품목</div></div></div>
-      <div class="rcb">
-        <div class="fl"><div class="flb">품목명 *</div><input class="fi" id="mName" placeholder="닭가슴살 1kg"></div>
-        <div class="fl"><div class="flb">카테고리</div><select class="fs" id="mCat"><option value="">선택</option><option>육류</option><option>곡류</option><option>유지류</option><option>소스류</option><option>음료</option><option>포장재</option><option>기타</option></select></div>
-        <div class="fl"><div class="flb">규격/단위</div><input class="fi" id="mSpec" placeholder="냉장 1kg/팩"></div>
-        <div class="fl"><div class="flb">브랜드</div><select class="fs" id="mBrand"><option value="">브랜드 선택</option></select></div>
-        <button class="rb green" onclick="addMenu()"><i class="ti ti-plus"></i>품목 등록</button>
+    <!-- ┌ 탭2: 품목·가격 통합 등록 ┐ -->
+    <div class="reg-panel" id="regp-menu">
+      <div class="rg" style="grid-template-columns:1fr">
+        <div class="rc">
+          <div class="rch"><div class="rci" style="background:var(--green-bg)"><i class="ti ti-tools-kitchen-2" style="color:var(--green)"></i></div>
+            <div><div class="rct">품목 + 판매가격 통합 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">코드 6자리 = 거래처2 + 브랜드2 + 일련번호2</div></div>
+          </div>
+          <div class="rcb">
+
+            <!-- 코드 프리뷰 -->
+            <div class="code-preview">
+              <div>
+                <div class="code-big" id="codePreview">__  __  __</div>
+                <div class="code-seg">거래처코드 &nbsp;|&nbsp; 브랜드코드 &nbsp;|&nbsp; 일련번호</div>
+              </div>
+              <div style="margin-left:auto;font-size:12px;color:var(--muted);text-align:right">
+                6자리 자동 생성<br><span id="codePreviewFull" style="font-family:var(--mono);font-weight:700;color:var(--blue-mid)">-</span>
+              </div>
+            </div>
+
+            <div class="three-col">
+              <div class="fl"><div class="flb">거래처 *</div>
+                <select class="fs" id="mPartner" onchange="updateCodePreview()"><option value="">선택</option></select>
+              </div>
+              <div class="fl"><div class="flb">브랜드 *</div>
+                <select class="fs" id="mBrand" onchange="updateCodePreview()"><option value="">선택</option></select>
+              </div>
+              <div class="fl"><div class="flb">일련번호 (2자리)</div>
+                <input class="fi code" id="mSeq" placeholder="01" maxlength="2" oninput="this.value=this.value.replace(/\D/g,'');updateCodePreview()" value="01">
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="fl"><div class="flb">품목명 *</div><input class="fi" id="mName" placeholder="밀면 면발 500g"></div>
+              <div class="fl"><div class="flb">카테고리</div>
+                <select class="fs" id="mCat"><option value="">선택</option><option>육류</option><option>면류</option><option>곡류</option><option>유지류</option><option>소스류</option><option>채소류</option><option>음료</option><option>포장재</option><option>기타</option></select>
+              </div>
+            </div>
+            <div class="two-col">
+              <div class="fl"><div class="flb">규격/단위</div><input class="fi" id="mSpec" placeholder="냉장 500g/봉"></div>
+              <div class="fl"><div class="flb">단위명 *</div><input class="fi" id="mUnit" placeholder="봉, kg, 개, 박스"></div>
+            </div>
+            <div class="three-col">
+              <div class="fl"><div class="flb">공급단가 (원) *</div><input class="fi" id="mPrice" type="number" placeholder="0" min="0"></div>
+              <div class="fl"><div class="flb">최소주문수량</div><input class="fi" id="mMinQty" type="number" placeholder="1" min="1"></div>
+              <div class="fl"><div class="flb">최대주문수량</div><input class="fi" id="mMaxQty" type="number" placeholder="999" min="1"></div>
+            </div>
+
+            <button class="rb green" id="menuSaveBtn" onclick="saveMenu()"><i class="ti ti-plus"></i>품목·가격 등록</button>
+          </div>
+
+          <!-- 등록 목록 -->
+          <div style="padding:0 16px 16px">
+            <div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:8px;display:flex;align-items:center;gap:8px">
+              등록된 품목
+              <span id="menuCount" style="background:var(--blue-bg);color:var(--blue);font-size:10px;padding:1px 7px;border-radius:999px;font-weight:700">0</span>
+            </div>
+            <div style="overflow:auto;max-height:300px">
+              <table class="lt">
+                <thead><tr><th>코드</th><th>품목명</th><th>카테고리</th><th>거래처</th><th>단가</th><th>단위</th><th></th></tr></thead>
+                <tbody id="menuList"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 품목</div><div style="overflow:auto;max-height:220px"><table class="lt"><thead><tr><th>코드</th><th>품목명</th><th>카테고리</th><th>규격</th><th></th></tr></thead><tbody id="menuList"></tbody></table></div></div>
     </div>
 
-    <!-- 판매가격 -->
-    <div class="rc">
-      <div class="rch"><div class="rci" style="background:var(--amber-bg)"><i class="ti ti-tag" style="color:var(--amber)"></i></div><div><div class="rct">판매가격 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">품목별 공급 단가</div></div></div>
-      <div class="rcb">
-        <div class="fl"><div class="flb">품목 *</div><select class="fs" id="prMenu"><option value="">품목 선택</option></select></div>
-        <div class="fl"><div class="flb">거래처</div><select class="fs" id="prPartner"><option value="">거래처 선택</option></select></div>
-        <div class="fl"><div class="flb">공급단가 (원) *</div><input class="fi" id="prPrice" type="number" placeholder="0" min="0"></div>
-        <div class="fl"><div class="flb">단위</div><input class="fi" id="prUnit" placeholder="kg, 포대, 통 등"></div>
-        <div class="fl"><div class="flb">최소주문수량</div><input class="fi" id="prMinQty" type="number" placeholder="1" min="1"></div>
-        <button class="rb amber" onclick="addPrice()"><i class="ti ti-plus"></i>판매가격 등록</button>
+    <!-- ┌ 탭3: 메뉴별 소요량 등록 ┐ -->
+    <div class="reg-panel" id="regp-recipe">
+
+      <!-- 알림 카드 -->
+      <div class="alert-card" style="margin-bottom:16px">
+        <i class="ti ti-info-circle"></i>
+        <div>
+          <div class="alert-title">메뉴별 소요량이란?</div>
+          <div class="alert-desc">
+            판매 메뉴 1인분에 들어가는 재료와 소요량을 미리 등록합니다.<br>
+            OKPos 판매 데이터를 가져오면 <strong>재고 소진량을 자동 계산</strong>하여<br>
+            가맹점에 <strong>"밀가루 재고 90% 소진 — 발주를 권고합니다"</strong> 메시지를 보냅니다.
+          </div>
+        </div>
       </div>
-      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 가격</div><div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>품목</th><th>거래처</th><th>단가</th><th>단위</th><th></th></tr></thead><tbody id="priceList"></tbody></table></div></div>
+
+      <div class="rg">
+        <!-- 소요량 등록 폼 -->
+        <div class="rc">
+          <div class="rch"><div class="rci" style="background:var(--amber-bg)"><i class="ti ti-clipboard-list" style="color:var(--amber)"></i></div>
+            <div><div class="rct">소요량 등록</div><div style="font-size:11px;color:var(--muted);margin-top:2px">OKPos 메뉴명과 동일하게 입력</div></div>
+          </div>
+          <div class="rcb">
+            <div class="fl"><div class="flb">판매 메뉴명 * (OKPos 메뉴명과 동일)</div>
+              <input class="fi" id="recipeMenu" placeholder="예) 밀면, 비빔밀면, 물냉면">
+            </div>
+
+            <!-- 재료 추가 -->
+            <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:12px;font-weight:700;color:var(--muted)">재료 추가</div>
+              <div style="display:flex;gap:6px">
+                <select class="fs" id="ingItem" style="flex:2"><option value="">품목 선택</option></select>
+                <input class="fi" id="ingQty" type="number" placeholder="수량" min="0" step="any" style="width:80px">
+                <input class="fi" id="ingUnit" placeholder="단위" style="width:70px">
+                <button onclick="addIngredient()" style="padding:0 12px;border-radius:9px;border:none;background:var(--amber);color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">추가</button>
+              </div>
+              <div id="ingredientList" style="display:flex;flex-direction:column;gap:5px"></div>
+            </div>
+
+            <div class="fl"><div class="flb">발주 권고 임계값 (%)</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <input class="fi" id="recipeThreshold" type="number" value="90" min="1" max="100" style="width:100px">
+                <span style="font-size:13px;color:var(--muted)">% 소진 시 발주 권고 알림</span>
+              </div>
+            </div>
+
+            <button class="rb amber" onclick="saveRecipe()"><i class="ti ti-device-floppy"></i>소요량 저장</button>
+          </div>
+        </div>
+
+        <!-- 등록된 소요량 목록 -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;font-weight:700;color:var(--text)">등록된 소요량</div>
+          <div id="recipeList">
+            <div style="text-align:center;padding:30px;color:var(--dim);font-size:13px">등록된 소요량이 없습니다</div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-  </div></div></div>
+  </div></div>
 
-  <!-- 거래처 관리 -->
-  <div class="hqp" id="hqp-partners"><div class="content"><div class="card"><div class="ch"><span class="ct">거래처 목록</span></div><div id="partnersFull"><div style="text-align:center;padding:40px;color:var(--dim)">불러오는 중...</div></div></div></div></div>
+  <!-- ── 거래처 관리 ── -->
+  <div class="hqp" id="hqp-partners"><div class="content">
+    <div class="card"><div class="ch"><span class="ct">거래처 목록</span></div>
+      <div id="partnersFull"><div style="text-align:center;padding:40px;color:var(--dim)">불러오는 중...</div></div>
+    </div>
+  </div></div>
 
-  <!-- 배송 관리 -->
-  <div class="hqp" id="hqp-delivery"><div class="content"><div class="card"><div class="ch"><span class="ct">배송 현황</span></div><div id="deliveryBody"><div style="text-align:center;padding:40px;color:var(--dim)">불러오는 중...</div></div></div></div></div>
+  <!-- ── 배송 관리 ── -->
+  <div class="hqp" id="hqp-delivery"><div class="content">
+    <div class="card"><div class="ch"><span class="ct">배송 현황</span></div>
+      <div id="deliveryBody"><div style="text-align:center;padding:40px;color:var(--dim)">불러오는 중...</div></div>
+    </div>
+  </div></div>
 
   <!-- 기타 -->
-  <div class="hqp" id="hqp-orders"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-circles-relation" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">주문 통합 관리</div><div style="font-size:14px;margin-top:6px">다음 업데이트에 추가 예정</div></div></div></div>
-  <div class="hqp" id="hqp-stats"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-chart-bar" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">통계·분석</div><div style="font-size:14px;margin-top:6px">다음 업데이트에 추가 예정</div></div></div></div>
-  <div class="hqp" id="hqp-settle"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-coin" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">정산 관리</div><div style="font-size:14px;margin-top:6px">다음 업데이트에 추가 예정</div></div></div></div>
-  <div class="hqp" id="hqp-notice"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-speakerphone" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">공지·레시피</div><div style="font-size:14px;margin-top:6px">다음 업데이트에 추가 예정</div></div></div></div>
+  <div class="hqp" id="hqp-orders"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-circles-relation" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">주문 통합 관리</div><div style="margin-top:6px">다음 업데이트 예정</div></div></div></div>
+  <div class="hqp" id="hqp-stats"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-chart-bar" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">통계·분석</div><div style="margin-top:6px">다음 업데이트 예정</div></div></div></div>
+  <div class="hqp" id="hqp-settle"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-coin" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">정산 관리</div><div style="margin-top:6px">다음 업데이트 예정</div></div></div></div>
+  <div class="hqp" id="hqp-notice"><div class="content"><div style="padding:60px;text-align:center;color:var(--dim)"><i class="ti ti-speakerphone" style="font-size:48px;opacity:.4;display:block;margin-bottom:12px"></i><div style="font-size:18px;font-weight:700;color:var(--muted)">공지·레시피</div><div style="margin-top:6px">다음 업데이트 예정</div></div></div></div>
 </div>
 
 <div id="toast"></div>
 <script src="auth.js"></script>
 <script>
-const Auth=window.SmartBaljuAuth;
-const PAGES={dashboard:'대시보드',register:'기준정보 등록',partners:'거래처 관리',orders:'주문 통합 관리',delivery:'배송 관리',stats:'통계·분석',settle:'정산 관리',notice:'공지·레시피'};
+const Auth = window.SmartBaljuAuth;
+const PAGES = {dashboard:'대시보드',register:'기준정보 등록',partners:'거래처 관리',orders:'주문 통합 관리',delivery:'배송 관리',stats:'통계·분석',settle:'정산 관리',notice:'공지·레시피'};
 
 function goto(p){
-  Object.keys(PAGES).forEach(k=>{const el=document.getElementById('hqp-'+k);if(el)el.classList.toggle('active',k===p);});
+  Object.keys(PAGES).forEach(k=>{ const el=document.getElementById('hqp-'+k); if(el) el.classList.toggle('active',k===p); });
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('ptitle').textContent=PAGES[p]||p;
-  if(p==='dashboard')initCharts();
-  if(p==='register')loadReg();
-  if(p==='partners')loadPartnersFull();
-  if(p==='delivery')loadDelivery();
+  if(p==='dashboard') initCharts();
+  if(p==='register') loadReg();
+  if(p==='partners') loadPartnersFull();
+  if(p==='delivery') loadDelivery();
+}
+
+function switchRegTab(tab) {
+  ['code','menu','recipe'].forEach(t=>{
+    document.getElementById('regp-'+t).classList.toggle('active',t===tab);
+  });
+  document.querySelectorAll('.reg-tab').forEach((b,i)=>b.classList.toggle('active',['code','menu','recipe'][i]===tab));
+  if(tab==='menu') refreshMenuSelects();
+  if(tab==='recipe') { refreshIngSelect(); loadRecipes(); }
 }
 
 let _tt;
-function showToast(m){const el=document.getElementById('toast');el.textContent=m;el.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(0);background:#1a1916;color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:1;z-index:200;white-space:nowrap';clearTimeout(_tt);_tt=setTimeout(()=>{el.style.opacity='0';},2200);}
+function showToast(m){ const el=document.getElementById('toast'); el.textContent=m; el.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(0);background:#1a1916;color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:1;z-index:200;white-space:nowrap'; clearTimeout(_tt); _tt=setTimeout(()=>{ el.style.opacity='0'; },2200); }
 
-(function(){const d=new Date(),days=['일','월','화','수','목','금','토'];document.getElementById('ddate').textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' ('+days[d.getDay()]+')';}());
+(function(){ const d=new Date(),days=['일','월','화','수','목','금','토']; document.getElementById('ddate').textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' ('+days[d.getDay()]+')'; }());
 
+// ── 코드 프리뷰 ──────────────────────────────────────────
+function updateCodePreview() {
+  // 탭1: 거래처/브랜드 미리보기 (입력 중)
+  const pc = (document.getElementById('pCode')?.value||'__').padStart(2,'_');
+  const bc = (document.getElementById('bCode')?.value||'__').padStart(2,'_');
+  // 탭2: 품목코드 프리뷰
+  const sel = document.getElementById('mPartner');
+  const bsel = document.getElementById('mBrand');
+  const seq = (document.getElementById('mSeq')?.value||'01').padStart(2,'0');
+  const pOpt = sel?.options[sel.selectedIndex];
+  const bOpt = bsel?.options[bsel.selectedIndex];
+  const pCode = pOpt?.dataset?.code || '__';
+  const bCode = bOpt?.dataset?.code || '__';
+  const full = (pCode!=='__'&&bCode!=='__') ? pCode+bCode+seq : '';
+  const prev = document.getElementById('codePreview');
+  const prevFull = document.getElementById('codePreviewFull');
+  if(prev) { prev.textContent = pCode+'  '+bCode+'  '+seq; }
+  if(prevFull) { prevFull.textContent = full || '-'; }
+}
+
+// ── 대시보드 차트 ─────────────────────────────────────────
 let chartsOk=false;
 function initCharts(){
   if(chartsOk)return;chartsOk=true;
   const ctx=document.getElementById('salesChart').getContext('2d');
   new Chart(ctx,{type:'bar',data:{labels:['12월','1월','2월','3월','4월','5월'],datasets:[{label:'실매출(만원)',data:[38200,41500,36800,44200,43100,48340],backgroundColor:'rgba(26,95,168,.15)',borderColor:'#1a5fa8',borderWidth:1.5,borderRadius:6,order:2},{label:'목표',data:[40000,42000,40000,45000,45000,50000],type:'line',borderColor:'#b85c00',borderWidth:1.5,pointRadius:3,fill:false,order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12,padding:12}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11},callback:v=>(v/10000).toFixed(0)+'억'}}}}});
-  const orders=[{store:'부산 1호점',item:'닭가슴살 외 3종',amt:'128,000',t:'09:12',c:'#1a5fa8',i:'부1'},{store:'서울 강남점',item:'쌀 20kg · 소스류',amt:'94,000',t:'08:47',c:'#2d9e65',i:'강'},{store:'경남 창원점',item:'식용유 18L 외',amt:'76,500',t:'08:31',c:'#b85c00',i:'창'}];
+  const orders=[{store:'부산 1호점',item:'닭가슴살 외 3종',amt:'128,000',t:'09:12',c:'#1a5fa8',i:'부1'},{store:'서울 강남점',item:'쌀 20kg · 소스류',amt:'94,000',t:'08:47',c:'#2d9e65',i:'강'}];
   document.getElementById('orderList').innerHTML=orders.map(o=>`<div class="oi"><div class="oa" style="background:${o.c}22;color:${o.c}">${o.i}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">${o.store}</div><div style="font-size:11px;color:var(--muted)">${o.item}</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:13px;font-weight:700">${o.amt}원</div><div style="font-size:11px;color:var(--dim)">${o.t}</div></div></div>`).join('');
-  const st=[{r:1,n:'서울 강남점',s:'6,240만',a:'-'},{r:2,n:'부산 해운대점',s:'5,980만',a:'-'},{r:3,n:'부산 1호점',s:'4,834만',a:'320만'},{r:4,n:'경남 창원점',s:'3,210만',a:'480만'}];
+  const st=[{r:1,n:'서울 강남점',s:'6,240만',a:'-'},{r:2,n:'부산 해운대점',s:'5,980만',a:'-'},{r:3,n:'부산 1호점',s:'4,834만',a:'320만'}];
   document.getElementById('storeTable').innerHTML=st.map(s=>`<tr><td><div class="rb-badge ${s.r<=2?'top':''}">${s.r}</div></td><td>${s.n}</td><td><span class="sp">정상</span></td><td style="font-family:var(--mono);text-align:right">${s.s}</td><td style="font-family:var(--mono);text-align:right;color:${s.a!=='-'?'var(--red)':'var(--dim)'}">${s.a}</td></tr>`).join('');
   document.getElementById('alertList').innerHTML=`<div class="ai danger"><i class="ti ti-alert-circle"></i><div><div style="font-size:12px;font-weight:700">창원점 미수금 480만 — 기한 초과</div><div style="font-size:11px;color:var(--muted)">결제 기한 3일 초과</div></div></div><div class="ai warn"><i class="ti ti-clock"></i><div><div style="font-size:12px;font-weight:700">오늘 18:00 발주 마감</div><div style="font-size:11px;color:var(--muted)">미발주 가맹점 5개점</div></div></div>`;
 }
 
-// ── 기준정보 등록 ──────────────────────────────────────────
-async function loadReg(){ await Promise.all([rPartner(),rBrand(),rMenu(),rPrice()]); await refreshSel(); }
+// ── 기준정보 로드 ─────────────────────────────────────────
+async function loadReg(){ await Promise.all([rPartner(), rBrand()]); }
 
+// ── 거래처 ───────────────────────────────────────────────
 async function addPartner(){
-  if(!pName.value.trim()){showToast('거래처명을 입력하세요');return;}
-  await Auth.registerPartner({name:pName.value,businessNumber:pBiz.value,phone:pPhone.value,contactPerson:pContact.value,status:'active'});
-  pName.value=pBiz.value=pPhone.value=pContact.value='';
-  await rPartner();await refreshSel();showToast('거래처 등록 완료');
+  const code = pCode.value.trim().padStart(2,'0');
+  if(!code||code==='00'||!pName.value.trim()){ showToast('코드(2자리)와 거래처명을 입력하세요'); return; }
+  // 중복 코드 체크
+  const list = await Auth.loadPartners();
+  if(list.find(p=>p.code===code)){ showToast('코드 '+code+' 는 이미 사용 중입니다'); return; }
+  await Auth.registerPartner({code,name:pName.value,businessNumber:pBiz.value,phone:pPhone.value,contactPerson:pContact.value,status:'active'});
+  pCode.value=pName.value=pBiz.value=pPhone.value=pContact.value='';
+  await rPartner(); await refreshMenuSelects(); showToast('거래처 등록 완료 (코드: '+code+')');
 }
 async function rPartner(){
   const list=await Auth.loadPartners();
-  document.getElementById('partnerList').innerHTML=list.length?list.map(p=>`<tr><td><strong>${p.name||'-'}</strong></td><td>${p.phone||'-'}</td><td><button class="delbtn" onclick="delP('${p.id}')">삭제</button></td></tr>`).join(''):`<tr><td colspan="3" class="empty">등록된 거래처 없음</td></tr>`;
+  document.getElementById('partnerList').innerHTML=list.length
+    ?list.map(p=>`<tr><td><span class="code-chip">${p.code||'-'}</span></td><td><strong>${p.name}</strong></td><td>${p.phone||'-'}</td><td><button class="delbtn" onclick="delP('${p.id}')">삭제</button></td></tr>`).join('')
+    :`<tr><td colspan="4" class="empty">등록된 거래처 없음</td></tr>`;
 }
-async function delP(id){await Auth.deletePartner(id);await rPartner();await refreshSel();showToast('삭제');}
+async function delP(id){ if(!confirm('삭제할까요?')) return; await Auth.deletePartner(id); await rPartner(); await refreshMenuSelects(); showToast('삭제'); }
 
+// ── 브랜드 ───────────────────────────────────────────────
 async function addBrand(){
-  if(!bName.value.trim()){showToast('브랜드명을 입력하세요');return;}
-  await Auth.registerBrand({name:bName.value,owner:bOwner.value,category:bCategory.value});
-  bName.value=bOwner.value=bCategory.value='';await rBrand();await refreshSel();showToast('브랜드 등록 완료');
+  const code = bCode.value.trim().padStart(2,'0');
+  if(!code||code==='00'||!bName.value.trim()){ showToast('코드(2자리)와 브랜드명을 입력하세요'); return; }
+  const list = await Auth.loadBrands();
+  if(list.find(b=>b.code===code)){ showToast('코드 '+code+' 는 이미 사용 중입니다'); return; }
+  await Auth.registerBrand({code,name:bName.value,owner:bOwner.value,category:bCategory.value});
+  bCode.value=bName.value=bOwner.value=bCategory.value='';
+  await rBrand(); await refreshMenuSelects(); showToast('브랜드 등록 완료 (코드: '+code+')');
 }
 async function rBrand(){
   const list=await Auth.loadBrands();
-  document.getElementById('brandList').innerHTML=list.length?list.map(b=>`<tr><td><strong>${b.name}</strong></td><td>${b.category||'-'}</td><td><button class="delbtn" onclick="delB('${b.id}')">삭제</button></td></tr>`).join(''):`<tr><td colspan="3" class="empty">등록된 브랜드 없음</td></tr>`;
+  document.getElementById('brandList').innerHTML=list.length
+    ?list.map(b=>`<tr><td><span class="code-chip">${b.code||'-'}</span></td><td><strong>${b.name}</strong></td><td>${b.category||'-'}</td><td><button class="delbtn" onclick="delB('${b.id}')">삭제</button></td></tr>`).join('')
+    :`<tr><td colspan="4" class="empty">등록된 브랜드 없음</td></tr>`;
 }
-async function delB(id){await Auth.DB.remove('brands/'+id);await rBrand();showToast('삭제');}
+async function delB(id){ if(!confirm('삭제할까요?')) return; await Auth.DB.remove('brands/'+id); await rBrand(); showToast('삭제'); }
 
-// 품목 코드 생성 (예: M001, M002 ...)
-async function genMenuCode(){
-  const list = await Auth.loadMenus();
-  const nums = list.map(m=>parseInt((m.code||'M000').replace(/\D/g,''))||0);
-  const next = (Math.max(0,...nums)+1);
-  return 'M'+String(next).padStart(3,'0');
+// ── 셀렉트 갱신 ──────────────────────────────────────────
+async function refreshMenuSelects(){
+  const [partners, brands] = await Promise.all([Auth.loadPartners(), Auth.loadBrands()]);
+  document.getElementById('mPartner').innerHTML='<option value="">거래처 선택</option>'+partners.map(p=>`<option value="${p.id}" data-code="${p.code||'00'}">[${p.code||'??'}] ${p.name}</option>`).join('');
+  document.getElementById('mBrand').innerHTML='<option value="">브랜드 선택</option>'+brands.map(b=>`<option value="${b.id}" data-code="${b.code||'00'}">[${b.code||'??'}] ${b.name}</option>`).join('');
+  updateCodePreview();
 }
 
+// ── 품목+가격 통합 등록 ───────────────────────────────────
 let _editMenuId = '';
-async function addMenu(){
-  if(!mName.value.trim()){showToast('품목명을 입력하세요');return;}
+
+async function saveMenu(){
+  const pSel = document.getElementById('mPartner');
+  const bSel = document.getElementById('mBrand');
+  const pOpt = pSel.options[pSel.selectedIndex];
+  const bOpt = bSel.options[bSel.selectedIndex];
+  if(!pSel.value||!bSel.value){ showToast('거래처와 브랜드를 선택하세요'); return; }
+  if(!mName.value.trim()){ showToast('품목명을 입력하세요'); return; }
+  if(!mPrice.value){ showToast('공급단가를 입력하세요'); return; }
+
+  const pCode = pOpt.dataset.code||'00';
+  const bCode = bOpt.dataset.code||'00';
+  const seq = (mSeq.value||'01').padStart(2,'0');
+  const code = pCode+bCode+seq;
+
   if(_editMenuId){
-    // 수정 모드
-    await Auth.updateMenu(_editMenuId,{name:mName.value,category:mCat.value,spec:mSpec.value,brandId:mBrand.value});
-    _editMenuId='';
-    document.querySelector('#hqp-register .rb.green').innerHTML='<i class="ti ti-plus"></i>품목 등록';
-    showToast('품목 수정 완료');
+    await Auth.updateMenu(_editMenuId,{name:mName.value,category:mCat.value,spec:mSpec.value,unit:mUnit.value,partnerId:pSel.value,partnerName:pOpt.text.split('] ')[1]||'',brandId:bSel.value,brandName:bOpt.text.split('] ')[1]||'',price:Number(mPrice.value),minQty:Number(mMinQty.value)||1,maxQty:Number(mMaxQty.value)||999,code});
+    _editMenuId=''; document.getElementById('menuSaveBtn').innerHTML='<i class="ti ti-plus"></i>품목·가격 등록';
+    showToast('수정 완료 ('+code+')');
   } else {
-    // 신규 등록
-    const code = await genMenuCode();
-    await Auth.registerMenu({code,name:mName.value,category:mCat.value,spec:mSpec.value,brandId:mBrand.value});
-    showToast('품목 등록 완료 ('+code+')');
+    const existing = await Auth.loadMenus();
+    if(existing.find(m=>m.code===code)){ showToast('코드 '+code+' 는 이미 사용 중입니다. 일련번호를 변경하세요'); return; }
+    await Auth.registerMenu({code,name:mName.value,category:mCat.value,spec:mSpec.value,unit:mUnit.value,partnerId:pSel.value,partnerName:pOpt.text.split('] ')[1]||'',brandId:bSel.value,brandName:bOpt.text.split('] ')[1]||'',price:Number(mPrice.value),minQty:Number(mMinQty.value)||1,maxQty:Number(mMaxQty.value)||999});
+    showToast('등록 완료 ('+code+')');
   }
-  mName.value=mSpec.value='';mCat.value='';mBrand.value='';
-  await rMenu();await refreshSel();
+  mName.value=mSpec.value=mUnit.value=mPrice.value=mMinQty.value=mMaxQty.value='';
+  mCat.value=''; mPartner.value=''; mBrand.value=''; mSeq.value='01';
+  updateCodePreview(); await rMenu();
 }
 
 async function rMenu(){
   const list=await Auth.loadMenus();
+  document.getElementById('menuCount').textContent=list.length;
   document.getElementById('menuList').innerHTML=list.length
-    ? list.map(m=>`<tr>
-        <td>
-          <span onclick="editMenu('${m.id}')" style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--blue-mid);cursor:pointer;padding:2px 7px;border-radius:5px;border:.5px solid rgba(40,116,204,.3);background:var(--blue-bg)" title="클릭하여 수정">${m.code||'-'}</span>
-        </td>
+    ?list.map(m=>`<tr>
+        <td><span class="code-chip" onclick="editMenu('${m.id}')" title="클릭하여 수정">${m.code||'-'}</span></td>
         <td><strong>${m.name}</strong></td>
         <td>${m.category||'-'}</td>
-        <td style="color:var(--muted)">${m.spec||'-'}</td>
+        <td>${m.partnerName||'-'}</td>
+        <td style="font-family:var(--mono)">${Number(m.price||0).toLocaleString()}원</td>
+        <td>${m.unit||'-'}</td>
         <td><button class="delbtn" onclick="delM('${m.id}')">삭제</button></td>
       </tr>`).join('')
-    : `<tr><td colspan="5" class="empty">등록된 품목 없음</td></tr>`;
+    :`<tr><td colspan="7" class="empty">등록된 품목 없음</td></tr>`;
 }
 
 async function editMenu(id){
-  const list = await Auth.loadMenus();
-  const m = list.find(x=>x.id===id);
-  if(!m) return;
-  _editMenuId = id;
-  mName.value=m.name||''; mCat.value=m.category||''; mSpec.value=m.spec||''; mBrand.value=m.brandId||'';
-  document.querySelector('#hqp-register .rb.green').innerHTML='<i class="ti ti-pencil"></i>품목 수정 저장';
-  // 품목 카드로 스크롤
-  document.getElementById('mName').focus();
-  showToast(m.code+' 수정 모드 — 내용 변경 후 저장하세요');
+  await switchRegTab('menu'); await refreshMenuSelects();
+  const list=await Auth.loadMenus(); const m=list.find(x=>x.id===id); if(!m)return;
+  _editMenuId=id;
+  mName.value=m.name||''; mCat.value=m.category||''; mSpec.value=m.spec||'';
+  mUnit.value=m.unit||''; mPrice.value=m.price||'';
+  mMinQty.value=m.minQty||1; mMaxQty.value=m.maxQty||999;
+  if(m.code){ mSeq.value=m.code.slice(4)||'01'; }
+  // 거래처/브랜드 선택
+  if(m.partnerId){ mPartner.value=m.partnerId; }
+  if(m.brandId){ mBrand.value=m.brandId; }
+  updateCodePreview();
+  document.getElementById('menuSaveBtn').innerHTML='<i class="ti ti-pencil"></i>품목·가격 수정 저장';
+  mName.focus(); showToast('['+m.code+'] '+m.name+' 수정 모드');
 }
 
-async function delM(id){
-  if(!confirm('삭제할까요?')) return;
-  await Auth.deleteMenu(id);await rMenu();await refreshSel();showToast('삭제');
+async function delM(id){ if(!confirm('삭제할까요?')) return; await Auth.deleteMenu(id); await rMenu(); await refreshIngSelect(); showToast('삭제'); }
+
+// ── 메뉴별 소요량 ─────────────────────────────────────────
+let _ingredients = []; // 현재 입력 중인 재료 목록
+
+async function refreshIngSelect(){
+  const menus = await Auth.loadMenus();
+  document.getElementById('ingItem').innerHTML='<option value="">품목 선택</option>'+menus.map(m=>`<option value="${m.id}" data-unit="${m.unit||''}" data-name="${m.name}">[${m.code||'?'}] ${m.name}</option>`).join('');
 }
 
-async function addPrice(){
-  if(!prMenu.value||!prPrice.value){showToast('품목과 단가를 입력하세요');return;}
-  const menus=await Auth.loadMenus(),partners=await Auth.loadPartners();
-  const menu=menus.find(m=>m.id===prMenu.value),partner=partners.find(p=>p.id===prPartner.value);
-  await Auth.registerPrice({menuId:prMenu.value,menuName:menu?.name||'',partnerId:prPartner.value,partnerName:partner?.name||'',price:Number(prPrice.value),unit:prUnit.value,minQty:Number(prMinQty.value)||1});
-  prPrice.value=prUnit.value=prMinQty.value='';prMenu.value='';prPartner.value='';await rPrice();showToast('판매가격 등록 완료');
-}
-async function rPrice(){
-  const list=await Auth.loadPrices();
-  document.getElementById('priceList').innerHTML=list.length?list.map(p=>`<tr><td><strong>${p.menuName||p.menuId}</strong></td><td>${p.partnerName||'-'}</td><td style="font-family:var(--mono)">${Number(p.price).toLocaleString()}원</td><td>${p.unit||'-'}</td><td><button class="delbtn" onclick="delPr('${p.id}')">삭제</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">등록된 가격 없음</td></tr>`;
-}
-async function delPr(id){await Auth.deletePrice(id);await rPrice();showToast('삭제');}
-
-async function refreshSel(){
-  const [brands,menus,partners]=await Promise.all([Auth.loadBrands(),Auth.loadMenus(),Auth.loadPartners()]);
-  document.getElementById('mBrand').innerHTML='<option value="">브랜드 선택</option>'+brands.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
-  document.getElementById('prMenu').innerHTML='<option value="">품목 선택</option>'+menus.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
-  document.getElementById('prPartner').innerHTML='<option value="">거래처 선택</option>'+partners.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+function addIngredient(){
+  const sel = document.getElementById('ingItem');
+  const opt = sel.options[sel.selectedIndex];
+  const qty = parseFloat(document.getElementById('ingQty').value);
+  const unit = document.getElementById('ingUnit').value.trim() || opt?.dataset?.unit || '';
+  if(!sel.value){ showToast('품목을 선택하세요'); return; }
+  if(!qty||qty<=0){ showToast('소요량을 입력하세요'); return; }
+  const exist = _ingredients.find(x=>x.menuId===sel.value);
+  if(exist){ exist.qty=qty; exist.unit=unit; }
+  else { _ingredients.push({ menuId:sel.value, name:opt.dataset.name||opt.text, qty, unit }); }
+  sel.value=''; document.getElementById('ingQty').value=''; document.getElementById('ingUnit').value='';
+  renderIngredients();
 }
 
-// ── 거래처 관리 페이지 ─────────────────────────────────────
+function renderIngredients(){
+  document.getElementById('ingredientList').innerHTML = _ingredients.length
+    ? _ingredients.map((ing,i)=>`<div class="ingredient-row">
+        <span class="ing-name">${ing.name}</span>
+        <span class="ing-qty">${ing.qty}${ing.unit}</span>
+        <button class="ing-del" onclick="_ingredients.splice(${i},1);renderIngredients()">✕</button>
+      </div>`).join('')
+    : '<div style="text-align:center;padding:10px;color:var(--dim);font-size:12px">재료를 추가하세요</div>';
+}
+
+async function saveRecipe(){
+  const menuName = document.getElementById('recipeMenu').value.trim();
+  if(!menuName){ showToast('판매 메뉴명을 입력하세요'); return; }
+  if(!_ingredients.length){ showToast('재료를 최소 1개 추가하세요'); return; }
+  const threshold = Number(document.getElementById('recipeThreshold').value)||90;
+  const id = 'recipe_'+Date.now();
+  await Auth.DB.set('recipes/'+id, {
+    id, menuName, ingredients: _ingredients, threshold, createdAt: new Date().toISOString()
+  });
+  document.getElementById('recipeMenu').value='';
+  document.getElementById('recipeThreshold').value='90';
+  _ingredients=[]; renderIngredients();
+  await loadRecipes(); showToast('['+menuName+'] 소요량 저장 완료');
+}
+
+async function loadRecipes(){
+  const data = await Auth.DB.get('recipes') || {};
+  const list = Object.values(data);
+  const el = document.getElementById('recipeList');
+  if(!list.length){ el.innerHTML='<div style="text-align:center;padding:30px;color:var(--dim);font-size:13px">등록된 소요량이 없습니다</div>'; return; }
+  el.innerHTML = list.map(r=>`
+    <div class="recipe-card">
+      <div class="recipe-header">
+        <div>
+          <div class="recipe-title">🍽 ${r.menuName} <span style="font-size:12px;font-weight:400;color:var(--muted)">1인분 소요량</span></div>
+          <div style="font-size:11px;color:var(--dim);margin-top:2px">재고 ${r.threshold||90}% 소진 시 발주 권고</div>
+        </div>
+        <button class="delbtn" onclick="delRecipe('${r.id}')">삭제</button>
+      </div>
+      <div class="recipe-body">
+        ${(r.ingredients||[]).map(ing=>`<div class="ingredient-row"><span class="ing-name">${ing.name}</span><span class="ing-qty">${ing.qty}${ing.unit}</span></div>`).join('')}
+        <div style="margin-top:4px;padding:8px 10px;background:var(--amber-bg);border-radius:8px;font-size:12px;color:var(--amber)">
+          ⚡ OKPos 판매량 × 소요량 → 재고 ${r.threshold||90}% 소진 시 가맹점에 자동 발주 권고 알림
+        </div>
+      </div>
+    </div>`).join('');
+}
+async function delRecipe(id){ if(!confirm('삭제할까요?')) return; await Auth.DB.remove('recipes/'+id); await loadRecipes(); showToast('삭제'); }
+
+// ── 거래처 관리 페이지 ────────────────────────────────────
 async function loadPartnersFull(){
   const list=await Auth.loadPartners();
   const el=document.getElementById('partnersFull');
-  if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px;color:var(--dim)">등록된 거래처가 없습니다.</div>';return;}
-  el.innerHTML=`<table class="lt"><thead><tr><th>상호명</th><th>사업자번호</th><th>담당자</th><th>연락처</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead><tbody>${list.map(p=>`<tr><td><strong>${p.name||'-'}</strong></td><td>${p.businessNumber||'-'}</td><td>${p.contactPerson||'-'}</td><td>${p.phone||'-'}</td><td><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:${p.status==='active'?'var(--green-bg)':'var(--surface2)'};color:${p.status==='active'?'var(--green)':'var(--muted)'}">${p.status==='active'?'활성':'비활성'}</span></td><td style="color:var(--dim);font-size:12px">${(p.createdAt||'').slice(0,10)}</td><td><button class="edbtn" onclick="togglePStatus('${p.id}','${p.status}')">${p.status==='active'?'비활성화':'활성화'}</button> <button class="delbtn" onclick="delPFull('${p.id}')">삭제</button></td></tr>`).join('')}</tbody></table>`;
+  if(!list.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--dim)">등록된 거래처가 없습니다.</div>'; return; }
+  el.innerHTML=`<table class="lt"><thead><tr><th>코드</th><th>상호명</th><th>사업자번호</th><th>담당자</th><th>연락처</th><th>상태</th><th>관리</th></tr></thead><tbody>${list.map(p=>`<tr>
+    <td><span class="code-chip">${p.code||'-'}</span></td>
+    <td><strong>${p.name||'-'}</strong></td><td>${p.businessNumber||'-'}</td>
+    <td>${p.contactPerson||'-'}</td><td>${p.phone||'-'}</td>
+    <td><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:${p.status==='active'?'var(--green-bg)':'var(--surface2)'};color:${p.status==='active'?'var(--green)':'var(--muted)'}">${p.status==='active'?'활성':'비활성'}</span></td>
+    <td><button class="delbtn" onclick="delPFull('${p.id}')">삭제</button></td>
+  </tr>`).join('')}</tbody></table>`;
 }
-async function togglePStatus(id,cur){await Auth.updatePartner(id,{status:cur==='active'?'inactive':'active'});await loadPartnersFull();showToast('상태 변경');}
-async function delPFull(id){if(!confirm('삭제할까요?'))return;await Auth.deletePartner(id);await loadPartnersFull();showToast('삭제 완료');}
+async function delPFull(id){ if(!confirm('삭제할까요?')) return; await Auth.deletePartner(id); await loadPartnersFull(); showToast('삭제'); }
 
-// ── 배송 관리 ──────────────────────────────────────────────
+// ── 배송 관리 ─────────────────────────────────────────────
 async function loadDelivery(){
   const list=await Auth.loadDeliveries();
   const el=document.getElementById('deliveryBody');
-  if(!list.length){el.innerHTML='<div style="text-align:center;padding:40px;color:var(--dim)">등록된 배송 없음</div>';return;}
+  if(!list.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--dim)">등록된 배송 없음</div>'; return; }
   const ST={assigned:{l:'배정됨',c:'var(--muted)',bg:'var(--surface2)'},shipping:{l:'배송중',c:'var(--blue)',bg:'var(--blue-bg)'},done:{l:'완료',c:'var(--green)',bg:'var(--green-bg)'},issue:{l:'이슈',c:'var(--red)',bg:'var(--red-bg)'}};
   el.innerHTML=`<table class="lt"><thead><tr><th>배송처</th><th>기사</th><th>품목</th><th>금액</th><th>상태</th><th>시작</th><th>완료</th></tr></thead><tbody>${list.map(d=>{const s=ST[d.status]||ST.assigned;return`<tr><td><strong>${d.storeName||'-'}</strong><div style="font-size:11px;color:var(--muted)">${d.address||''}</div></td><td>${d.driverName||'미배정'}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--muted)">${d.items||'-'}</td><td style="font-family:var(--mono)">${(d.amount||0).toLocaleString()}원</td><td><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:${s.bg};color:${s.c}">${s.l}</span></td><td style="font-size:12px;color:var(--muted)">${(d.startedAt||'').slice(11,16)||'-'}</td><td style="font-size:12px;color:var(--muted)">${(d.doneAt||'').slice(11,16)||'-'}</td></tr>`;}).join('')}</tbody></table>`;
 }
 
-document.addEventListener('firebaseReady',initCharts);
-if(Auth.isFirebaseReady)initCharts();
+document.addEventListener('firebaseReady', initCharts);
+if(Auth.isFirebaseReady) initCharts();
 </script>
 </body>
 </html>

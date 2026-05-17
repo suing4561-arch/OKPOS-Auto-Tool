@@ -202,10 +202,28 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
           <div class="form-field" style="margin-top:8px"><div class="form-label">배송기사</div>
             <select class="form-select" id="newDriver"><option value="">기사 선택 (나중에 배정 가능)</option></select>
           </div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">품목 내역</div>
-            <input class="form-input" id="newItems" placeholder="닭가슴살 50kg · 쌀 5포대 · 소스류"></div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">금액 (원)</div>
-            <input class="form-input" id="newAmount" type="number" placeholder="0" min="0"></div>
+
+          <!-- 본사 등록 품목 선택 -->
+          <div class="form-field" style="margin-top:8px">
+            <div class="form-label">품목 선택 (본사 등록 품목)</div>
+            <div style="display:flex;gap:6px">
+              <select class="form-select" id="menuSelect" style="flex:1"><option value="">품목 선택</option></select>
+              <input class="form-input" id="menuQty" type="number" placeholder="수량" min="1" style="width:80px">
+              <button onclick="addItemToList()" style="padding:0 14px;border-radius:9px;border:none;background:var(--blue-mid);color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">추가</button>
+            </div>
+          </div>
+          <!-- 추가된 품목 목록 -->
+          <div id="itemListWrap" style="display:none;margin-top:8px;border:.5px solid var(--line);border-radius:10px;overflow:hidden">
+            <div style="padding:8px 12px;background:var(--surface2);font-size:11px;font-weight:700;color:var(--dim)">선택된 품목</div>
+            <div id="itemList" style="display:flex;flex-direction:column;gap:0"></div>
+            <div style="padding:8px 12px;border-top:.5px solid var(--line);display:flex;justify-content:space-between;font-size:13px;font-weight:700">
+              <span style="color:var(--muted)">합계</span>
+              <span id="itemTotal" style="font-family:var(--mono)">0원</span>
+            </div>
+          </div>
+
+          <div class="form-field" style="margin-top:8px"><div class="form-label">직접 입력 (위 선택과 별개)</div>
+            <input class="form-input" id="newItems" placeholder="추가 품목 직접 입력 (선택사항)"></div>
           <div class="form-field" style="margin-top:8px"><div class="form-label">메모</div>
             <input class="form-input" id="newNote" placeholder="냉장 보관 필요 등"></div>
           <button class="reg-btn green" style="margin-top:10px" onclick="createDelivery()"><i class="ti ti-truck-delivery" style="font-size:15px"></i>배송 생성</button>
@@ -347,11 +365,62 @@ async function loadStores() {
 async function delStore(id){ if(!confirm('삭제할까요?')) return; await Auth.deleteSupplierFranchise(id); await loadStores(); showToast('삭제 완료'); }
 
 // ── 배송 배정 ─────────────────────────────────────────────
+// ── 본사 등록 품목/거래처 연동 ────────────────────────────
+let _hqMenus = [], _hqPrices = [], _selectedItems = [];
+
+async function loadHqData() {
+  [_hqMenus, _hqPrices] = await Promise.all([Auth.loadMenus(), Auth.loadPrices()]);
+  // 품목 셀렉트 채우기
+  const sel = document.getElementById('menuSelect');
+  if(sel) {
+    sel.innerHTML = '<option value="">품목 선택</option>'
+      + _hqMenus.map(m => {
+          const price = _hqPrices.find(p => p.menuId === m.id);
+          const priceStr = price ? ' — '+Number(price.price).toLocaleString()+'원/'+price.unit : '';
+          return `<option value="${m.id}" data-price="${price?.price||0}" data-unit="${price?.unit||''}">${m.code?'['+m.code+'] ':''}${m.name}${priceStr}</option>`;
+        }).join('');
+  }
+}
+
+function addItemToList() {
+  const sel = document.getElementById('menuSelect');
+  const qty = parseInt(document.getElementById('menuQty').value) || 1;
+  const opt = sel.options[sel.selectedIndex];
+  if(!sel.value) { showToast('품목을 선택하세요'); return; }
+  const menuId = sel.value;
+  const name = opt.text.split(' — ')[0];
+  const price = parseInt(opt.dataset.price) || 0;
+  const unit = opt.dataset.unit || '';
+  // 중복 시 수량 합산
+  const exist = _selectedItems.find(x => x.menuId === menuId);
+  if(exist) { exist.qty += qty; }
+  else { _selectedItems.push({ menuId, name, price, unit, qty }); }
+  sel.value = ''; document.getElementById('menuQty').value = '';
+  renderItemList();
+}
+
+function renderItemList() {
+  const wrap = document.getElementById('itemListWrap');
+  const listEl = document.getElementById('itemList');
+  if(!_selectedItems.length) { wrap.style.display='none'; return; }
+  wrap.style.display = '';
+  listEl.innerHTML = _selectedItems.map((item, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:.5px solid var(--line);font-size:13px">
+      <span style="flex:1;font-weight:700">${item.name}</span>
+      <span style="color:var(--muted);font-size:12px">${item.price?Number(item.price).toLocaleString()+'원/'+item.unit:''}</span>
+      <input type="number" value="${item.qty}" min="1" style="width:60px;padding:4px 8px;border-radius:6px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;text-align:center" onchange="_selectedItems[${i}].qty=parseInt(this.value)||1;renderItemList()">
+      <button onclick="_selectedItems.splice(${i},1);renderItemList()" style="padding:3px 7px;border-radius:6px;border:none;background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;cursor:pointer">✕</button>
+    </div>`).join('');
+  const total = _selectedItems.reduce((s,x) => s + x.price*x.qty, 0);
+  document.getElementById('itemTotal').textContent = total.toLocaleString()+'원';
+}
+
 async function refreshAssignSelects() {
   const [drivers, stores] = await Promise.all([Auth.loadSupplierDrivers(), Auth.loadSupplierFranchises()]);
   _drivers = drivers; _stores = stores;
   document.getElementById('newStore').innerHTML = '<option value="">배송지 선택</option>'+stores.map(s=>`<option value="${s.id}">${s.businessName}</option>`).join('');
   document.getElementById('newDriver').innerHTML = '<option value="">기사 선택 (나중에 배정 가능)</option>'+drivers.map(d=>`<option value="${d.id}">${d.name} (${d.phone})</option>`).join('');
+  await loadHqData();
 }
 
 async function createDelivery() {
@@ -360,13 +429,26 @@ async function createDelivery() {
   const store = _stores.find(s=>s.id===storeId);
   const driverId = newDriver.value;
   const driver = _drivers.find(d=>d.id===driverId);
+
+  // 품목 내역 조합 (선택 품목 + 직접 입력)
+  let itemsText = _selectedItems.map(x=>`${x.name} ${x.qty}${x.unit}`).join(' · ');
+  if(newItems.value.trim()) itemsText += (itemsText ? ' · ' : '') + newItems.value.trim();
+  if(!itemsText){ showToast('품목을 선택하거나 직접 입력하세요'); return; }
+
+  // 금액 자동 계산
+  const amount = _selectedItems.reduce((s,x)=>s+x.price*x.qty, 0);
+
   await Auth.createDelivery({
     storeId, storeName: store?.businessName||'', address: store?.address||'',
     driverId: driverId||'', driverName: driver?.name||'', driverPhone: driver?.phone||'',
-    items: newItems.value.trim(), amount: Number(newAmount.value)||0, note: newNote.value.trim(),
+    items: itemsText,
+    itemDetails: _selectedItems,
+    amount,
+    note: newNote.value.trim(),
   });
-  newStore.value=''; newDriver.value=''; newItems.value=''; newAmount.value=''; newNote.value='';
-  await loadDeliveries(); showToast('배송 생성 완료');
+  newStore.value=''; newDriver.value=''; newItems.value=''; newNote.value='';
+  _selectedItems=[]; renderItemList();
+  await loadDeliveries(); showToast('배송 생성 완료 · '+amount.toLocaleString()+'원');
 }
 
 async function loadDeliveries() {
