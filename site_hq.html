@@ -119,7 +119,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 </head>
 <body>
 <aside class="sidebar">
-  <div class="slogo"><div class="slogo-mark">DAESANG HQ</div><div class="slogo-sub">본사 관리자 센터</div></div>
+  <div class="slogo">
+    <div class="slogo-mark">DAESANG HQ</div>
+    <div class="slogo-sub">본사 관리자 센터</div>
+    <div id="brandBadge" style="display:none;margin-top:8px;padding:4px 10px;background:rgba(40,116,204,.2);border-radius:6px;font-size:11px;font-weight:700;color:#93c5fd"></div>
+  </div>
   <div class="slabel">메인</div>
   <button class="ni active" onclick="goto('dashboard')"><i class="ti ti-layout-dashboard"></i><span>대시보드</span></button>
   <button class="ni" onclick="goto('orders')"><i class="ti ti-circles-relation"></i><span>주문 통합 관리</span></button>
@@ -380,6 +384,22 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <script src="auth.js"></script>
 <script>
 const Auth = window.SmartBaljuAuth;
+
+// ── 세션에서 브랜드 정보 읽기 ──────────────────────────────
+const _session = Auth.getSession();
+const _myBrandId   = _session?.brandId   || '';
+const _myBrandName = _session?.brandName || '';
+
+// 브랜드 배지 표시
+if(_myBrandId){
+  const badge = document.getElementById('brandBadge');
+  badge.style.display = '';
+  badge.textContent = '🏷 '+_myBrandName;
+}
+
+// 사이드바 아바타
+const _myName = _session?.name || _session?.businessName || '관리자';
+document.querySelector('.sfooter').innerHTML = `<div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">${_myName.slice(0,1)}</div><div><div style="font-size:12px;font-weight:500;color:#fff">${_myName}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">${_myBrandName||'본사 관리자'}</div></div></div>`;
 const PAGES = {dashboard:'대시보드',register:'기준정보 등록',partners:'거래처 관리',orders:'주문 통합 관리',delivery:'배송 관리',stats:'통계·분석',settle:'정산 관리',notice:'공지·레시피'};
 
 function goto(p){
@@ -484,6 +504,13 @@ async function refreshMenuSelects(){
   const [partners, brands] = await Promise.all([Auth.loadPartners(), Auth.loadBrands()]);
   document.getElementById('mPartner').innerHTML='<option value="">거래처 선택</option>'+partners.map(p=>`<option value="${p.id}" data-code="${p.code||'00'}">[${p.code||'??'}] ${p.name}</option>`).join('');
   document.getElementById('mBrand').innerHTML='<option value="">브랜드 선택</option>'+brands.map(b=>`<option value="${b.id}" data-code="${b.code||'00'}">[${b.code||'??'}] ${b.name}</option>`).join('');
+  // 세션 브랜드 자동 선택
+  if(_myBrandId){
+    const bSel = document.getElementById('mBrand');
+    bSel.value = _myBrandId;
+    bSel.disabled = true; // 본인 브랜드 고정
+    bSel.title = '연동된 브랜드: '+_myBrandName;
+  }
   updateCodePreview();
 }
 
@@ -504,6 +531,10 @@ async function saveMenu(){
   const seq = (mSeq.value||'01').padStart(2,'0');
   const code = pCode+bCode+seq;
 
+  // 세션 브랜드가 있으면 자동 설정, 없으면 선택값 사용
+  const finalBrandId   = _myBrandId   || bSel.value;
+  const finalBrandName = _myBrandName || (bOpt.text.split('] ')[1]||'');
+
   if(_editMenuId){
     await Auth.updateMenu(_editMenuId,{name:mName.value,category:mCat.value,spec:mSpec.value,unit:mUnit.value,partnerId:pSel.value,partnerName:pOpt.text.split('] ')[1]||'',brandId:bSel.value,brandName:bOpt.text.split('] ')[1]||'',price:Number(mPrice.value),minQty:Number(mMinQty.value)||1,maxQty:Number(mMaxQty.value)||999,code});
     _editMenuId=''; document.getElementById('menuSaveBtn').innerHTML='<i class="ti ti-plus"></i>품목·가격 등록';
@@ -511,7 +542,7 @@ async function saveMenu(){
   } else {
     const existing = await Auth.loadMenus();
     if(existing.find(m=>m.code===code)){ showToast('코드 '+code+' 는 이미 사용 중입니다. 일련번호를 변경하세요'); return; }
-    await Auth.registerMenu({code,name:mName.value,category:mCat.value,spec:mSpec.value,unit:mUnit.value,partnerId:pSel.value,partnerName:pOpt.text.split('] ')[1]||'',brandId:bSel.value,brandName:bOpt.text.split('] ')[1]||'',price:Number(mPrice.value),minQty:Number(mMinQty.value)||1,maxQty:Number(mMaxQty.value)||999});
+    await Auth.registerMenu({code,name:mName.value,category:mCat.value,spec:mSpec.value,unit:mUnit.value,partnerId:pSel.value,partnerName:pOpt.text.split('] ')[1]||'',brandId:finalBrandId,brandName:finalBrandName,price:Number(mPrice.value),minQty:Number(mMinQty.value)||1,maxQty:Number(mMaxQty.value)||999});
     showToast('등록 완료 ('+code+')');
   }
   mName.value=mSpec.value=mUnit.value=mPrice.value=mMinQty.value=mMaxQty.value='';
@@ -520,7 +551,9 @@ async function saveMenu(){
 }
 
 async function rMenu(){
-  const list=await Auth.loadMenus();
+  const all = await Auth.loadMenus();
+  // 브랜드 연동된 경우 해당 브랜드 품목만 표시
+  const list = _myBrandId ? all.filter(m=>m.brandId===_myBrandId) : all;
   document.getElementById('menuCount').textContent=list.length;
   document.getElementById('menuList').innerHTML=list.length
     ?list.map(m=>`<tr>

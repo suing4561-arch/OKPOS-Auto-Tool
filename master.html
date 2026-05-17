@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>대상정보통신 Master 계정관리</title>
+<title>??곸젙蹂댄넻??Master 怨꾩젙愿由?/title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f7fb;--panel:#fff;--text:#162033;--muted:#6b7280;--line:#dbe3ee;--navy:#17233c;--blue:#2563eb;--green:#16a34a;--yellow:#d97706;--red:#dc2626;--purple:#7c3aed;--shadow:0 14px 40px rgba(20,31,51,.08)}
@@ -45,7 +45,7 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 .box{width:100%;max-width:580px;background:#fff;border-radius:18px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
 .box h2{margin-bottom:14px}
 
-/* ── 권한부여 모달 ── */
+/* ?? 沅뚰븳遺??紐⑤떖 ?? */
 .perm-section{margin-bottom:16px}
 .perm-section-title{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--bg);border-radius:8px}
 .perm-section-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -69,116 +69,126 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <body>
 <div class="shell">
   <aside class="side">
-    <div class="brand">대상정보통신<small>Smart Balju Master</small></div>
+    <div class="brand">??곸젙蹂댄넻??small>Smart Balju Master</small></div>
     <div class="nav">
-      <button class="active" onclick="showSection('accounts')">👥 계정관리</button>
-      <button onclick="showSection('partners')">🏭 거래처 승인</button>
-      <button onclick="location.href='site_hq.html'">🏢 본사 화면</button>
-      <button onclick="location.href='site_franchise.html'">🏪 가맹점 화면</button>
-      <button onclick="location.href='site_supplier.html'">🚚 납품업체 화면</button>
-      <button onclick="location.href='site_driver.html'">🛵 배송기사 화면</button>
-      <button onclick="Auth.logout()" style="margin-top:20px;background:rgba(220,38,38,.2);color:#fca5a5">🚪 로그아웃</button>
+      <button class="active" onclick="showSection('accounts')">?뫁 怨꾩젙愿由?/button>
+      <button onclick="showSection('partners')">?룺 嫄곕옒泥??뱀씤</button>
+      <button onclick="location.href='site_hq.html'">?룫 蹂몄궗 ?붾㈃</button>
+      <button onclick="location.href='site_franchise.html'">?룵 媛留뱀젏 ?붾㈃</button>
+      <button onclick="location.href='site_supplier.html'">?슊 ?⑺뭹?낆껜 ?붾㈃</button>
+      <button onclick="location.href='site_driver.html'">?쎎 諛곗넚湲곗궗 ?붾㈃</button>
+      <button onclick="Auth.logout()" style="margin-top:20px;background:rgba(220,38,38,.2);color:#fca5a5">?슞 濡쒓렇?꾩썐</button>
     </div>
   </aside>
   <main class="main">
 
-    <!-- 계정관리 -->
+    <!-- 怨꾩젙愿由?-->
     <div id="section-accounts">
       <div class="top">
-        <div><div class="title">Master 계정관리</div><div class="muted">계정 생성·수정·권한 부여</div></div>
+        <div><div class="title">Master 怨꾩젙愿由?/div><div class="muted">怨꾩젙 ?앹꽦쨌?섏젙쨌沅뚰븳 遺??/div></div>
         <div class="top-actions">
-          <button class="btn" onclick="resetMock()">초기화</button>
-          <button class="btn primary" onclick="openEditor()">+ 계정 생성</button>
+          <button class="btn" onclick="resetMock()">珥덇린??/button>
+          <button class="btn primary" onclick="openEditor()">+ 怨꾩젙 ?앹꽦</button>
         </div>
       </div>
       <div class="card">
         <div class="filters" id="filters"></div>
         <div style="overflow:auto">
           <table>
-            <thead><tr><th>역할</th><th>계정</th><th>상태</th><th>로그인</th><th>부여된 권한</th><th>관리</th></tr></thead>
-            <tbody id="userBody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>불러오는 중...</div></td></tr></tbody>
+            <thead><tr><th>??븷</th><th>怨꾩젙</th><th>?곹깭</th><th>濡쒓렇??/th><th>遺?щ맂 沅뚰븳</th><th>愿由?/th></tr></thead>
+            <tbody id="userBody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div></td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- 거래처 승인 -->
+    <!-- 嫄곕옒泥??뱀씤 -->
     <div id="section-partners" style="display:none">
       <div class="top">
-        <div><div class="title">거래처 승인 관리</div><div class="muted">납품업체 첫 로그인 시 여기에 표시됩니다</div></div>
+        <div><div class="title">嫄곕옒泥??뱀씤 愿由?/div><div class="muted">?⑺뭹?낆껜 泥?濡쒓렇?????ш린???쒖떆?⑸땲??/div></div>
       </div>
       <div class="card">
-        <div id="partnerBody"><div class="loading"><div class="spinner"></div>불러오는 중...</div></div>
+        <div id="partnerBody"><div class="loading"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div></div>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- ── 계정 편집 모달 ── -->
+<!-- ?? 怨꾩젙 ?몄쭛 紐⑤떖 ?? -->
 <div class="modal" id="editorModal">
   <div class="box">
-    <h2 id="editorTitle">계정 생성</h2>
+    <h2 id="editorTitle">怨꾩젙 ?앹꽦</h2>
     <div class="grid">
-      <div><label>역할</label><select id="fRole" onchange="toggleOkposFields()">
-        <option value="hq">프랜차이즈 본사</option>
-        <option value="franchise">가맹점</option>
-        <option value="supplier">납품업체</option>
-        <option value="driver">배송기사</option>
+      <div><label>??븷</label><select id="fRole" onchange="toggleOkposFields()">
+        <option value="hq">?꾨옖李⑥씠利?蹂몄궗</option>
+        <option value="franchise">媛留뱀젏</option>
+        <option value="supplier">?⑺뭹?낆껜</option>
+        <option value="driver">諛곗넚湲곗궗</option>
         <option value="master">Master</option>
       </select></div>
-      <div><label>상태</label><select id="fStatus">
-        <option value="active">정상</option>
-        <option value="inactive">비활성</option>
-        <option value="suspended">사용중지</option>
-        <option value="expired">계약만료</option>
-        <option value="password_reset_required">비밀번호 재설정 필요</option>
+      <div><label>?곹깭</label><select id="fStatus">
+        <option value="active">?뺤긽</option>
+        <option value="inactive">鍮꾪솢??/option>
+        <option value="suspended">?ъ슜以묒?</option>
+        <option value="expired">怨꾩빟留뚮즺</option>
+        <option value="password_reset_required">鍮꾨?踰덊샇 ?ъ꽕???꾩슂</option>
       </select></div>
 
-      <div class="section-divider">기본 정보</div>
-      <div><label>담당자명</label><input id="fName"></div>
-      <div><label>상호명</label><input id="fBusinessName"></div>
-      <div><label>사업자번호</label><input id="fBusinessNumber"></div>
-      <div><label>연락처</label><input id="fPhone"></div>
+      <div class="section-divider">湲곕낯 ?뺣낫</div>
+      <div><label>?대떦?먮챸</label><input id="fName"></div>
+      <div><label>?곹샇紐?/label><input id="fBusinessName"></div>
+      <div><label>?ъ뾽?먮쾲??/label><input id="fBusinessNumber"></div>
+      <div><label>?곕씫泥?/label><input id="fPhone"></div>
 
-      <div class="section-divider">로그인 정보</div>
-      <div><label>로그인 ID</label><input id="fLoginId"></div>
-      <div><label>비밀번호 <span style="color:var(--muted);font-weight:400">(수정 시 비워두면 유지)</span></label><input id="fPassword" type="password"></div>
+      <div class="section-divider">濡쒓렇???뺣낫</div>
+      <div><label>濡쒓렇??ID</label><input id="fLoginId"></div>
+      <div><label>鍮꾨?踰덊샇 <span style="color:var(--muted);font-weight:400">(?섏젙 ??鍮꾩썙?먮㈃ ?좎?)</span></label><input id="fPassword" type="password"></div>
 
-      <!-- OKPos 정보 (가맹점/본사 역할일 때만 표시) -->
-      <div class="section-divider" id="okposDivider" style="display:none">OKPos 연동</div>
-      <div id="okposIdWrap" style="display:none"><label>OKPos 아이디</label><input id="fOkposId" placeholder="OKPos 로그인 아이디"></div>
-      <div id="okposPwWrap" style="display:none"><label>OKPos 비밀번호</label><input id="fOkposPw" type="password" placeholder="OKPos 비밀번호"></div>
+      <!-- 釉뚮옖???곕룞 (蹂몄궗/媛留뱀젏 ??븷???뚮쭔 ?쒖떆) -->
+      <div class="section-divider" id="brandDivider" style="display:none">釉뚮옖???곕룞</div>
+      <div id="brandSelectWrap" style="display:none">
+        <label>?곕룞 釉뚮옖??<span style="color:var(--muted);font-weight:400">(蹂몄궗?먯꽌 ?깅줉??釉뚮옖??</span></label>
+        <select id="fBrandSelect">
+          <option value="">釉뚮옖???좏깮</option>
+        </select>
+        <div id="brandPreview" style="margin-top:6px;padding:8px 12px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--muted);display:none"></div>
+      </div>
+
+      <!-- OKPos ?뺣낫 (媛留뱀젏/蹂몄궗 ??븷???뚮쭔 ?쒖떆) -->
+      <div class="section-divider" id="okposDivider" style="display:none">OKPos ?곕룞</div>
+      <div id="okposIdWrap" style="display:none"><label>OKPos ?꾩씠??/label><input id="fOkposId" placeholder="OKPos 濡쒓렇???꾩씠??></div>
+      <div id="okposPwWrap" style="display:none"><label>OKPos 鍮꾨?踰덊샇</label><input id="fOkposPw" type="password" placeholder="OKPos 鍮꾨?踰덊샇"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
-      <button class="btn" onclick="closeEditor()">취소</button>
-      <button class="btn primary" onclick="saveEditor()">저장</button>
+      <button class="btn" onclick="closeEditor()">痍⑥냼</button>
+      <button class="btn primary" onclick="saveEditor()">???/button>
     </div>
   </div>
 </div>
 
-<!-- ── 권한부여 모달 ── -->
+<!-- ?? 沅뚰븳遺??紐⑤떖 ?? -->
 <div class="modal" id="permModal">
   <div class="box" style="max-width:620px">
-    <h2>🔑 권한부여</h2>
+    <h2>?뵎 沅뚰븳遺??/h2>
     <div id="permTargetName" style="color:var(--muted);margin-bottom:16px;font-size:14px"></div>
     <div id="permGrid"></div>
     <div style="margin-top:8px;padding:10px;background:#f8fafc;border-radius:8px;font-size:12px;color:var(--muted)">
-      ※ 체크된 기능만 해당 계정에서 탭/메뉴가 보입니다. 결제 플랜에 따라 차등 부여하세요.
+      ??泥댄겕??湲곕뒫留??대떦 怨꾩젙?먯꽌 ??硫붾돱媛 蹂댁엯?덈떎. 寃곗젣 ?뚮옖???곕씪 李⑤벑 遺?ы븯?몄슂.
     </div>
     <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
-      <button class="btn" onclick="closePerm()">취소</button>
-      <button class="btn primary" onclick="savePerm()">저장</button>
+      <button class="btn" onclick="closePerm()">痍⑥냼</button>
+      <button class="btn primary" onclick="savePerm()">???/button>
     </div>
   </div>
 </div>
 
-<!-- 상세보기 모달 -->
+<!-- ?곸꽭蹂닿린 紐⑤떖 -->
 <div class="modal" id="detailModal">
   <div class="box">
-    <h2>계정 상세보기</h2>
+    <h2>怨꾩젙 ?곸꽭蹂닿린</h2>
     <pre id="detailText" style="white-space:pre-wrap;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px;max-height:60vh;overflow:auto"></pre>
-    <div style="margin-top:14px;text-align:right"><button class="btn primary" onclick="closeDetail()">닫기</button></div>
+    <div style="margin-top:14px;text-align:right"><button class="btn primary" onclick="closeDetail()">?リ린</button></div>
   </div>
 </div>
 
@@ -189,43 +199,42 @@ const Auth = window.SmartBaljuAuth;
 let filter='all', editingUid='', permUid='', _users=[];
 
 const FILTERS=[
-  ['all','전체'],['hq','본사'],['franchise','가맹점'],['supplier','납품업체'],['driver','배송기사'],
-  ['active','활성'],['inactive','비활성'],['suspended','사용중지'],
+  ['all','All'],['hq','HQ'],['franchise','Franchise'],['supplier','Supplier'],['driver','Driver'],
+  ['active','Active'],['inactive','Inactive'],['suspended','Suspended'],
 ];
 
-// 역할별 권한 항목 정의
 const PERM_DEFS = {
   hq: {
-    label:'프랜차이즈 본사', color:'#1d4ed8', bg:'#eff6ff', dot:'#3b82f6',
+    label:'Franchise HQ', color:'#1d4ed8', bg:'#eff6ff', dot:'#3b82f6',
     items:[
-      {key:'hq_dashboard',    label:'대시보드',       sub:'매출·KPI 현황'},
-      {key:'hq_orders',       label:'주문 통합 관리', sub:'발주 승인·반려'},
-      {key:'hq_delivery',     label:'배송 관리',      sub:'배송 현황 조회'},
-      {key:'hq_register',     label:'기준정보 등록',  sub:'거래처·메뉴·가격'},
-      {key:'hq_partners',     label:'거래처 관리',    sub:'납품업체 목록'},
-      {key:'hq_stats',        label:'통계·분석',      sub:'매출 분석'},
-      {key:'hq_settle',       label:'정산 관리',      sub:'입출금 정산'},
-      {key:'hq_notice',       label:'공지·레시피',    sub:'공지사항 관리'},
-      {key:'hq_okpos',        label:'OKPos 매출연동', sub:'자동 매출 수집'},
+      {key:'hq_dashboard', label:'Dashboard', sub:'Sales and KPI'},
+      {key:'hq_orders', label:'Order management', sub:'Approve or reject orders'},
+      {key:'hq_delivery', label:'Delivery management', sub:'Delivery status'},
+      {key:'hq_register', label:'Register data', sub:'Partners, brands, menus, prices'},
+      {key:'hq_partners', label:'Partner management', sub:'Supplier list'},
+      {key:'hq_stats', label:'Statistics', sub:'Sales analysis'},
+      {key:'hq_settle', label:'Settlement', sub:'Payments and settlement'},
+      {key:'hq_notice', label:'Notices', sub:'Notice management'},
+      {key:'hq_okpos', label:'OKPos sales sync', sub:'Automatic sales collection'},
     ]
   },
   franchise: {
-    label:'가맹점', color:'#047857', bg:'#ecfdf5', dot:'#10b981',
+    label:'Franchise', color:'#047857', bg:'#ecfdf5', dot:'#10b981',
     items:[
-      {key:'fr_home',     label:'홈·대시보드', sub:'수발주 현황·재고'},
-      {key:'fr_order',    label:'발주하기',    sub:'품목 선택·장바구니'},
-      {key:'fr_delivery', label:'배송 추적',   sub:'실시간 배송 현황'},
-      {key:'fr_sales',    label:'매출 현황',   sub:'일별·월별 매출'},
-      {key:'fr_stats',    label:'통계',        sub:'매출 분석 차트'},
+      {key:'fr_home', label:'Home dashboard', sub:'Order and stock status'},
+      {key:'fr_order', label:'Place order', sub:'Select items and cart'},
+      {key:'fr_delivery', label:'Delivery tracking', sub:'Real-time delivery status'},
+      {key:'fr_sales', label:'Sales status', sub:'Daily and monthly sales'},
+      {key:'fr_stats', label:'Statistics', sub:'Sales charts'},
     ]
   },
   supplier: {
-    label:'납품업체', color:'#c2410c', bg:'#fff7ed', dot:'#f97316',
+    label:'Supplier', color:'#c2410c', bg:'#fff7ed', dot:'#f97316',
     items:[
-      {key:'sup_register', label:'등록관리',  sub:'기사·가맹점 등록'},
-      {key:'sup_assign',   label:'배송배정',  sub:'배송 생성·기사 배정'},
-      {key:'sup_slip',     label:'전표출력',  sub:'배송전표 인쇄·링크'},
-      {key:'sup_settle',   label:'정산관리',  sub:'납품 내역·정산'},
+      {key:'sup_register', label:'Registration', sub:'Drivers and franchise stores'},
+      {key:'sup_assign', label:'Delivery assignment', sub:'Create and assign deliveries'},
+      {key:'sup_slip', label:'Delivery slip', sub:'Print slips and copy links'},
+      {key:'sup_settle', label:'Settlement', sub:'Supply history and settlement'},
     ]
   },
 };
@@ -239,16 +248,37 @@ function showSection(id){
   if(id==='partners') loadPartnersSection();
 }
 
-// OKPos 필드 토글 (가맹점·본사만 표시)
-function toggleOkposFields(){
+// OKPos쨌釉뚮옖???꾨뱶 ?좉? (??븷???곕씪 ?쒖떆/?④?)
+async function toggleOkposFields(){
   const role = document.getElementById('fRole').value;
-  const show = ['franchise','hq'].includes(role);
+  const showOkpos = ['franchise','hq'].includes(role);
+  const showBrand = ['hq','franchise','supplier'].includes(role);
   ['okposDivider','okposIdWrap','okposPwWrap'].forEach(id=>{
-    document.getElementById(id).style.display = show ? '' : 'none';
+    document.getElementById(id).style.display = showOkpos ? '' : 'none';
   });
+  ['brandDivider','brandSelectWrap'].forEach(id=>{
+    document.getElementById(id).style.display = showBrand ? '' : 'none';
+  });
+  if(showBrand) await loadBrandSelect();
 }
 
-// ── 사용자 테이블 ──────────────────────────────────────────
+async function loadBrandSelect(){
+  const brands = await Auth.loadBrands();
+  const sel = document.getElementById('fBrandSelect');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">釉뚮옖???좏깮</option>' +
+    brands.map(b=>`<option value="${b.id}" data-code="${b.code||''}" data-name="${b.name}">[${b.code||'??'}] ${b.name}${b.category?' ('+b.category+')':''}</option>`).join('');
+  if(current) sel.value = current;
+  sel.onchange = function(){
+    const opt = sel.options[sel.selectedIndex];
+    const prev = document.getElementById('brandPreview');
+    if(sel.value){ prev.style.display=''; prev.innerHTML=`Brand: <strong>${opt.dataset.name}</strong>`; }
+    else { prev.style.display='none'; }
+  };
+  sel.dispatchEvent(new Event('change'));
+}
+
+// ?? ?ъ슜???뚯씠釉???????????????????????????????????????????
 function loginAvailable(u){ return !Auth.BLOCKED_LOGIN_STATUSES.includes(u.status); }
 
 function renderFilters(){
@@ -262,86 +292,92 @@ function filteredUsers(){ return _users.filter(u=>filter==='all'||u.role===filte
 function permBadges(u){
   const p = u.permissions||{};
   const active = Object.keys(p).filter(k=>p[k]);
-  if(!active.length) return '<span style="color:var(--muted);font-size:11px">없음</span>';
-  // 카테고리별 그룹핑
-  const groups={hq:0,fr:0,sup:0};
+  if(!active.length) return '<span style="color:var(--muted);font-size:11px">?놁쓬</span>';
+  // 移댄뀒怨좊━蹂?洹몃９??  const groups={hq:0,fr:0,sup:0};
   active.forEach(k=>{ if(k.startsWith('hq_'))groups.hq++; else if(k.startsWith('fr_'))groups.fr++; else if(k.startsWith('sup_'))groups.sup++; });
   let badges='';
-  if(groups.hq) badges+=`<span class="pill role-hq" style="font-size:10px;margin:1px">본사 ${groups.hq}개</span>`;
-  if(groups.fr) badges+=`<span class="pill role-franchise" style="font-size:10px;margin:1px">가맹점 ${groups.fr}개</span>`;
-  if(groups.sup) badges+=`<span class="pill role-supplier" style="font-size:10px;margin:1px">납품업체 ${groups.sup}개</span>`;
-  return badges||'<span style="color:var(--muted);font-size:11px">없음</span>';
+  if(groups.hq) badges+=`<span class="pill role-hq" style="font-size:10px;margin:1px">蹂몄궗 ${groups.hq}媛?/span>`;
+  if(groups.fr) badges+=`<span class="pill role-franchise" style="font-size:10px;margin:1px">媛留뱀젏 ${groups.fr}媛?/span>`;
+  if(groups.sup) badges+=`<span class="pill role-supplier" style="font-size:10px;margin:1px">?⑺뭹?낆껜 ${groups.sup}媛?/span>`;
+  return badges||'<span style="color:var(--muted);font-size:11px">?놁쓬</span>';
 }
 
 function render(){
   renderFilters();
   const users=filteredUsers();
   document.getElementById('userBody').innerHTML=users.length===0
-    ?'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">계정이 없습니다.</td></tr>'
+    ?'<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">怨꾩젙???놁뒿?덈떎.</td></tr>'
     :users.map(u=>`<tr>
       <td><span class="pill role-${esc(u.role)}">${esc(Auth.ROLE_LABELS[u.role]||u.role)}</span></td>
       <td><strong>${esc(u.businessName||u.name||'-')}</strong>
-        <div class="muted">${esc(u.name)} · ${esc(u.loginId)}</div>
+        <div class="muted">${esc(u.name)} 쨌 ${esc(u.loginId)}</div>
         ${u.okposId?`<div style="font-size:11px;color:#6366f1">OKPos: ${esc(u.okposId)}</div>`:''}
         <div class="muted">${esc(u.businessNumber||'')}</div></td>
       <td><span class="pill status-${esc(u.status)}">${esc(Auth.STATUS_LABELS[u.status]||u.status)}</span></td>
-      <td>${loginAvailable(u)?'<span class="login-ok">가능</span>':'<span class="login-no">불가</span>'}
-        ${u.mustChangePassword?'<div class="muted" style="font-size:10px">비번변경필요</div>':''}</td>
+      <td>${loginAvailable(u)?'<span class="login-ok">媛??/span>':'<span class="login-no">遺덇?</span>'}
+        ${u.mustChangePassword?'<div class="muted" style="font-size:10px">鍮꾨쾲蹂寃쏀븘??/div>':''}</td>
       <td>${permBadges(u)}
-        ${u.role!=='master'?`<br><button class="mini blue" style="margin-top:4px" onclick="openPerm('${esc(u.uid)}')">🔑 권한부여</button>`:''}</td>
+        ${u.role!=='master'?`<br><button class="mini blue" style="margin-top:4px" onclick="openPerm('${esc(u.uid)}')">?뵎 沅뚰븳遺??/button>`:''}</td>
       <td><div class="actions">
-        <button class="mini blue" onclick="openEditor('${esc(u.uid)}')">수정</button>
-        <button class="mini green" onclick="doStatus('${esc(u.uid)}','active')">활성화</button>
-        <button class="mini" onclick="doStatus('${esc(u.uid)}','inactive')">비활성</button>
-        <button class="mini yellow" onclick="doStatus('${esc(u.uid)}','suspended')">중지</button>
-        <button class="mini red" onclick="doStatus('${esc(u.uid)}','expired')">만료</button>
-        <button class="mini blue" onclick="doResetPw('${esc(u.uid)}')">비번초기화</button>
-        <button class="mini" onclick="showDetail('${esc(u.uid)}')">상세</button>
-        ${u.role!=='master'?`<button class="mini red" onclick="doDelete('${esc(u.uid)}')">삭제</button>`:''}
+        <button class="mini blue" onclick="openEditor('${esc(u.uid)}')">?섏젙</button>
+        <button class="mini green" onclick="doStatus('${esc(u.uid)}','active')">?쒖꽦??/button>
+        <button class="mini" onclick="doStatus('${esc(u.uid)}','inactive')">鍮꾪솢??/button>
+        <button class="mini yellow" onclick="doStatus('${esc(u.uid)}','suspended')">以묒?</button>
+        <button class="mini red" onclick="doStatus('${esc(u.uid)}','expired')">留뚮즺</button>
+        <button class="mini blue" onclick="doResetPw('${esc(u.uid)}')">鍮꾨쾲珥덇린??/button>
+        <button class="mini" onclick="showDetail('${esc(u.uid)}')">?곸꽭</button>
+        ${u.role!=='master'?`<button class="mini red" onclick="doDelete('${esc(u.uid)}')">??젣</button>`:''}
       </div></td>
     </tr>`).join('');
 }
 
 async function refreshUsers(){ _users=await Auth.loadUsers(); render(); }
 
-// ── 편집 ──────────────────────────────────────────────────
-function openEditor(uid){
+// ?? ?몄쭛 ??????????????????????????????????????????????????
+async function openEditor(uid){
   editingUid=uid||'';
   const u=uid?_users.find(x=>x.uid===uid):null;
-  document.getElementById('editorTitle').textContent=u?'계정 수정':'계정 생성';
+  document.getElementById('editorTitle').textContent=u?'怨꾩젙 ?섏젙':'怨꾩젙 ?앹꽦';
   ['fRole','fStatus','fName','fBusinessName','fBusinessNumber','fPhone','fLoginId','fPassword','fOkposId','fOkposPw']
     .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('fBrandSelect').value='';
   if(u){
     fRole.value=u.role; fStatus.value=u.status; fName.value=u.name||'';
     fBusinessName.value=u.businessName||''; fBusinessNumber.value=u.businessNumber||'';
     fPhone.value=u.phone||''; fLoginId.value=u.loginId||'';
-    fOkposId.value=u.okposId||''; fOkposPw.value=''; // 비번은 보안상 빈칸
+    fOkposId.value=u.okposId||''; fOkposPw.value='';
+    // 釉뚮옖???좏깮 (鍮꾨룞湲곕씪 ?쎄컙 吏??
+    await toggleOkposFields();
+    if(u.brandId) document.getElementById('fBrandSelect').value=u.brandId;
+    document.getElementById('fBrandSelect').dispatchEvent(new Event('change'));
   } else {
     fRole.value='franchise'; fStatus.value='active'; fPassword.value='1234';
+    await toggleOkposFields();
   }
-  toggleOkposFields();
   editorModal.classList.add('show');
 }
 function closeEditor(){ editorModal.classList.remove('show'); }
 async function saveEditor(){
-  if(!fLoginId.value.trim()){ toast('로그인 ID를 입력하세요'); return; }
+  if(!fLoginId.value.trim()){ toast('Login ID를 입력하세요.'); return; }
   await Auth.upsertUser({
     uid:editingUid, role:fRole.value, status:fStatus.value,
     name:fName.value, businessName:fBusinessName.value,
     businessNumber:fBusinessNumber.value, phone:fPhone.value,
     loginId:fLoginId.value, password:fPassword.value||undefined,
     okposId:fOkposId.value, okposPw:fOkposPw.value||undefined,
+    brandId: document.getElementById('fBrandSelect').value || '',
+    brandName: document.getElementById('fBrandSelect').options[document.getElementById('fBrandSelect').selectedIndex]?.dataset?.name || '',
   });
-  closeEditor(); await refreshUsers(); toast('계정 저장 완료');
+  closeEditor(); await refreshUsers(); toast('怨꾩젙 ????꾨즺');
 }
 
-async function doStatus(uid,status){ await Auth.setUserStatus(uid,status); await refreshUsers(); toast('상태 변경 완료'); }
+async function doStatus(uid,status){ await Auth.setUserStatus(uid,status); await refreshUsers(); toast('?곹깭 蹂寃??꾨즺'); }
 async function doResetPw(uid){
   const result=await Auth.resetPasswordByMaster(uid);
   await refreshUsers();
-  alert(`임시 비밀번호 발급\n\n계정: ${result.user.loginId}\n임시 비밀번호: ${result.tempPassword}\n\n사용자는 로그인 후 새 비밀번호로 변경해야 합니다.`);
+  alert(`?꾩떆 鍮꾨?踰덊샇 諛쒓툒\n\n怨꾩젙: ${result.user.loginId}\n?꾩떆 鍮꾨?踰덊샇: ${result.tempPassword}\n\n?ъ슜?먮뒗 濡쒓렇??????鍮꾨?踰덊샇濡?蹂寃쏀빐???⑸땲??`);
 }
-async function doDelete(uid){ if(!confirm('정말 삭제하시겠습니까?')) return; await Auth.deleteUser(uid); await refreshUsers(); toast('삭제 완료'); }
+async function doDelete(uid){ if(!confirm('?뺣쭚 ??젣?섏떆寃좎뒿?덇퉴?')) return; await Auth.deleteUser(uid); await refreshUsers(); toast('??젣 ?꾨즺'); }
 function showDetail(uid){
   const u=_users.find(x=>x.uid===uid);
   const safe={...u}; delete safe.passwordHash; delete safe.okposPwHash;
@@ -350,23 +386,23 @@ function showDetail(uid){
 }
 function closeDetail(){ detailModal.classList.remove('show'); }
 
-// ── 권한부여 모달 ─────────────────────────────────────────
+// ?? 沅뚰븳遺??紐⑤떖 ?????????????????????????????????????????
 function openPerm(uid){
   permUid=uid;
   const u=_users.find(x=>x.uid===uid);
   const p=u?.permissions||{};
   document.getElementById('permTargetName').innerHTML=
-    `<strong>${u?.businessName||u?.name||uid}</strong> 의 기능 접근 권한을 설정합니다.`;
+    `<strong>${u?.businessName||u?.name||uid}</strong> ??湲곕뒫 ?묎렐 沅뚰븳???ㅼ젙?⑸땲??`;
 
-  // 역할에 따라 관련 섹션만 표시 (전체 표시도 가능)
+  // ??븷???곕씪 愿???뱀뀡留??쒖떆 (?꾩껜 ?쒖떆??媛??
   const sections = Object.entries(PERM_DEFS);
   document.getElementById('permGrid').innerHTML = sections.map(([roleKey, def])=>`
     <div class="perm-section">
       <div class="perm-section-title">
         <div class="dot" style="background:${def.dot}"></div>
         <span>${def.label}</span>
-        <button onclick="toggleAll('${roleKey}', true)" style="margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer">전체선택</button>
-        <button onclick="toggleAll('${roleKey}', false)" style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer">전체해제</button>
+        <button onclick="toggleAll('${roleKey}', true)" style="margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer">?꾩껜?좏깮</button>
+        <button onclick="toggleAll('${roleKey}', false)" style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer">?꾩껜?댁젣</button>
       </div>
       <div class="sub-perms">
         ${def.items.map(item=>`
@@ -401,38 +437,38 @@ async function savePerm(){
     def.items.forEach(item=>{ perms[item.key]=document.getElementById('perm_'+item.key)?.checked||false; });
   });
   await Auth.setPermissions(permUid,perms);
-  await refreshUsers(); closePerm(); toast('권한 저장 완료');
+  await refreshUsers(); closePerm(); toast('沅뚰븳 ????꾨즺');
 }
 
-// ── 거래처 섹션 ───────────────────────────────────────────
+// ?? 嫄곕옒泥??뱀뀡 ???????????????????????????????????????????
 async function loadPartnersSection(){
   const partners=await Auth.loadPartners();
   const el=document.getElementById('partnerBody');
-  if(!partners.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">등록된 거래처 요청이 없습니다.</div>'; return; }
-  el.innerHTML=`<table><thead><tr><th>상호명</th><th>사업자번호</th><th>연락처</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead><tbody>
+  if(!partners.length){ el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">?깅줉??嫄곕옒泥??붿껌???놁뒿?덈떎.</div>'; return; }
+  el.innerHTML=`<table><thead><tr><th>?곹샇紐?/th><th>?ъ뾽?먮쾲??/th><th>?곕씫泥?/th><th>?곹깭</th><th>?깅줉??/th><th>愿由?/th></tr></thead><tbody>
     ${partners.map(p=>`<tr>
       <td><strong>${esc(p.name||'-')}</strong></td>
       <td>${esc(p.businessNumber||'-')}</td>
       <td>${esc(p.phone||'-')}</td>
-      <td><span class="pill ${p.status==='active'?'status-active':'status-inactive'}">${p.status==='active'?'승인됨':'승인대기'}</span></td>
+      <td><span class="pill ${p.status==='active'?'status-active':'status-inactive'}">${p.status==='active'?'승인':'대기'}</span></td>
       <td class="muted">${(p.createdAt||'').slice(0,10)}</td>
       <td><div class="actions">
-        <button class="mini green" onclick="approvePartner('${p.id}')">승인</button>
-        <button class="mini" onclick="deactivatePartner('${p.id}')">비활성화</button>
-        <button class="mini red" onclick="deletePartner('${p.id}')">삭제</button>
+        <button class="mini green" onclick="approvePartner('${p.id}')">?뱀씤</button>
+        <button class="mini" onclick="deactivatePartner('${p.id}')">鍮꾪솢?깊솕</button>
+        <button class="mini red" onclick="deletePartner('${p.id}')">??젣</button>
       </div></td>
     </tr>`).join('')}</tbody></table>`;
 }
-async function approvePartner(id){ await Auth.updatePartner(id,{status:'active'}); await loadPartnersSection(); toast('승인 완료'); }
-async function deactivatePartner(id){ await Auth.updatePartner(id,{status:'inactive'}); await loadPartnersSection(); toast('비활성화'); }
-async function deletePartner(id){ if(!confirm('삭제할까요?')) return; await Auth.deletePartner(id); await loadPartnersSection(); toast('삭제 완료'); }
+async function approvePartner(id){ await Auth.updatePartner(id,{status:'active'}); await loadPartnersSection(); toast('?뱀씤 ?꾨즺'); }
+async function deactivatePartner(id){ await Auth.updatePartner(id,{status:'inactive'}); await loadPartnersSection(); toast('鍮꾪솢?깊솕'); }
+async function deletePartner(id){ if(!confirm('??젣?좉퉴??')) return; await Auth.deletePartner(id); await loadPartnersSection(); toast('??젣 ?꾨즺'); }
 
-// ── 초기화 ────────────────────────────────────────────────
+// ?? 珥덇린??????????????????????????????????????????????????
 async function resetMock(){
-  if(!confirm('master 계정을 제외한 모든 계정을 삭제할까요?')) return;
+  if(!confirm('master 怨꾩젙???쒖쇅??紐⑤뱺 怨꾩젙????젣?좉퉴??')) return;
   const users=await Auth.loadUsers();
   for(const u of users){ if(u.role!=='master') await Auth.deleteUser(u.uid); }
-  await refreshUsers(); toast('초기화 완료');
+  await refreshUsers(); toast('珥덇린???꾨즺');
 }
 
 document.addEventListener('firebaseReady', refreshUsers);
@@ -441,3 +477,5 @@ else setTimeout(refreshUsers, 2000);
 </script>
 </body>
 </html>
+
+
