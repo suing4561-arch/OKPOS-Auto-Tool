@@ -164,7 +164,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="fl"><div class="flb">브랜드</div><select class="fs" id="mBrand"><option value="">브랜드 선택</option></select></div>
         <button class="rb green" onclick="addMenu()"><i class="ti ti-plus"></i>품목 등록</button>
       </div>
-      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 품목</div><div style="overflow:auto;max-height:200px"><table class="lt"><thead><tr><th>품목명</th><th>카테고리</th><th>규격</th><th></th></tr></thead><tbody id="menuList"></tbody></table></div></div>
+      <div style="padding:0 16px 14px"><div style="font-size:11px;font-weight:700;color:var(--dim);margin-bottom:6px">등록된 품목</div><div style="overflow:auto;max-height:220px"><table class="lt"><thead><tr><th>코드</th><th>품목명</th><th>카테고리</th><th>규격</th><th></th></tr></thead><tbody id="menuList"></tbody></table></div></div>
     </div>
 
     <!-- 판매가격 -->
@@ -255,16 +255,64 @@ async function rBrand(){
 }
 async function delB(id){await Auth.DB.remove('brands/'+id);await rBrand();showToast('삭제');}
 
+// 품목 코드 생성 (예: M001, M002 ...)
+async function genMenuCode(){
+  const list = await Auth.loadMenus();
+  const nums = list.map(m=>parseInt((m.code||'M000').replace(/\D/g,''))||0);
+  const next = (Math.max(0,...nums)+1);
+  return 'M'+String(next).padStart(3,'0');
+}
+
+let _editMenuId = '';
 async function addMenu(){
   if(!mName.value.trim()){showToast('품목명을 입력하세요');return;}
-  await Auth.registerMenu({name:mName.value,category:mCat.value,spec:mSpec.value,brandId:mBrand.value});
-  mName.value=mSpec.value='';mCat.value='';mBrand.value='';await rMenu();await refreshSel();showToast('품목 등록 완료');
+  if(_editMenuId){
+    // 수정 모드
+    await Auth.updateMenu(_editMenuId,{name:mName.value,category:mCat.value,spec:mSpec.value,brandId:mBrand.value});
+    _editMenuId='';
+    document.querySelector('#hqp-register .rb.green').innerHTML='<i class="ti ti-plus"></i>품목 등록';
+    showToast('품목 수정 완료');
+  } else {
+    // 신규 등록
+    const code = await genMenuCode();
+    await Auth.registerMenu({code,name:mName.value,category:mCat.value,spec:mSpec.value,brandId:mBrand.value});
+    showToast('품목 등록 완료 ('+code+')');
+  }
+  mName.value=mSpec.value='';mCat.value='';mBrand.value='';
+  await rMenu();await refreshSel();
 }
+
 async function rMenu(){
   const list=await Auth.loadMenus();
-  document.getElementById('menuList').innerHTML=list.length?list.map(m=>`<tr><td><strong>${m.name}</strong></td><td>${m.category||'-'}</td><td style="color:var(--muted)">${m.spec||'-'}</td><td><button class="delbtn" onclick="delM('${m.id}')">삭제</button></td></tr>`).join(''):`<tr><td colspan="4" class="empty">등록된 품목 없음</td></tr>`;
+  document.getElementById('menuList').innerHTML=list.length
+    ? list.map(m=>`<tr>
+        <td>
+          <span onclick="editMenu('${m.id}')" style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--blue-mid);cursor:pointer;padding:2px 7px;border-radius:5px;border:.5px solid rgba(40,116,204,.3);background:var(--blue-bg)" title="클릭하여 수정">${m.code||'-'}</span>
+        </td>
+        <td><strong>${m.name}</strong></td>
+        <td>${m.category||'-'}</td>
+        <td style="color:var(--muted)">${m.spec||'-'}</td>
+        <td><button class="delbtn" onclick="delM('${m.id}')">삭제</button></td>
+      </tr>`).join('')
+    : `<tr><td colspan="5" class="empty">등록된 품목 없음</td></tr>`;
 }
-async function delM(id){await Auth.deleteMenu(id);await rMenu();await refreshSel();showToast('삭제');}
+
+async function editMenu(id){
+  const list = await Auth.loadMenus();
+  const m = list.find(x=>x.id===id);
+  if(!m) return;
+  _editMenuId = id;
+  mName.value=m.name||''; mCat.value=m.category||''; mSpec.value=m.spec||''; mBrand.value=m.brandId||'';
+  document.querySelector('#hqp-register .rb.green').innerHTML='<i class="ti ti-pencil"></i>품목 수정 저장';
+  // 품목 카드로 스크롤
+  document.getElementById('mName').focus();
+  showToast(m.code+' 수정 모드 — 내용 변경 후 저장하세요');
+}
+
+async function delM(id){
+  if(!confirm('삭제할까요?')) return;
+  await Auth.deleteMenu(id);await rMenu();await refreshSel();showToast('삭제');
+}
 
 async function addPrice(){
   if(!prMenu.value||!prPrice.value){showToast('품목과 단가를 입력하세요');return;}

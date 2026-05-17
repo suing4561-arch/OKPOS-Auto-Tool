@@ -226,6 +226,8 @@ async function upsertUser(fields) {
     supplierId:     fields.supplierId     ?? existing.supplierId ?? '',
     driverId:       fields.driverId       ?? existing.driverId ?? '',
     permissions:    existing.permissions  ?? {},
+    okposId:        fields.okposId        ?? existing.okposId        ?? '',
+    okposPw:        fields.okposPw        ? hashPw(fields.okposPw) : (existing.okposPw ?? ''),
     mustChangePassword: fields.password ? false : (existing.mustChangePassword ?? false),
     createdAt:      existing.createdAt    ?? now(),
     updatedAt:      now(),
