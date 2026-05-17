@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>?쒓뎅?앺뭹 ???⑺뭹?낆껜 SCM</title>
+<title>한국식품 — 납품업체 SCM</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
@@ -21,34 +21,34 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .ndot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--surface)}
 .sup-name{font-size:20px;font-weight:700;letter-spacing:-.3px}
 .sup-sub{font-size:12px;color:var(--dim);margin-top:3px}
-/* ??*/
+/* 탭 */
 .tab-bar{display:flex;padding:0 20px;border-bottom:.5px solid var(--line);gap:0;background:var(--surface)}
 .tab-btn{flex:1;padding:12px 4px;text-align:center;font-size:13px;font-weight:500;color:var(--dim);border-bottom:2px solid transparent;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--sans)}
 .tab-btn.active{color:var(--text);border-bottom-color:var(--text);font-weight:700}
 .tbadge{display:inline-block;margin-left:4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:999px;vertical-align:middle}
-/* ?섏씠吏 */
+/* 페이지 */
 .page{display:none;flex-direction:column}.page.active{display:flex}
 .scroll-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
-/* 移대뱶 */
+/* 카드 */
 .section-label{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.5px;text-transform:uppercase}
 .card{background:var(--surface);border:.5px solid var(--line);border-radius:14px;padding:14px 16px}
 .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .card-title{font-size:14px;font-weight:700}
-/* ??*/
+/* 폼 */
 .form-field{display:flex;flex-direction:column;gap:5px}
 .form-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px}
 .form-input{width:100%;padding:10px 12px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:14px;font-family:var(--sans);color:var(--text);outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--text);background:var(--surface)}
 .form-select{width:100%;padding:10px 12px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:14px;font-family:var(--sans);color:var(--text);outline:none;appearance:none}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-/* 踰꾪듉 */
+/* 버튼 */
 .reg-btn{width:100%;padding:12px;border-radius:11px;border:none;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s}
 .reg-btn:active{opacity:.85}
 .reg-btn.blue{background:var(--blue-mid);color:#fff}
 .reg-btn.green{background:var(--green-mid);color:#fff}
 .reg-btn.purple{background:var(--purple);color:#fff}
 .reg-btn.outline{background:var(--surface2);border:.5px solid var(--line);color:var(--text)}
-/* 諛곗넚湲곗궗/媛留뱀젏 ?꾩씠??*/
+/* 배송기사/가맹점 아이템 */
 .list-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border:.5px solid var(--line);border-radius:12px;background:var(--surface)}
 .li-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .li-info{flex:1;min-width:0}
@@ -59,7 +59,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .act-btn.red{background:var(--red-bg);color:var(--red);border-color:rgba(192,57,43,.3)}
 .act-btn.blue{background:var(--blue-bg);color:var(--blue);border-color:rgba(26,95,168,.3)}
 .act-btn.green{background:var(--green-bg);color:var(--green);border-color:rgba(26,122,74,.3)}
-/* 諛곗넚 諛곗젙 移대뱶 */
+/* 배송 배정 카드 */
 .assign-card{border:.5px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin-bottom:10px}
 .ac-header{padding:13px 14px;border-bottom:.5px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ac-id{font-family:var(--mono);font-size:11px;color:var(--dim)}
@@ -79,12 +79,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .af-btn{flex:1;padding:9px;border-radius:9px;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;border:.5px solid var(--line);background:var(--surface2);color:var(--text);display:flex;align-items:center;justify-content:center;gap:5px}
 .af-btn.green{background:var(--green-mid);color:#fff;border-color:var(--green-mid)}
 .af-btn.blue{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
-/* ?붿빟 ?ㅽ듃由?*/
+/* 요약 스트립 */
 .strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .strip-card{background:var(--surface2);border-radius:12px;padding:12px;text-align:center}
 .strip-val{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text)}
 .strip-lbl{font-size:11px;color:var(--dim);margin-top:3px}
-/* ?뺤궛 */
+/* 정산 */
 .settle-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:.5px solid var(--line)}
 .settle-row:last-child{border-bottom:none}
 .settle-lbl{font-size:13px;color:var(--text)}.settle-sub{font-size:11px;color:var(--dim);margin-top:1px}
@@ -100,17 +100,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .hist-amt{font-family:var(--mono);font-size:13px;font-weight:700}
 .hist-st{font-size:11px;margin-top:2px}
 .hist-st.paid{color:var(--green)}.hist-st.pending{color:var(--amber)}
-/* ?대퉬 */
+/* 내비 */
 .nav-bar{display:flex;border-top:.5px solid var(--line);padding:8px 0 20px;background:var(--surface);flex-shrink:0}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 0;border:none;background:none;font-family:var(--sans)}
 .nav-item i{font-size:22px;color:var(--dim)}
 .nav-item i.active{color:var(--text)}
 .nav-lbl{font-size:10px;color:var(--dim);font-weight:500}
 .nav-lbl.active{color:var(--text);font-weight:700}
-/* ?좎뒪??*/
+/* 토스트 */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:999px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:200}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-/* 紐⑤떖 */
+/* 모달 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.show{display:flex}
 .modal-sheet{width:100%;max-width:480px;background:var(--surface);border-radius:20px 20px 0 0;padding:20px 20px 40px;display:flex;flex-direction:column;gap:14px}
@@ -120,7 +120,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .mbtn{flex:1;padding:13px;border-radius:12px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;border:.5px solid var(--line)}
 .mbtn.cancel{background:var(--surface2);color:var(--text)}
 .mbtn.ok{background:var(--text);color:#fff;border-color:var(--text)}
-/* 濡쒕뵫 */
+/* 로딩 */
 .loading-wrap{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted)}
 .spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -136,162 +136,181 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </div>
   <div class="app-header">
     <div class="header-top">
-      <div class="sup-badge"><i class="ti ti-building-factory" style="font-size:12px"></i>?⑺뭹?낆껜 SCM</div>
-      <div class="notif-btn"><i class="ti ti-bell"></i><span class="ndot"></span></div>
+      <div class="sup-badge"><i class="ti ti-building-factory" style="font-size:12px"></i>납품업체 SCM</div>
+      <button onclick="openBizSelect()" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:9px;border:.5px solid var(--line);background:var(--surface2);font-size:12px;font-weight:700;color:var(--text);cursor:pointer;font-family:var(--sans)">
+        <i class="ti ti-building-store" style="font-size:14px"></i>업체선택
+      </button>
     </div>
-    <div class="sup-name" id="supName">?⑺뭹?낆껜</div>
-    <div class="sup-sub" id="supDate">濡쒕뵫 以?..</div>
+    <div class="sup-name" id="supName" style="cursor:pointer;display:flex;align-items:center;gap:6px" onclick="openBizSelect()">
+      <span id="supNameText">업체를 선택하세요</span>
+      <i class="ti ti-chevron-down" style="font-size:14px;color:var(--muted)"></i>
+    </div>
+    <div class="sup-sub" id="supDate">로딩 중...</div>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('register')">?깅줉愿由?/button>
-    <button class="tab-btn" onclick="switchTab('assign')">諛곗넚諛곗젙<span class="tbadge" id="assignBadge">0</span></button>
-    <button class="tab-btn" onclick="switchTab('settle')">?뺤궛愿由?/button>
+    <button class="tab-btn active" onclick="switchTab('register')">등록관리</button>
+    <button class="tab-btn" onclick="switchTab('assign')">배송배정<span class="tbadge" id="assignBadge">0</span></button>
+    <button class="tab-btn" onclick="switchTab('settle')">정산관리</button>
   </div>
 
-  <!-- ?? ??: ?깅줉愿由??? -->
+  <!-- ── 탭1: 등록관리 ── -->
   <div class="page active" id="page-register">
     <div class="scroll-body">
 
-      <!-- 諛곗넚湲곗궗 ?깅줉 -->
+      <!-- 배송기사 등록 -->
       <div>
-        <div class="section-label" style="margin-bottom:8px">諛곗넚湲곗궗 ?깅줉</div>
+        <div class="section-label" style="margin-bottom:8px">배송기사 등록</div>
         <div class="card">
           <div class="two-col">
-            <div class="form-field"><div class="form-label">湲곗궗 ?깊븿 *</div><input class="form-input" id="drvName" placeholder="?띻만??></div>
-            <div class="form-field"><div class="form-label">?곕씫泥?*</div><input class="form-input" id="drvPhone" placeholder="010-0000-0000" type="tel"></div>
+            <div class="form-field"><div class="form-label">기사 성함 *</div><input class="form-input" id="drvName" placeholder="홍길동"></div>
+            <div class="form-field"><div class="form-label">연락처 *</div><input class="form-input" id="drvPhone" placeholder="010-0000-0000" type="tel"></div>
           </div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">李⑤웾 ?뺣낫</div><input class="form-input" id="drvCar" placeholder="12媛 3456 (1???묒감)"></div>
-          <button class="reg-btn blue" style="margin-top:10px" onclick="addDriver()"><i class="ti ti-user-plus" style="font-size:15px"></i>諛곗넚湲곗궗 ?깅줉</button>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">차량 정보</div><input class="form-input" id="drvCar" placeholder="12가 3456 (1톤 탑차)"></div>
+          <button class="reg-btn blue" style="margin-top:10px" onclick="addDriver()"><i class="ti ti-user-plus" style="font-size:15px"></i>배송기사 등록</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px" id="driverList">
-          <div class="loading-wrap"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div>
+          <div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>
         </div>
       </div>
 
-      <!-- 媛留뱀젏 ?깅줉 -->
+      <!-- 가맹점 등록 -->
       <div>
-        <div class="section-label" style="margin-bottom:8px">諛곗넚吏(媛留뱀젏) ?깅줉</div>
+        <div class="section-label" style="margin-bottom:8px">배송지(가맹점) 등록</div>
         <div class="card">
           <div class="two-col">
-            <div class="form-field"><div class="form-label">?곹샇紐?*</div><input class="form-input" id="stName" placeholder="遺??1?몄젏"></div>
-            <div class="form-field"><div class="form-label">?ъ뾽?먮쾲??/div><input class="form-input" id="stBiz" placeholder="000-00-00000"></div>
+            <div class="form-field"><div class="form-label">상호명 *</div><input class="form-input" id="stName" placeholder="부산 1호점"></div>
+            <div class="form-field"><div class="form-label">사업자번호</div><input class="form-input" id="stBiz" placeholder="000-00-00000"></div>
           </div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">二쇱냼 *</div><input class="form-input" id="stAddr" placeholder="遺?곗떆 遺?곗쭊援??뗢뿃??123-4"></div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">?곕씫泥?/div><input class="form-input" id="stPhone" placeholder="051-000-0000" type="tel"></div>
-          <button class="reg-btn purple" style="margin-top:10px" onclick="addStore()"><i class="ti ti-map-pin" style="font-size:15px"></i>諛곗넚吏 ?깅줉</button>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">주소 *</div><input class="form-input" id="stAddr" placeholder="부산시 부산진구 ○○동 123-4"></div>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">연락처</div><input class="form-input" id="stPhone" placeholder="051-000-0000" type="tel"></div>
+          <button class="reg-btn purple" style="margin-top:10px" onclick="addStore()"><i class="ti ti-map-pin" style="font-size:15px"></i>배송지 등록</button>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px" id="storeList">
-          <div class="loading-wrap"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div>
+          <div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ?? ??: 諛곗넚 諛곗젙 ?? -->
+  <!-- ── 탭2: 배송 배정 ── -->
   <div class="page" id="page-assign">
     <div class="scroll-body">
 
-      <!-- ??諛곗넚 ?앹꽦 -->
+      <!-- 새 배송 생성 -->
       <div>
-        <div class="section-label" style="margin-bottom:8px">??諛곗넚 ?앹꽦</div>
+        <div class="section-label" style="margin-bottom:8px">새 배송 생성</div>
         <div class="card">
-          <div class="form-field"><div class="form-label">諛곗넚吏(媛留뱀젏) *</div>
-            <select class="form-select" id="newStore"><option value="">諛곗넚吏 ?좏깮</option></select>
+          <div class="form-field"><div class="form-label">배송지(가맹점) *</div>
+            <select class="form-select" id="newStore"><option value="">배송지 선택</option></select>
           </div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">諛곗넚湲곗궗</div>
-            <select class="form-select" id="newDriver"><option value="">湲곗궗 ?좏깮 (?섏쨷??諛곗젙 媛??</option></select>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">배송기사</div>
+            <select class="form-select" id="newDriver"><option value="">기사 선택 (나중에 배정 가능)</option></select>
           </div>
 
-          <!-- 蹂몄궗 ?깅줉 ?덈ぉ ?좏깮 -->
+          <!-- 본사 등록 품목 선택 -->
           <div class="form-field" style="margin-top:8px">
-            <div class="form-label">?덈ぉ ?좏깮 (蹂몄궗 ?깅줉 ?덈ぉ)</div>
+            <div class="form-label">품목 선택 (본사 등록 품목)</div>
             <div style="display:flex;gap:6px">
-              <select class="form-select" id="menuSelect" style="flex:1"><option value="">?덈ぉ ?좏깮</option></select>
-              <input class="form-input" id="menuQty" type="number" placeholder="?섎웾" min="1" style="width:80px">
-              <button onclick="addItemToList()" style="padding:0 14px;border-radius:9px;border:none;background:var(--blue-mid);color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">異붽?</button>
+              <select class="form-select" id="menuSelect" style="flex:1"><option value="">품목 선택</option></select>
+              <input class="form-input" id="menuQty" type="number" placeholder="수량" min="1" style="width:80px">
+              <button onclick="addItemToList()" style="padding:0 14px;border-radius:9px;border:none;background:var(--blue-mid);color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">추가</button>
             </div>
           </div>
-          <!-- 異붽????덈ぉ 紐⑸줉 -->
+          <!-- 추가된 품목 목록 -->
           <div id="itemListWrap" style="display:none;margin-top:8px;border:.5px solid var(--line);border-radius:10px;overflow:hidden">
-            <div style="padding:8px 12px;background:var(--surface2);font-size:11px;font-weight:700;color:var(--dim)">?좏깮???덈ぉ</div>
+            <div style="padding:8px 12px;background:var(--surface2);font-size:11px;font-weight:700;color:var(--dim)">선택된 품목</div>
             <div id="itemList" style="display:flex;flex-direction:column;gap:0"></div>
             <div style="padding:8px 12px;border-top:.5px solid var(--line);display:flex;justify-content:space-between;font-size:13px;font-weight:700">
-              <span style="color:var(--muted)">?⑷퀎</span>
-              <span id="itemTotal" style="font-family:var(--mono)">0??/span>
+              <span style="color:var(--muted)">합계</span>
+              <span id="itemTotal" style="font-family:var(--mono)">0원</span>
             </div>
           </div>
 
-          <div class="form-field" style="margin-top:8px"><div class="form-label">吏곸젒 ?낅젰 (???좏깮怨?蹂꾧컻)</div>
-            <input class="form-input" id="newItems" placeholder="異붽? ?덈ぉ 吏곸젒 ?낅젰 (?좏깮?ы빆)"></div>
-          <div class="form-field" style="margin-top:8px"><div class="form-label">硫붾え</div>
-            <input class="form-input" id="newNote" placeholder="?됱옣 蹂닿? ?꾩슂 ??></div>
-          <button class="reg-btn green" style="margin-top:10px" onclick="createDelivery()"><i class="ti ti-truck-delivery" style="font-size:15px"></i>諛곗넚 ?앹꽦</button>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">직접 입력 (위 선택과 별개)</div>
+            <input class="form-input" id="newItems" placeholder="추가 품목 직접 입력 (선택사항)"></div>
+          <div class="form-field" style="margin-top:8px"><div class="form-label">메모</div>
+            <input class="form-input" id="newNote" placeholder="냉장 보관 필요 등"></div>
+          <button class="reg-btn green" style="margin-top:10px" onclick="createDelivery()"><i class="ti ti-truck-delivery" style="font-size:15px"></i>배송 생성</button>
         </div>
       </div>
 
-      <!-- 諛곗넚 紐⑸줉 -->
+      <!-- 배송 목록 -->
       <div>
-        <div class="section-label" style="margin-bottom:8px">諛곗넚 紐⑸줉</div>
+        <div class="section-label" style="margin-bottom:8px">배송 목록</div>
         <div id="deliveryList">
-          <div class="loading-wrap"><div class="spinner"></div>遺덈윭?ㅻ뒗 以?..</div>
+          <div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ?? ??: ?뺤궛 愿由??? -->
+  <!-- ── 탭3: 정산 관리 ── -->
   <div class="page" id="page-settle">
     <div class="scroll-body">
       <div class="strip">
-        <div class="strip-card"><div class="strip-val" style="color:var(--green)">18嫄?/div><div class="strip-lbl">?대쾲???꾨즺</div></div>
-        <div class="strip-card"><div class="strip-val" style="color:var(--amber)">4嫄?/div><div class="strip-lbl">泥?뎄以?/div></div>
-        <div class="strip-card"><div class="strip-val" style="color:var(--blue)">2??1,480留?/div><div class="strip-lbl">?대쾲???⑷퀎</div></div>
+        <div class="strip-card"><div class="strip-val" style="color:var(--green)">18건</div><div class="strip-lbl">이번달 완료</div></div>
+        <div class="strip-card"><div class="strip-val" style="color:var(--amber)">4건</div><div class="strip-lbl">청구중</div></div>
+        <div class="strip-card"><div class="strip-val" style="color:var(--blue)">2억 1,480만</div><div class="strip-lbl">이번달 합계</div></div>
       </div>
       <div class="card">
-        <div class="card-header"><span class="card-title">?대쾲???뺤궛 ?붿빟</span></div>
-        <div class="settle-row"><div><div class="settle-lbl">珥??⑺뭹 湲덉븸</div><div class="settle-sub">18嫄?/div></div><div class="settle-amt pos">+2??1,480留?/div></div>
-        <div class="settle-row"><div><div class="settle-lbl">?낃툑 ?꾨즺</div><div class="settle-sub">14嫄?/div></div><div class="settle-amt pos">+1??8,240留?/div></div>
-        <div class="settle-row"><div><div class="settle-lbl">誘몄닔湲?(泥?뎄 以?</div><div class="settle-sub">4嫄?쨌 5/20 ?덉젙</div></div><div class="settle-amt neg">-3,240留?/div></div>
-        <div class="settle-row"><div><div class="settle-lbl" style="font-weight:700">理쒖쥌 ?뺤궛 ?덉긽</div></div><div class="settle-amt pos" style="font-size:16px">+2??120留?/div></div>
+        <div class="card-header"><span class="card-title">이번달 정산 요약</span></div>
+        <div class="settle-row"><div><div class="settle-lbl">총 납품 금액</div><div class="settle-sub">18건</div></div><div class="settle-amt pos">+2억 1,480만</div></div>
+        <div class="settle-row"><div><div class="settle-lbl">입금 완료</div><div class="settle-sub">14건</div></div><div class="settle-amt pos">+1억 8,240만</div></div>
+        <div class="settle-row"><div><div class="settle-lbl">미수금 (청구 중)</div><div class="settle-sub">4건 · 5/20 예정</div></div><div class="settle-amt neg">-3,240만</div></div>
+        <div class="settle-row"><div><div class="settle-lbl" style="font-weight:700">최종 정산 예상</div></div><div class="settle-amt pos" style="font-size:16px">+2억 120만</div></div>
       </div>
       <div class="card">
-        <div class="card-header"><span class="card-title">?⑺뭹 ?댁뿭</span></div>
-        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">????댁궡 ??5醫?/div><div class="hist-detail">05/15</div></div><div class="hist-right"><div class="hist-amt">4,820,000??/div><div class="hist-st pending">泥?뎄以?/div></div></div>
-        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">?앹슜??쨌 ?ъ옣??/div><div class="hist-detail">05/12</div></div><div class="hist-right"><div class="hist-amt">1,240,000??/div><div class="hist-st pending">泥?뎄以?/div></div></div>
-        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">? 쨌 ?뚯뒪瑜?/div><div class="hist-detail">05/10</div></div><div class="hist-right"><div class="hist-amt">960,000??/div><div class="hist-st paid">?낃툑?꾨즺</div></div></div>
-        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">????댁궡 쨌 ?뚯뒪瑜?/div><div class="hist-detail">05/05</div></div><div class="hist-right"><div class="hist-amt">3,200,000??/div><div class="hist-st paid">?낃툑?꾨즺</div></div></div>
+        <div class="card-header"><span class="card-title">납품 내역</span></div>
+        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">닭가슴살 외 5종</div><div class="hist-detail">05/15</div></div><div class="hist-right"><div class="hist-amt">4,820,000원</div><div class="hist-st pending">청구중</div></div></div>
+        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">식용유 · 포장재</div><div class="hist-detail">05/12</div></div><div class="hist-right"><div class="hist-amt">1,240,000원</div><div class="hist-st pending">청구중</div></div></div>
+        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">쌀 · 소스류</div><div class="hist-detail">05/10</div></div><div class="hist-right"><div class="hist-amt">960,000원</div><div class="hist-st paid">입금완료</div></div></div>
+        <div class="hist-item"><div class="hist-icon"><i class="ti ti-file-invoice"></i></div><div class="hist-info"><div class="hist-title">닭가슴살 · 소스류</div><div class="hist-detail">05/05</div></div><div class="hist-right"><div class="hist-amt">3,200,000원</div><div class="hist-st paid">입금완료</div></div></div>
       </div>
       <div style="display:flex;gap:8px">
-        <button style="flex:1;padding:11px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px" onclick="showToast('嫄곕옒紐낆꽭??PDF ?앹꽦 以?..')"><i class="ti ti-file-type-pdf" style="font-size:17px"></i>嫄곕옒紐낆꽭??PDF</button>
-        <button style="flex:1;padding:11px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px" onclick="showToast('?묒? ?뚯씪 ?ㅼ슫濡쒕뱶 以?..')"><i class="ti ti-table-export" style="font-size:17px"></i>?묒? ?대낫?닿린</button>
+        <button style="flex:1;padding:11px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px" onclick="showToast('거래명세서 PDF 생성 중...')"><i class="ti ti-file-type-pdf" style="font-size:17px"></i>거래명세서 PDF</button>
+        <button style="flex:1;padding:11px;border-radius:10px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px" onclick="showToast('엑셀 파일 다운로드 중...')"><i class="ti ti-table-export" style="font-size:17px"></i>엑셀 내보내기</button>
       </div>
     </div>
   </div>
 
   <div class="nav-bar">
-    <button class="nav-item" onclick="switchTab('register')" id="nav-register"><i class="ti ti-list-check active" id="ni-register"></i><span class="nav-lbl active" id="nl-register">?깅줉愿由?/span></button>
-    <button class="nav-item" onclick="switchTab('assign')" id="nav-assign"><i class="ti ti-truck-delivery" id="ni-assign"></i><span class="nav-lbl" id="nl-assign">諛곗넚諛곗젙</span></button>
-    <button class="nav-item" onclick="switchTab('settle')" id="nav-settle"><i class="ti ti-coin" id="ni-settle"></i><span class="nav-lbl" id="nl-settle">?뺤궛愿由?/span></button>
+    <button class="nav-item" onclick="switchTab('register')" id="nav-register"><i class="ti ti-list-check active" id="ni-register"></i><span class="nav-lbl active" id="nl-register">등록관리</span></button>
+    <button class="nav-item" onclick="switchTab('assign')" id="nav-assign"><i class="ti ti-truck-delivery" id="ni-assign"></i><span class="nav-lbl" id="nl-assign">배송배정</span></button>
+    <button class="nav-item" onclick="switchTab('settle')" id="nav-settle"><i class="ti ti-coin" id="ni-settle"></i><span class="nav-lbl" id="nl-settle">정산관리</span></button>
   </div>
 </div>
 
-<!-- 諛곗넚?꾪몴 紐⑤떖 -->
+<!-- 업체 선택 모달 -->
+<div class="modal-overlay" id="bizSelectModal" onclick="if(event.target===this)closeModal('bizSelectModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">납품업체 선택</div>
+    <div style="font-size:13px;color:var(--muted)">본사에서 등록한 납품업체를 선택하세요</div>
+    <div id="bizSelectList" style="display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow-y:auto">
+      <div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>
+    </div>
+    <button class="reg-btn outline" onclick="closeModal('bizSelectModal')">취소</button>
+  </div>
+</div>
+
 <div class="modal-overlay" id="slipModal" onclick="if(event.target===this)closeModal('slipModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">?벀 諛곗넚?꾪몴</div>
+    <div class="modal-title">📦 배송전표</div>
     <div id="slipContent" style="background:var(--surface2);border-radius:12px;padding:14px;font-size:13px;line-height:1.8"></div>
     <div class="mbtn-row">
-      <button class="mbtn cancel" onclick="closeModal('slipModal')">?リ린</button>
-      <button class="mbtn ok" onclick="printSlip()"><i class="ti ti-printer" style="font-size:15px;vertical-align:-2px"></i> ?몄뇙</button>
-      <button class="mbtn ok" style="background:var(--blue-mid);border-color:var(--blue-mid)" onclick="copyLink()"><i class="ti ti-link" style="font-size:15px;vertical-align:-2px"></i> 留곹겕蹂듭궗</button>
+      <button class="mbtn cancel" onclick="closeModal('slipModal')">닫기</button>
+      <button class="mbtn ok" onclick="printSlip()"><i class="ti ti-printer" style="font-size:15px;vertical-align:-2px"></i> 인쇄</button>
+      <button class="mbtn ok" style="background:var(--blue-mid);border-color:var(--blue-mid)" onclick="copyLink()"><i class="ti ti-link" style="font-size:15px;vertical-align:-2px"></i> 링크복사</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="auth.js"></script>
 <script>
 const Auth = window.SmartBaljuAuth;
@@ -299,32 +318,35 @@ let currentTab = 'register';
 let _drivers = [], _stores = [], _deliveries = [];
 let _slipDeliveryId = '';
 
-// ?쒓퀎
+// 시계
 (function tick(){ const n=new Date(); document.getElementById('stTime').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0'); setTimeout(tick,1000); })();
-(function(){ const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],n=new Date(); document.getElementById('supDate').textContent=n.getFullYear()+'.'+(n.getMonth()+1)+'.'+(n.getDate())+' ('+days[n.getDay()]+')'; })();
+(function(){ const days=['일','월','화','수','목','금','토'],n=new Date(); document.getElementById('supDate').textContent=n.getFullYear()+'.'+(n.getMonth()+1)+'.'+(n.getDate())+' ('+days[n.getDay()]+') · 담당자 김철수 과장'; })();
 
-// ???꾪솚
-async function switchTab(tab) {
+// 탭 전환
+function switchTab(tab) {
   currentTab = tab;
   ['register','assign','settle'].forEach(t => {
     document.getElementById('page-'+t).classList.toggle('active', t===tab);
-    document.querySelectorAll('.tab-btn').forEach((b,i) => { if(['register','assign','settle'][i]===tab) b.classList.add('active'); else if(['register','assign','settle'][i]!==tab) b.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach((b,i) => { if(['register','assign','settle'][i]===tab) b.classList.add('active'); else b.classList.remove('active'); });
     document.getElementById('ni-'+t).className = 'ti ti-'+(t==='register'?'list-check':t==='assign'?'truck-delivery':'coin')+(t===tab?' active':'');
     document.getElementById('nl-'+t).className = 'nav-lbl'+(t===tab?' active':'');
   });
-  if(tab==='assign') { await loadDeliveries(); await refreshAssignSelects(); }
+  if(tab==='assign') { loadDeliveries(); refreshAssignSelects(); }
 }
 
 let _tt;
 function showToast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2400); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 
-// ?? 諛곗넚湲곗궗 ??????????????????????????????????????????????
+// ── 배송기사 ──────────────────────────────────────────────
 async function addDriver() {
-  if(!drvName.value.trim()||!drvPhone.value.trim()){ showToast('이름과 연락처를 입력하세요.'); return; }
+  const drvName = document.getElementById('drvName');
+  const drvPhone = document.getElementById('drvPhone');
+  const drvCar = document.getElementById('drvCar');
+  if(!drvName.value.trim()||!drvPhone.value.trim()){ showToast('성함과 연락처를 입력하세요'); return; }
   await Auth.registerSupplierDriver({ name:drvName.value.trim(), phone:drvPhone.value.trim(), car:drvCar.value.trim() });
   drvName.value=drvPhone.value=drvCar.value='';
-  await loadDrivers(); await refreshAssignSelects(); showToast('諛곗넚湲곗궗 ?깅줉 ?꾨즺');
+  await loadDrivers(); await refreshAssignSelects(); showToast('배송기사 등록 완료');
 }
 async function loadDrivers() {
   _drivers = await Auth.loadSupplierDrivers();
@@ -332,22 +354,26 @@ async function loadDrivers() {
   el.innerHTML = _drivers.length
     ? _drivers.map(d=>`<div class="list-item">
         <div class="li-icon" style="background:var(--blue-bg);color:var(--blue)"><i class="ti ti-user"></i></div>
-        <div class="li-info"><div class="li-name">${d.name}</div><div class="li-sub">${d.phone}${d.car?' 쨌 '+d.car:''}</div></div>
+        <div class="li-info"><div class="li-name">${d.name}</div><div class="li-sub">${d.phone}${d.car?' · '+d.car:''}</div></div>
         <div class="li-actions">
           <a href="tel:${d.phone}" class="act-btn blue"><i class="ti ti-phone" style="font-size:12px"></i></a>
           <button class="act-btn red" onclick="delDriver('${d.id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>
         </div>
       </div>`).join('')
-    : '<div class="empty-state">?깅줉??諛곗넚湲곗궗 ?놁쓬</div>';
+    : '<div class="empty-state">등록된 배송기사 없음</div>';
 }
-async function delDriver(id){ if(!confirm('??젣?좉퉴??')) return; await Auth.deleteSupplierDriver(id); await loadDrivers(); showToast('??젣 ?꾨즺'); }
+async function delDriver(id){ if(!confirm('삭제할까요?')) return; await Auth.deleteSupplierDriver(id); await loadDrivers(); showToast('삭제 완료'); }
 
-// ?? 媛留뱀젏(諛곗넚吏) ?????????????????????????????????????????
+// ── 가맹점(배송지) ─────────────────────────────────────────
 async function addStore() {
-  if(!stName.value.trim()||!stAddr.value.trim()){ showToast('상호명과 주소를 입력하세요.'); return; }
+  const stName = document.getElementById('stName');
+  const stAddr = document.getElementById('stAddr');
+  const stBiz = document.getElementById('stBiz');
+  const stPhone = document.getElementById('stPhone');
+  if(!stName.value.trim()||!stAddr.value.trim()){ showToast('상호명과 주소를 입력하세요'); return; }
   await Auth.registerSupplierFranchise({ businessName:stName.value.trim(), businessNumber:stBiz.value.trim(), address:stAddr.value.trim(), phone:stPhone.value.trim() });
   stName.value=stBiz.value=stAddr.value=stPhone.value='';
-  await loadStores(); await refreshAssignSelects(); showToast('諛곗넚吏 ?깅줉 ?꾨즺');
+  await loadStores(); await refreshAssignSelects(); showToast('배송지 등록 완료');
 }
 async function loadStores() {
   _stores = await Auth.loadSupplierFranchises();
@@ -355,27 +381,26 @@ async function loadStores() {
   el.innerHTML = _stores.length
     ? _stores.map(s=>`<div class="list-item">
         <div class="li-icon" style="background:var(--purple-bg);color:var(--purple)"><i class="ti ti-building-store"></i></div>
-        <div class="li-info"><div class="li-name">${s.businessName}</div><div class="li-sub">${s.address}${s.phone?' 쨌 '+s.phone:''}</div></div>
+        <div class="li-info"><div class="li-name">${s.businessName}</div><div class="li-sub">${s.address}${s.phone?' · '+s.phone:''}</div></div>
         <div class="li-actions">
           <button class="act-btn red" onclick="delStore('${s.id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>
         </div>
       </div>`).join('')
-    : '<div class="empty-state">?깅줉??諛곗넚吏 ?놁쓬</div>';
+    : '<div class="empty-state">등록된 배송지 없음</div>';
 }
-async function delStore(id){ if(!confirm('??젣?좉퉴??')) return; await Auth.deleteSupplierFranchise(id); await loadStores(); showToast('??젣 ?꾨즺'); }
+async function delStore(id){ if(!confirm('삭제할까요?')) return; await Auth.deleteSupplierFranchise(id); await loadStores(); showToast('삭제 완료'); }
 
-// ?? 諛곗넚 諛곗젙 ?????????????????????????????????????????????
-// ?? 蹂몄궗 ?깅줉 ?덈ぉ/嫄곕옒泥??곕룞 ????????????????????????????
+// ── 본사 등록 품목/거래처 연동 ────────────────────────────
 let _hqMenus = [], _hqPrices = [], _selectedItems = [];
 
 async function loadHqData() {
   [_hqMenus, _hqPrices] = await Promise.all([Auth.loadMenus(), Auth.loadPrices()]);
-  // ?덈ぉ ??됲듃 梨꾩슦湲?  const sel = document.getElementById('menuSelect');
+  const sel = document.getElementById('menuSelect');
   if(sel) {
-    sel.innerHTML = '<option value="">?덈ぉ ?좏깮</option>'
+    sel.innerHTML = '<option value="">품목 선택</option>'
       + _hqMenus.map(m => {
           const price = _hqPrices.find(p => p.menuId === m.id);
-          const priceStr = price ? ' ??'+Number(price.price).toLocaleString()+'??'+price.unit : '';
+          const priceStr = price ? ' — '+Number(price.price).toLocaleString()+'원/'+price.unit : '';
           return `<option value="${m.id}" data-price="${price?.price||0}" data-unit="${price?.unit||''}">${m.code?'['+m.code+'] ':''}${m.name}${priceStr}</option>`;
         }).join('');
   }
@@ -385,12 +410,11 @@ function addItemToList() {
   const sel = document.getElementById('menuSelect');
   const qty = parseInt(document.getElementById('menuQty').value) || 1;
   const opt = sel.options[sel.selectedIndex];
-  if(!sel.value) { showToast('품목을 선택하세요.'); return; }
+  if(!sel.value) { showToast('품목을 선택하세요'); return; }
   const menuId = sel.value;
-  const name = opt.text.split(' ??')[0];
+  const name = opt.text.split(' — ')[0];
   const price = parseInt(opt.dataset.price) || 0;
   const unit = opt.dataset.unit || '';
-  // 以묐났 ???섎웾 ?⑹궛
   const exist = _selectedItems.find(x => x.menuId === menuId);
   if(exist) { exist.qty += qty; }
   else { _selectedItems.push({ menuId, name, price, unit, qty }); }
@@ -406,9 +430,9 @@ function renderItemList() {
   listEl.innerHTML = _selectedItems.map((item, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:.5px solid var(--line);font-size:13px">
       <span style="flex:1;font-weight:700">${item.name}</span>
-      <span style="color:var(--muted);font-size:12px">${item.price?Number(item.price).toLocaleString()+'??'+item.unit:''}</span>
+      <span style="color:var(--muted);font-size:12px">${item.price?Number(item.price).toLocaleString()+'원/'+item.unit:''}</span>
       <input type="number" value="${item.qty}" min="1" style="width:60px;padding:4px 8px;border-radius:6px;border:.5px solid var(--line);background:var(--surface2);font-size:13px;text-align:center" onchange="_selectedItems[${i}].qty=parseInt(this.value)||1;renderItemList()">
-      <button onclick="_selectedItems.splice(${i},1);renderItemList()" style="padding:3px 7px;border-radius:6px;border:none;background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;cursor:pointer">??/button>
+      <button onclick="_selectedItems.splice(${i},1);renderItemList()" style="padding:3px 7px;border-radius:6px;border:none;background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;cursor:pointer">✕</button>
     </div>`).join('');
   const total = _selectedItems.reduce((s,x) => s + x.price*x.qty, 0);
   document.getElementById('itemTotal').textContent = total.toLocaleString()+'원';
@@ -417,35 +441,30 @@ function renderItemList() {
 async function refreshAssignSelects() {
   const [drivers, stores] = await Promise.all([Auth.loadSupplierDrivers(), Auth.loadSupplierFranchises()]);
   _drivers = drivers; _stores = stores;
-  document.getElementById('newStore').innerHTML = '<option value="">諛곗넚吏 ?좏깮</option>'+stores.map(s=>`<option value="${s.id}">${s.businessName}</option>`).join('');
-  document.getElementById('newDriver').innerHTML = '<option value="">湲곗궗 ?좏깮 (?섏쨷??諛곗젙 媛??</option>'+drivers.map(d=>`<option value="${d.id}">${d.name} (${d.phone})</option>`).join('');
+  document.getElementById('newStore').innerHTML = '<option value="">배송지 선택</option>'+stores.map(s=>`<option value="${s.id}">${s.businessName}</option>`).join('');
+  document.getElementById('newDriver').innerHTML = '<option value="">기사 선택 (나중에 배정 가능)</option>'+drivers.map(d=>`<option value="${d.id}">${d.name} (${d.phone})</option>`).join('');
   await loadHqData();
 }
 
 async function createDelivery() {
-  const storeId = newStore.value;
-  if(!storeId){ showToast('배송지를 선택하세요.'); return; }
+  const storeId = document.getElementById('newStore').value;
+  if(!storeId){ showToast('배송지를 선택하세요'); return; }
   const store = _stores.find(s=>s.id===storeId);
-  const driverId = newDriver.value;
+  const driverId = document.getElementById('newDriver').value;
   const driver = _drivers.find(d=>d.id===driverId);
-
-  // ?덈ぉ ?댁뿭 議고빀 (?좏깮 ?덈ぉ + 吏곸젒 ?낅젰)
-  let itemsText = _selectedItems.map(x=>`${x.name} ${x.qty}${x.unit}`).join(' 쨌 ');
-  if(newItems.value.trim()) itemsText += (itemsText ? ' 쨌 ' : '') + newItems.value.trim();
-  if(!itemsText){ showToast('품목을 선택하거나 직접 입력하세요.'); return; }
-
-  // 湲덉븸 ?먮룞 怨꾩궛
+  let itemsText = _selectedItems.map(x=>`${x.name} ${x.qty}${x.unit}`).join(' · ');
+  const newItemsVal = document.getElementById('newItems').value.trim();
+  if(newItemsVal) itemsText += (itemsText ? ' · ' : '') + newItemsVal;
+  if(!itemsText){ showToast('품목을 선택하거나 직접 입력하세요'); return; }
   const amount = _selectedItems.reduce((s,x)=>s+x.price*x.qty, 0);
-
   await Auth.createDelivery({
     storeId, storeName: store?.businessName||'', address: store?.address||'',
     driverId: driverId||'', driverName: driver?.name||'', driverPhone: driver?.phone||'',
-    items: itemsText,
-    itemDetails: _selectedItems,
-    amount,
-    note: newNote.value.trim(),
+    items: itemsText, itemDetails: _selectedItems, amount,
+    note: document.getElementById('newNote').value.trim(),
   });
-  newStore.value=''; newDriver.value=''; newItems.value=''; newNote.value='';
+  document.getElementById('newStore').value=''; document.getElementById('newDriver').value='';
+  document.getElementById('newItems').value=''; document.getElementById('newNote').value='';
   _selectedItems=[]; renderItemList();
   await loadDeliveries(); showToast('배송 생성 완료 · '+amount.toLocaleString()+'원');
 }
@@ -455,12 +474,12 @@ async function loadDeliveries() {
   const badge = _deliveries.filter(d=>d.status==='assigned').length;
   document.getElementById('assignBadge').textContent = badge;
   const el = document.getElementById('deliveryList');
-  if(!_deliveries.length){ el.innerHTML='<div class="empty-state">?깅줉??諛곗넚 ?놁쓬</div>'; return; }
+  if(!_deliveries.length){ el.innerHTML='<div class="empty-state">등록된 배송 없음</div>'; return; }
   const ST = {assigned:{l:'배정됨',cls:'sc-assigned'},shipping:{l:'배송중',cls:'sc-shipping'},done:{l:'완료',cls:'sc-done'},issue:{l:'이슈',cls:'sc-issue'}};
   el.innerHTML = _deliveries.map(d=>{
     const st = ST[d.status]||ST.assigned;
     const driverSel = '<select class="driver-select" id="dsel-'+d.id+'" onchange="assignDriver(\''+d.id+'\',this.value)">'
-      +'<option value="">湲곗궗 誘몃같??/option>'
+      +'<option value="">기사 미배정</option>'
       +_drivers.map(dr=>`<option value="${dr.id}" ${dr.id===d.driverId?'selected':''}>${dr.name}</option>`).join('')
       +'</select>';
     return `<div class="assign-card">
@@ -476,15 +495,15 @@ async function loadDeliveries() {
       <div class="ac-body">
         <div class="driver-select-wrap">
           ${driverSel}
-          <button class="assign-btn" onclick="assignDriver('${d.id}', document.getElementById('dsel-${d.id}').value)">諛곗젙</button>
+          <button class="assign-btn" onclick="assignDriver('${d.id}', document.getElementById('dsel-${d.id}').value)">배정</button>
         </div>
-        ${d.amount?`<div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)">${Number(d.amount).toLocaleString()}??/div>`:''}
-        ${d.note?`<div style="font-size:12px;color:var(--muted)">硫붾え: ${d.note}</div>`:''}
+        ${d.amount?`<div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text)">${Number(d.amount).toLocaleString()}원</div>`:''}
+        ${d.note?`<div style="font-size:12px;color:var(--muted)">메모: ${d.note}</div>`:''}
       </div>
       <div class="ac-footer">
-        ${d.status==='assigned'?`<button class="af-btn green" onclick="startDelivery('${d.id}')"><i class="ti ti-truck-delivery" style="font-size:15px"></i>諛곗넚 ?쒖옉</button>`:''}
-        <button class="af-btn" onclick="openSlip('${d.id}')"><i class="ti ti-file-text" style="font-size:15px"></i>?꾪몴</button>
-        <button class="af-btn blue" onclick="copyDeliveryLink('${d.id}')"><i class="ti ti-link" style="font-size:15px"></i>留곹겕蹂듭궗</button>
+        ${d.status==='assigned'?`<button class="af-btn green" onclick="startDelivery('${d.id}')"><i class="ti ti-truck-delivery" style="font-size:15px"></i>배송 시작</button>`:''}
+        <button class="af-btn" onclick="openSlip('${d.id}')"><i class="ti ti-file-text" style="font-size:15px"></i>전표</button>
+        <button class="af-btn blue" onclick="copyDeliveryLink('${d.id}')"><i class="ti ti-link" style="font-size:15px"></i>링크복사</button>
         ${d.status!=='done'?`<button class="af-btn" style="color:var(--red)" onclick="delDelivery('${d.id}')"><i class="ti ti-trash" style="font-size:14px"></i></button>`:''}
       </div>
     </div>`;
@@ -492,38 +511,38 @@ async function loadDeliveries() {
 }
 
 async function assignDriver(deliveryId, driverId) {
-  if(!driverId){ showToast('기사를 선택하세요.'); return; }
+  if(!driverId){ showToast('기사를 선택하세요'); return; }
   await Auth.assignDelivery(deliveryId, driverId);
-  await loadDeliveries(); showToast('湲곗궗 諛곗젙 ?꾨즺');
+  await loadDeliveries(); showToast('기사 배정 완료');
 }
 
 async function startDelivery(id) {
-  if(!confirm('諛곗넚???쒖옉?섏떆寃좎뒿?덇퉴?\n媛留뱀젏쨌蹂몄궗???뚮┝???꾩넚?⑸땲??')) return;
+  if(!confirm('배송을 시작하시겠습니까?\n가맹점·본사에 알림이 전송됩니다.')) return;
   await Auth.startDelivery(id);
-  await loadDeliveries(); showToast('배송 시작 완료');
+  await loadDeliveries(); showToast('배송 시작! 알림 전송됨 ✓');
 }
 
 async function delDelivery(id) {
-  if(!confirm('??諛곗넚????젣?좉퉴??')) return;
+  if(!confirm('이 배송을 삭제할까요?')) return;
   await Auth.DB.remove('deliveries/'+id);
-  await loadDeliveries(); showToast('??젣 ?꾨즺');
+  await loadDeliveries(); showToast('삭제 완료');
 }
 
-// ?? 諛곗넚?꾪몴 ?????????????????????????????????????????????
+// ── 배송전표 ─────────────────────────────────────────────
 async function openSlip(id) {
   _slipDeliveryId = id;
-  const d = _deliveries.find(x=>x.id===id) || await Auth.DB.get('deliveries/'+id);
+  const d = _deliveries.find(x=>x.id===id);
   if(!d) return;
   document.getElementById('slipContent').innerHTML = `
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">諛곗넚ID</span><span style="font-family:var(--mono);font-size:12px">${d.id}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">諛곗넚泥?/span><strong>${d.storeName||'-'}</strong></div>
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">二쇱냼</span><span style="text-align:right;max-width:200px">${d.address||'-'}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">Driver</span><strong>${d.driverName||"Unassigned"}</strong></div>
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">?곕씫泥?/span>${d.driverPhone||'-'}</div>
-    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">Amount</span><strong style="font-family:var(--mono)">${Number(d.amount||0).toLocaleString()}원</strong></div>
-    <div style="padding:8px 0"><span style="color:var(--muted)">?덈ぉ</span><div style="margin-top:4px;font-size:13px">${d.items||'-'}</div></div>
-    ${d.note?`<div style="padding:5px 0"><span style="color:var(--muted)">硫붾え</span><div style="margin-top:4px;font-size:12px;color:var(--muted)">${d.note}</div></div>`:''}
-    <div style="color:var(--dim);font-size:11px;margin-top:8px;text-align:center">?앹꽦: ${(d.createdAt||'').slice(0,16).replace('T',' ')}</div>`;
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">배송ID</span><span style="font-family:var(--mono);font-size:12px">${d.id}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">배송처</span><strong>${d.storeName||'-'}</strong></div>
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">주소</span><span style="text-align:right;max-width:200px">${d.address||'-'}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">기사</span><strong>${d.driverName||'미배정'}</strong></div>
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">연락처</span>${d.driverPhone||'-'}</div>
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid var(--line)"><span style="color:var(--muted)">금액</span><strong style="font-family:var(--mono)">${Number(d.amount||0).toLocaleString()}원</strong></div>
+    <div style="padding:8px 0"><span style="color:var(--muted)">품목</span><div style="margin-top:4px;font-size:13px">${d.items||'-'}</div></div>
+    ${d.note?`<div style="padding:5px 0"><span style="color:var(--muted)">메모</span><div style="margin-top:4px;font-size:12px;color:var(--muted)">${d.note}</div></div>`:''}
+    <div style="color:var(--dim);font-size:11px;margin-top:8px;text-align:center">생성: ${(d.createdAt||'').slice(0,16).replace('T',' ')}</div>`;
   document.getElementById('slipModal').classList.add('show');
 }
 
@@ -532,20 +551,75 @@ function printSlip() {
   if(!d) return;
   Auth.getDeliverySlipHtml(_slipDeliveryId).then(html=>{
     const w = window.open('','_blank');
-    w.document.write(html);
-    w.document.close();
+    w.document.write(html); w.document.close();
     setTimeout(()=>w.print(), 300);
   });
 }
 
 function copyDeliveryLink(id) {
   const link = Auth.getDeliveryLink(id);
-  if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>showToast('링크 복사 완료'));
-  else { prompt('留곹겕瑜?蹂듭궗?섏꽭??', link); }
+  if(navigator.clipboard) navigator.clipboard.writeText(link).then(()=>showToast('링크 복사 완료! 기사에게 전송하세요'));
+  else { prompt('링크를 복사하세요:', link); }
 }
 function copyLink() { copyDeliveryLink(_slipDeliveryId); closeModal('slipModal'); }
 
-// ?? 珥덇린???????????????????????????????????????????????????
+// ── 업체 선택 ──────────────────────────────────────────────
+let _currentBiz = null;
+
+async function openBizSelect() {
+  document.getElementById('bizSelectModal').classList.add('show');
+  const el = document.getElementById('bizSelectList');
+  el.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>불러오는 중...</div>';
+
+  const [partners, users] = await Promise.all([
+    Auth.loadPartners(),
+    Auth.loadUsers()
+  ]);
+  const supplierUsers = users.filter(u => u.role === 'supplier' && u.status === 'active');
+
+  const bizList = [];
+  partners.filter(p => p.status === 'active').forEach(p => {
+    bizList.push({ id: p.id, name: p.name, sub: p.businessNumber || p.phone || '', type: 'partner', data: p });
+  });
+  supplierUsers.forEach(u => {
+    if(!bizList.find(b => b.name === (u.businessName || u.name))) {
+      bizList.push({ id: u.uid, name: u.businessName || u.name || u.loginId, sub: u.phone || u.loginId, type: 'user', data: u });
+    }
+  });
+
+  if(!bizList.length) {
+    el.innerHTML = '<div class="empty-state">등록된 납품업체가 없습니다.<br>본사 기준정보에서 거래처를 먼저 등록하세요.</div>';
+    return;
+  }
+
+  el.innerHTML = bizList.map(b => `
+    <div onclick="selectBiz(${JSON.stringify(b).replace(/"/g,'&quot;')})" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:.5px solid var(--line);border-radius:12px;cursor:pointer;background:var(--surface);transition:background .15s" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">
+        <i class="ti ti-building-factory" style="color:var(--purple)"></i>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:700;color:var(--text)">${b.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${b.sub}</div>
+      </div>
+      <i class="ti ti-chevron-right" style="color:var(--dim);font-size:16px"></i>
+    </div>`).join('');
+}
+
+function selectBiz(b) {
+  _currentBiz = b;
+  document.getElementById('supNameText').textContent = b.name;
+  document.getElementById('supDate').textContent = b.sub || '';
+  closeModal('bizSelectModal');
+  showToast(b.name + ' 선택됨');
+}
+
+(async function restoreBizSession() {
+  const session = Auth.getSession();
+  if(session && session.role === 'supplier') {
+    document.getElementById('supNameText').textContent = session.businessName || session.name || '납품업체';
+  }
+})();
+
 async function init() {
   await Promise.all([loadDrivers(), loadStores(), loadHqData()]);
 }
@@ -555,5 +629,3 @@ else setTimeout(init, 2000);
 </script>
 </body>
 </html>
-
-
